@@ -671,6 +671,12 @@ export default function App() {
           <a href="#" onClick={globalReset}>
             Reset Dashboard
           </a>
+          <a
+            href="https://digital-projects-lb.github.io/product-portfolio/"
+            target="_blank"
+          >
+            View Case Study & Docs
+          </a>
         </p>
       </footer>
     </>

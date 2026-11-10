@@ -25,6 +25,21 @@ body {
   flex-direction: column;
   align-items: center;
   min-height: 100vh;
+  font-family:
+    "Raleway",
+    -apple-system,
+    BlinkMacSystemFont,
+    sans-serif;
+  font-weight: 300;
+  letter-spacing: 0.03em;
+  -webkit-font-smoothing: antialiased;
+}
+
+button,
+select,
+input {
+  font-family: "Raleway", sans-serif;
+  letter-spacing: 0.03em;
 }
 
 .dashboard-header {
@@ -404,3 +419,76 @@ svg {
   color: var(--text-muted);
   padding-bottom: 24px;
 }
+/* Guided Tour Modal & Button */
+.tour-trigger-btn {
+  background: rgba(212, 175, 55, 0.15);
+  border: 1px solid var(--gold-accent);
+  color: var(--gold-accent);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: 20px;
+  cursor: pointer;
+  margin-left: 12px;
+  white-space: nowrap;
+  transition: all 0.2s;
+}
+
+.tour-trigger-btn:hover {
+  background: var(--gold-accent);
+  color: var(--blue-deep);
+}
+
+.tour-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(11, 27, 61, 0.78);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+  padding: 20px;
+}
+
+.tour-card {
+  background: #ffffff;
+  border-top: 5px solid var(--gold-accent);
+  border-radius: 12px;
+  max-width: 480px;
+  width: 100%;
+  padding: 28px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.35);
+}
+
+.tour-step-badge {
+  display: inline-block;
+  background: #ebf5fb;
+  color: #1e2e4f;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 12px;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+}
+
+.tour-card h3 {
+  font-size: 18px;
+  color: var(--blue-deep);
+  margin-bottom: 10px;
+}
+
+.tour-card p {
+  font-size: 14px;
+  color: var(--text-primary);
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+.tour-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+

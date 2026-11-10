@@ -17,6 +17,38 @@ export default function App() {
   });
   const [tickerAlert, setTickerAlert] = useState("");
 
+  const [tourStep, setTourStep] = useState(() => {
+    return localStorage.getItem("lifecycle_tour_seen") ? null : 0;
+  });
+
+  const tourSlides = [
+    {
+      badge: "Welcome • Product Lifecycle Simulation",
+      title: "Guide a Product from Concept to Scale",
+      text: "This interactive simulation walks through 10 real-world product delivery stages. To unlock each stage along the roadmap highway, you must align the right stakeholders and match the right framework deliverable.",
+    },
+    {
+      badge: "Step 1 of 3 • Overview & RACI Tab",
+      title: "Align Your Stakeholders (RACI)",
+      text: "Read the stage description and orange clue box on the left. Then use the dropdowns on the right to assign Responsible (R), Accountable (A), Consulted (C), or Informed (I) roles to the right teams.",
+    },
+    {
+      badge: "Step 2 of 3 • Readiness Checklist Tab",
+      title: "Match the Framework Deliverable",
+      text: "Switch to the Readiness Checklist tab. Drag the matching product framework block from the inventory list on the left and drop it into the target slot on the right.",
+    },
+    {
+      badge: "Step 3 of 3 • Asset Workspace Tab",
+      title: "Unlock & Advance Down the Roadmap",
+      text: "Once your RACI matrix and framework block are both verified, open the Asset Workspace tab to inspect your unlocked deliverable document and click 'Commit & Move' to advance.",
+    },
+  ];
+
+  const closeTour = () => {
+    localStorage.setItem("lifecycle_tour_seen", "true");
+    setTourStep(null);
+  };
+
   useEffect(() => {
     const cache = localStorage.getItem("lifecycle_react_highway_state");
     if (cache) {
@@ -174,6 +206,9 @@ export default function App() {
                 `[ROADMAP GUIDELINES] Required Artifact: ${currentData.asset} | Milestone Horizon: ${currentData.duration}`}
             </div>
           </div>
+          <button className="tour-trigger-btn" onClick={() => setTourStep(0)}>
+            How to Play
+          </button>
         </div>
 
         <div className="svg-container">
@@ -584,9 +619,55 @@ export default function App() {
         )}
       </main>
 
+      {tourStep !== null && (
+        <div className="tour-overlay">
+          <div className="tour-card">
+            <span className="tour-step-badge">
+              {tourSlides[tourStep].badge}
+            </span>
+            <h3>{tourSlides[tourStep].title}</h3>
+            <p>{tourSlides[tourStep].text}</p>
+            <div className="tour-actions">
+              <button className="btn btn-secondary" onClick={closeTour}>
+                Skip Tour
+              </button>
+              <div style={{ display: "flex", gap: "8px" }}>
+                {tourStep > 0 && (
+                  <button
+                    className="btn btn-secondary"
+                    onClick={() => setTourStep(tourStep - 1)}
+                  >
+                    Back
+                  </button>
+                )}
+                {tourStep < tourSlides.length - 1 ? (
+                  <button
+                    className="btn btn-primary"
+                    onClick={() => setTourStep(tourStep + 1)}
+                  >
+                    Next ➔
+                  </button>
+                ) : (
+                  <button
+                    className="btn btn-primary"
+                    style={{
+                      backgroundColor: "var(--gold-accent)",
+                      color: "var(--blue-deep)",
+                    }}
+                    onClick={closeTour}
+                  >
+                    Start Simulation ✔
+                  </button>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       <footer className="game-footer">
         <p>
-          Product Delivery Platform • Vite + React Architecture •{" "}
+          © 2026 product-lb • Product Delivery Simulation •{" "}
           <a href="#" onClick={globalReset}>
             Reset Dashboard
           </a>

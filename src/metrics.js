@@ -177,10 +177,9 @@ export const MetricsMatrix = {
       asset: "Iterative_Optimization_Roadmap.txt",
       raci: {
         product: "A",
-        cx: "C",
         slt: "None",
         sponsor: "None",
-        ux: "None",
+        ux: "C",
         dev: "None",
         legal: "None",
         risk: "None",

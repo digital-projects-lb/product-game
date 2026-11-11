@@ -192,6 +192,46 @@ export default function App() {
     { s: 10, len: 1000 },
   ];
   const activeLength = coordinates.find((c) => c.s === activeStage).len;
+
+  const downloadExecutiveDoc = () => {
+    const printWin = window.open("", "_blank", "width=820,height=900");
+    if (!printWin) return;
+    const cleanTitle = currentData.asset.replace(".txt", "").replace(/_/g, " ");
+    printWin.document.write(`
+      <!doctype html>
+      <html>
+        <head>
+          <title>${cleanTitle}</title>
+          <style>
+            body { font-family: 'Segoe UI', Arial, sans-serif; color: #2c3e50; margin: 0; padding: 40px; background: #ffffff; }
+            .doc-header { background: #0b1b3d; color: #ffffff; padding: 28px 32px; border-bottom: 4px solid #d4af37; border-radius: 8px 8px 0 0; }
+            .doc-badge { color: #d4af37; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.2px; }
+            .doc-title { font-size: 22px; margin: 6px 0 4px 0; font-weight: 600; }
+            .doc-meta { font-size: 12px; color: #cbd5e1; }
+            .doc-body { border: 1px solid #e5e7eb; border-top: none; padding: 28px 32px; border-radius: 0 0 8px 8px; }
+            .doc-summary { background: #faf9f6; border-left: 4px solid #d4af37; padding: 12px 16px; font-size: 13px; margin-bottom: 20px; }
+            pre { font-family: 'Segoe UI', Arial, sans-serif; white-space: pre-wrap; font-size: 13px; line-height: 1.65; color: #1e2e4f; margin: 0; }
+            .doc-footer { margin-top: 24px; font-size: 11px; color: #7a8b99; text-align: right; }
+          </style>
+        </head>
+        <body>
+          <div class="doc-header">
+            <div class="doc-badge">Approved Governance Deliverable • ${currentData.name}</div>
+            <div class="doc-title">${cleanTitle}</div>
+            <div class="doc-meta">Milestone Horizon: ${currentData.duration} • Framework: ${currentData.correctBlock}</div>
+          </div>
+          <div class="doc-body">
+            <div class="doc-summary"><strong>Stage Scope:</strong> ${currentData.desc}</div>
+            <pre>${currentData.docText}</pre>
+            <div class="doc-footer">Generated via Product Lifecycle Simulation • © 2026 product-lb</div>
+          </div>
+          <script>window.onload = () => { window.print(); };</script>
+        </body>
+      </html>
+    `);
+    printWin.document.close();
+  };
+
   return (
     <>
       <header
@@ -594,9 +634,24 @@ export default function App() {
                 alignItems: "center",
               }}
             >
-              <button className="btn btn-secondary" onClick={resetStage}>
-                Clear Settings
-              </button>
+              <div style={{ display: "flex", gap: "10px" }}>
+                <button className="btn btn-secondary" onClick={resetStage}>
+                  Clear Settings
+                </button>
+                {phaseIsCleared && (
+                  <button
+                    className="btn btn-secondary"
+                    onClick={downloadExecutiveDoc}
+                    style={{
+                      borderColor: "var(--blue-executive)",
+                      color: "var(--blue-executive)",
+                    }}
+                  >
+                    ⬇ Save PDF Brief
+                  </button>
+                )}
+              </div>
+
               <button
                 className="btn btn-primary"
                 disabled={!phaseIsCleared}

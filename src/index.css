@@ -53,19 +53,25 @@ input {
 .header-top-row {
   display: flex;
   align-items: center;
-  padding: 16px 24px 0 24px;
   justify-content: space-between;
+  gap: 12px;
+  padding: 12px 20px;
 }
 .pill-badge {
-  border: 2px solid var(--gold-accent);
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid var(--gold-accent);
   color: var(--gold-accent);
-  padding: 4px 14px;
-  border-radius: 20px;
+  background: rgba(212, 175, 55, 0.12);
   font-size: 11px;
-  font-weight: 700;
+  font-weight: 600;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  letter-spacing: 1px;
+  padding: 5px 14px;
+  border-radius: 999px;
   white-space: nowrap;
+  box-shadow: none;
+  outline: none;
 }
 .ticker-wrap {
   flex-grow: 1;
@@ -426,7 +432,7 @@ svg {
   color: var(--gold-accent);
   font-size: 11px;
   font-weight: 700;
-  padding: 4px 12px;
+  padding: 5px 14px;
   border-radius: 20px;
   cursor: pointer;
   margin-left: 12px;
@@ -489,4 +495,22 @@ svg {
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+
+@media (max-width: 768px) {
+  body {
+    padding: 8px;
+  }
+  .header-top-row {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .ticker-wrap {
+    order: 3;
+    width: 100%;
+    margin-left: 0;
+  }
+  .tour-trigger-btn {
+    margin-left: auto;
+  }
 }

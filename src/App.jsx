@@ -385,6 +385,7 @@ export default function App() {
                     fontSize: "12px",
                     color: "#D35400",
                     marginBottom: "16px",
+                    whiteSpace: "pre-line",
                   }}
                 >
                   {currentData.hint}
@@ -392,7 +393,6 @@ export default function App() {
                 <details
                   style={{
                     background: "#F4F6F7",
-                    whiteSpace: "pre-line",
                     padding: "10px",
                     borderRadius: "6px",
                     cursor: "pointer",

@@ -23,7 +23,7 @@ export default function App() {
 
   const tourSlides = [
     {
-      badge: "Welcome • Product Lifecycle Simulation",
+      badge: "Welcome • Product Pipeline",
       title: "Guide a Product from Concept to Scale",
       text: "This interactive simulation walks through 10 real-world product delivery stages. To unlock each stage along the roadmap highway, you must align the right stakeholders and match the right framework deliverable.",
     },
@@ -223,7 +223,7 @@ export default function App() {
           <div class="doc-body">
             <div class="doc-summary"><strong>Stage Scope:</strong> ${currentData.desc}</div>
             <pre>${currentData.docText}</pre>
-            <div class="doc-footer">Generated via Product Lifecycle Simulation • © 2026 product-lb</div>
+            <div class="doc-footer">Generated via Product Pipeline • © 2026 product-lb</div>
           </div>
           <script>window.onload = () => { window.print(); };</script>
         </body>
@@ -239,7 +239,7 @@ export default function App() {
         style={{ width: "100%", maxWidth: "950px" }}
       >
         <div className="header-top-row">
-          <div className="pill-badge">Product Lifecycle Path</div>
+          <div className="pill-badge">Product Pipeline</div>
           <div className="ticker-wrap">
             <div className="ticker-content">
               {tickerAlert ||
@@ -723,7 +723,7 @@ export default function App() {
 
       <footer className="game-footer">
         <p>
-          © 2026 product-lb • Product Delivery Simulation •{" "}
+          © 2026 product-lb • Product Pipeline •{" "}
           <a href="#" onClick={globalReset}>
             Reset Dashboard
           </a>{" "}

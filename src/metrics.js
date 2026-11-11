@@ -3,7 +3,7 @@ export const MetricsMatrix = {
     1: {
       name: "1. Concept Phase",
       duration: "1-2 Weeks",
-      asset: "Product_Opportunity_Brief.txt",
+      asset: "Product_Brief.pdf",
       raci: {
         product: "A",
         slt: "C",
@@ -14,15 +14,21 @@ export const MetricsMatrix = {
         risk: "None",
       },
       correctBlock: "Vision & Strategy Brief",
-      hint: "💡 CLUE: Product Management owns the concept definition (A). Secure strategic advice from the SLT (C). Drag the foundational business overview block.",
-      desc: "Define product vision & strategic parameters alignment. Pinpoint market gaps and create high-level user hypothesis vectors.",
-      docText:
-        "========================================================================\n                 STRATEGIC PRODUCT OPPORTUNITY BRIEF\n========================================================================\n[STAGE 1 LOG] STATUS: APPROVED & ARCHIVED\n\n1. OVERARCHING VISION & POSITIONING\n------------------------------------------------------------------------\nObjective: Articulate the north-star goal of the initiative and map\nhow it directly influences long-term competitive advantages.\n\n2. OPPORTUNITY ANALYSIS & POSITIONING VECTORS\n------------------------------------------------------------------------\nMarket Discovery: Map structural gaps, identify user workflow friction\nindicators, and lock in the core problem statement hypothesis.",
+      hint: "💡 CLUE:\n• Product owns the concept (A)\n• Consult SLT for early advice (C)\n• Drag: Vision & Strategy Brief",
+      desc: "Define the product goal, check how it fits company priorities, and identify the main customer problem we want to solve.",
+      docText: `PRODUCT BRIEF
+Status: Approved
+
+1. Goal & Purpose
+Explain the main problem this product solves and why it matters to our users and the business.
+
+2. Target Audience & Opportunity
+Outline who will use this product, what gaps exist today, and the core idea we are testing.`,
     },
     2: {
       name: "2. Discovery Phase",
       duration: "2-4 Weeks",
-      asset: "Business_Requirements_Document.txt",
+      asset: "Business_Requirements_Document.pdf",
       raci: {
         product: "A",
         slt: "C",
@@ -33,15 +39,21 @@ export const MetricsMatrix = {
         risk: "None",
       },
       correctBlock: "BABOK Market Analysis Mapping",
-      hint: "💡 CLUE: Business analysis must comply with BABOK methods. Product remains Accountable (A) and SLT provides constraint advice (C).",
-      desc: "Conduct qualitative user research interviews, audit competitive market variants, and scope down requirements under strict BABOK criteria.",
-      docText:
-        "========================================================================\n                BUSINESS REQUIREMENTS DOCUMENT (BRD)\n========================================================================\n[STAGE 2 LOG] STATUS: BABOK COMPLIANT SIGN-OFF\n\n1. BUSINESS ANALYSIS BODY OF KNOWLEDGE (BABOK) WORKSPACE\n------------------------------------------------------------------------\nScope Boundaries: Review quantitative customer surveys, process \nfunnel drop-offs, and competitive positioning metrics.\n\n2. TARGET DEMOGRAPHICS & SCOPED PROBLEM STATEMENT\n------------------------------------------------------------------------\nRefinement Framework: Narrow broad assumptions into high-fidelity user\njourney profiles and measurable operational bottlenecks.",
+      hint: "💡 CLUE:\n• Product stays Accountable (A)\n• Consult SLT on business constraints (C)\n• Drag: BABOK Market Analysis Mapping",
+      desc: "Run user interviews, review competing products, and narrow down requirements using practical BABOK business analysis methods.",
+      docText: `BUSINESS REQUIREMENTS DOCUMENT (BRD)
+Status: Signed Off
+
+1. Research & Analysis (BABOK)
+Review user interview findings, customer feedback, and competitor gaps to confirm what users actually need.
+
+2. Scoped Problem & User Needs
+Turn broad ideas into clear user workflows and list the specific problems the product must fix.`,
     },
     3: {
       name: "3. Stakeholder Engagement",
       duration: "1-2 Weeks",
-      asset: "Executive_Business_Case.txt",
+      asset: "Business_Case.pdf",
       raci: {
         product: "A",
         sponsor: "A",
@@ -52,15 +64,20 @@ export const MetricsMatrix = {
         risk: "None",
       },
       correctBlock: "PMBOK Triple Constraint Baseline",
-      desc: "Gather constraints, operational legal risks, and structure budget cost analysis under PMBOK triple-constraint guidelines.",
-      hint: "💡 CLUE: PMBOK needs the Project Sponsor and PM to align on approvals (A). Legal must vet risks (C), and SLT gets a passive push update (I).",
-      docText:
-        "========================================================================\n                  EXECUTIVE BUSINESS CASE FRAMEWORK\n========================================================================\n[STAGE 3 LOG] STATUS: FINANCIAL BASELINE BASALED\n\n1. PMBOK TRIPLE-CONSTRAINT SYSTEM ANALYSIS\n------------------------------------------------------------------------\n• Schedule Baseline: Formulate time-boxed project milestones roadmap.\n• Cost Baseline: Complete deep capital and infrastructure budget matrix.\n• Scope Baseline: Map internal constraints and legal risks.",
+      hint: "💡 CLUE:\n• Product & Sponsor both sign off (A)\n• Consult Legal on compliance risks (C)\n• Keep SLT Informed (I)\n• Drag: PMBOK Triple Constraint Baseline",
+      desc: "Check budget, timeline, and legal constraints with key stakeholders and build a clear business case using PMBOK baselines.",
+      docText: `BUSINESS CASE
+Status: Budget & Scope Approved
+
+1. Time, Cost & Scope Baselines (PMBOK)
+• Schedule: Set realistic delivery dates and key milestones.
+• Cost: Estimate build costs, tools, and ongoing running expenses.
+• Scope: Confirm what is included, what is out, and any legal or compliance rules.`,
     },
     4: {
       name: "4. Stories & Specs",
       duration: "2-3 Weeks",
-      asset: "Product_PRD_Spec_Sheet.txt",
+      asset: "Product_Requirements_Spec.pdf",
       raci: {
         ux: "C",
         dev: "C",
@@ -71,15 +88,22 @@ export const MetricsMatrix = {
         risk: "None",
       },
       correctBlock: "Epic Breakdown & Lifecycle Flows",
-      hint: "💡 CLUE: Design and Engineering need to be collaborated with early before building (C). Leave management out for this specific chunk.",
-      desc: "Slice wide feature scope down into manageable epics and customer-centric user stories, following strict agile acceptance criteria metrics.",
-      docText:
-        "========================================================================\n               PRODUCT REQUIREMENT DOCUMENTATION (PRD)\n========================================================================\n[STAGE 4 LOG] STATUS: USER STORIES REFINED\n\n1. AGILE SPECIFICATION & TRANSITIVE EPIC MAPS\n------------------------------------------------------------------------\nRequirements Matrix: Slice major feature components into functional epics.\nFormat standard: 'As a [user type], I want to [action], so that [benefit].'\n\n2. CORE LIFE TRACK STAGES OVERVIEW\n------------------------------------------------------------------------\nLifecycle Tracking: Discovery -> Definition -> Delivery -> Launch & Iteration.",
+      hint: "💡 CLUE:\n• Consult UX Design & Dev early before building (C)\n• Drag: Epic Breakdown & Lifecycle Flows",
+      desc: "Break large features down into smaller epics and clear user stories with practical acceptance criteria.",
+      docText: `PRODUCT REQUIREMENTS SPECIFICATION (PRD)
+Status: Stories Ready
+
+1. Epics & User Stories
+Break large features into small, testable user stories using the standard format:
+"As a [user], I want to [do something], so that [I get a clear benefit]."
+
+2. End-to-End User Flow
+Map out each screen and step from first visit through to task completion.`,
     },
     5: {
       name: "5. Tech Engagement",
       duration: "1-2 Weeks",
-      asset: "MVP_Scoping_Matrix.txt",
+      asset: "MVP_Scoping_Plan.pdf",
       raci: {
         product: "A",
         dev: "R",
@@ -90,15 +114,21 @@ export const MetricsMatrix = {
         risk: "None",
       },
       correctBlock: "Technical Debt & Feasibility Audit",
-      hint: "💡 CLUE: Product is Accountable (A) for what to build, but Dev Team is Responsible (R) for the technical execution. Grab the Tech Debt block.",
-      desc: "Facilitate a technical refinement session with engineering architects to analyze technical debt constraints and map database metrics onto the Roadmap.",
-      docText:
-        "========================================================================\n                       MVP SCOPING SPECIFICATION\n========================================================================\n[STAGE 5 LOG] STATUS: FEASIBILITY GRANTED\n\n1. TECHNICAL ROADMAP & FEASIBILITY CONSTRAINTS\n------------------------------------------------------------------------\nArchitecture Review: Map database changes, check safety parameters,\nand catalog legacy code technical debt impact vectors.\n\n2. MINIMUM VIABLE PRODUCT (MVP) BOUNDARIES\n------------------------------------------------------------------------\nScoping Strategy: Trim high-complexity items to fit the sprint loop.",
+      hint: "💡 CLUE:\n• Product is Accountable for priorities (A)\n• Dev is Responsible for technical checks (R)\n• Drag: Technical Debt & Feasibility Audit",
+      desc: "Review technical feasibility with developers, spot existing tech debt, and agree on a realistic Minimum Viable Product (MVP).",
+      docText: `MVP SCOPING PLAN
+Status: Technically Feasible
+
+1. Technical Check & Risks
+Review database needs, security rules, and any existing tech debt that could slow down the build.
+
+2. MVP Cut-Off Line
+Separate must-have features for launch from nice-to-have items that can wait until later.`,
     },
     6: {
       name: "6. Sprints & Development",
       duration: "2-4 Weeks",
-      asset: "Sprint_Backlog_Commitment.txt",
+      asset: "Sprint_Backlog_Plan.pdf",
       raci: {
         dev: "R",
         product: "None",
@@ -109,15 +139,21 @@ export const MetricsMatrix = {
         risk: "None",
       },
       correctBlock: "Agile Scrum Bible Ceremony Loop",
-      hint: "💡 CLUE: Sprints are executed entirely by the Dev Team (R). Look for the Agile Scrum ceremony tracking component.",
-      desc: "Commit prioritized technical backlog to time-boxed 1-2 week engineering cycles using story-points and facilitate daily alignment standups.",
-      docText:
-        "========================================================================\n                  SPRINT BACKLOG COMMITMENT MATRIX\n========================================================================\n[STAGE 6 LOG] STATUS: BACKLOG LOCKED TO ITERATION\n\n1. AGILE SCRUM BIBLE METHODOLOGY TRACKING\n------------------------------------------------------------------------\nSizing Units: Allocate developer Story-Points to active user epics.\nCeremony Flow: Sprint Planning -> Daily Standup -> Iteration Delivery.",
+      hint: "💡 CLUE:\n• Dev is Responsible for building during sprints (R)\n• Drag: Agile Scrum Bible Ceremony Loop",
+      desc: "Build prioritized stories in short 1-2 week sprints, size tasks with story points, and run daily team check-ins.",
+      docText: `SPRINT BACKLOG PLAN
+Status: Sprint Active
+
+1. Agile Scrum Workflow
+Estimate tasks using story points and commit only what the team can realistically finish in this sprint.
+
+2. Team Rhythm
+Sprint Planning -> Daily Stand-up -> Sprint Review -> Retrospective.`,
     },
     7: {
       name: "7. Test Phase",
       duration: "1-2 Weeks",
-      asset: "QA_UAT_Signoff_Log.txt",
+      asset: "QA_UAT_Signoff_Log.pdf",
       raci: {
         product: "A",
         dev: "R",
@@ -128,15 +164,21 @@ export const MetricsMatrix = {
         risk: "None",
       },
       correctBlock: "User Acceptance Testing (UAT) Controls",
-      hint: "💡 CLUE: Product approves the sign-off (A), while Dev runs the functional tests (R). Drag the User Acceptance Testing controller block.",
-      desc: "Run deep functional regression testing against acceptance criteria logs and coordinate formal staging User Acceptance Testing (UAT).",
-      docText:
-        "========================================================================\n                   QUALITY ASSURANCE SIGN-OFF LOG\n========================================================================\n[STAGE 7 LOG] STATUS: STAGING PASS PROTOCOL\n\n1. FUNCTIONAL REGRESSION VALIDATION PIPELINES\n------------------------------------------------------------------------\nUAT Matrix: Execute validation cycles against PRD acceptance criteria.\nSecurity Checklist: Audit data privacy protocols and system latency loops.",
+      hint: "💡 CLUE:\n• Product approves final sign-off (A)\n• Dev is Responsible for running tests (R)\n• Drag: User Acceptance Testing (UAT) Controls",
+      desc: "Test every feature against acceptance criteria and run User Acceptance Testing (UAT) before going live.",
+      docText: `QA & UAT SIGN-OFF LOG
+Status: Staging Passed
+
+1. Functional & UAT Testing
+Check all user flows against the acceptance criteria in the PRD and verify bug fixes in staging.
+
+2. Security & Speed Check
+Confirm user data is protected and pages load quickly before approving release.`,
     },
     8: {
       name: "8. Iterate Phase",
       duration: "1 Week",
-      asset: "Retrospective_Action_Plan.txt",
+      asset: "Retrospective_Action_Plan.pdf",
       raci: {
         dev: "R",
         product: "None",
@@ -147,15 +189,21 @@ export const MetricsMatrix = {
         risk: "None",
       },
       correctBlock: "Sprint Retrospective Workflow Refinement",
-      hint: "💡 CLUE: Refining development workflows is driven by the engineering team (R). Grab the Retrospective refinement block.",
-      desc: "Catalog observed defects and UX friction loops, execute team retrospectives, and document the Retrospective Action Plan.",
-      docText:
-        "========================================================================\n                  SPRINT RETROSPECTIVE ACTION PLAN\n========================================================================\n[STAGE 8 LOG] STATUS: RETRO MANIFEST FILED\n\n1. REFINEMENT & DEVELOPMENT TEAM OPTIMIZATION\n------------------------------------------------------------------------\nFeedback Loop: Document defects, capture edge cases, and design fast\ncode revisions to optimize process speed for the next cycle.",
+      hint: "💡 CLUE:\n• Dev is Responsible for workflow fixes (R)\n• Drag: Sprint Retrospective Workflow Refinement",
+      desc: "Log bugs and usability issues found during testing, hold a team retrospective, and agree on practical improvements.",
+      docText: `SPRINT RETROSPECTIVE ACTION PLAN
+Status: Actions Logged
+
+1. Team Review & Fixes
+List what went well, what slowed the team down, and small process changes for the next sprint.
+
+2. Bug & Polish Queue
+Prioritise remaining edge cases and UI fixes before launch.`,
     },
     9: {
       name: "9. Launch Phase",
       duration: "1-2 Weeks",
-      asset: "GoToMarket_Release_Deck.txt",
+      asset: "GoToMarket_Release_Plan.pdf",
       raci: {
         product: "A",
         sponsor: "I",
@@ -166,15 +214,21 @@ export const MetricsMatrix = {
         risk: "None",
       },
       correctBlock: "Usage & Adoption Telemetry Logging",
-      desc: "Coordinate with marketing on release logs, deploy phased rollouts via feature flags, and initialize automated adoption tracking dashboards.",
-      hint: "💡 CLUE: PM owns launch accountability (A), devs push the code switches (R), while the Sponsor and SLT get push notification updates (I).",
-      docText:
-        "========================================================================\n                     GO-TO-MARKET RELEASE PLAYBOOK\n========================================================================\n[STAGE 9 LOG] STATUS: LIVE ROLLOUT IN RUNTIME\n\n1. PHASED ROLLOUT CHANNELS & INFRASTRUCTURE WATCH\n------------------------------------------------------------------------\nStability Vectors: Scale feature flags safely (1% -> 10% -> 100%).\nSupport Readiness: Coordinate user guides, release metrics, and training.",
+      hint: "💡 CLUE:\n• Product is Accountable for launch (A)\n• Dev is Responsible for release rollout (R)\n• Keep Sponsor & SLT Informed (I)\n• Drag: Usage & Adoption Telemetry Logging",
+      desc: "Roll out the product safely in stages, share release notes, and turn on usage tracking to monitor adoption.",
+      docText: `GO-TO-MARKET RELEASE PLAN
+Status: Live in Production
+
+1. Staged Rollout
+Release safely in small steps (1% -> 10% -> 100%) while monitoring errors and performance.
+
+2. Launch Readiness & Tracking
+Share user guides, notify stakeholders, and track active usage from day one.`,
     },
     10: {
       name: "10. Add Feature Expansion",
       duration: "Ongoing",
-      asset: "Iterative_Optimization_Roadmap.txt",
+      asset: "Product_Improvement_Roadmap.pdf",
       raci: {
         product: "A",
         slt: "None",
@@ -185,10 +239,16 @@ export const MetricsMatrix = {
         risk: "None",
       },
       correctBlock: "Sentiment Instrumentation Hooks (NPS/CSAT)",
-      desc: "Measure initial launch success against baseline OKRs, monitor feedback channels, and prioritize upcoming features.",
-      hint: "💡 CLUE: Product owns the optimization roadmap (A). Consult heavily with CX experts (C) to track sentiment tracking loops.",
-      docText:
-        "========================================================================\n                   ITERATIVE OPTIMIZATION ROADMAP\n========================================================================\n[STAGE 10 LOG] STATUS: CYCLE COMPLETE • TUNNELED BACK TO NODE 1\n\n1. PRODUCTION SENTIMENT METHODOLOGY INSTRUMENTATION\n------------------------------------------------------------------------\nProduct Health HUD: Track Customer Satisfaction (CSAT), Customer Effort \nScore (CES), and net promoter sentiment tracking loops (NPS).",
+      hint: "💡 CLUE:\n• Product owns the roadmap (A)\n• Consult UX/CX on user feedback (C)\n• Drag: Sentiment Instrumentation Hooks (NPS/CSAT)",
+      desc: "Review post-launch results against goals, collect customer feedback, and prioritise the next set of improvements.",
+      docText: `PRODUCT IMPROVEMENT ROADMAP
+Status: Cycle Complete
+
+1. Customer Feedback & Metrics
+Track customer satisfaction (CSAT), ease of use, and Net Promoter Score (NPS) to spot friction.
+
+2. Next Priorities
+Use real usage data and customer feedback to plan the next round of product updates.`,
     },
   },
 };

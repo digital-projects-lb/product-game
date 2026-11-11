@@ -1,5 +1,5 @@
 :root {
-  --blue-executive: #1e2e4f;
+  --blue-primary: #1e2e4f;
   --blue-deep: #0b1b3d;
   --gold-accent: #d4af37;
   --gold-glow: rgba(212, 175, 55, 0.4);
@@ -45,7 +45,7 @@ input {
 .dashboard-header {
   width: 100%;
   max-width: 950px;
-  background-color: var(--blue-executive);
+  background-color: var(--blue-primary);
   border-radius: 20px 20px 0 0;
   overflow: hidden;
   box-shadow: 0 10px 30px rgba(11, 27, 61, 0.08);
@@ -337,7 +337,7 @@ svg {
   border-radius: 6px;
   font-size: 12px;
   font-weight: 600;
-  color: var(--blue-executive);
+  color: var(--blue-primary);
   cursor: grab;
 }
 .drop-zone {
@@ -396,7 +396,7 @@ svg {
   transition: all 0.2s;
 }
 .btn-primary {
-  background-color: var(--blue-executive);
+  background-color: var(--blue-primary);
   color: #ffffff;
 }
 .btn-primary:hover:not(:disabled) {
@@ -490,5 +490,3 @@ svg {
   justify-content: space-between;
   align-items: center;
 }
-
-

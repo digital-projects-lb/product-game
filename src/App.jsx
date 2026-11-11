@@ -193,7 +193,7 @@ export default function App() {
   ];
   const activeLength = coordinates.find((c) => c.s === activeStage).len;
 
-  const downloadExecutiveDoc = () => {
+  const downloadDoc = () => {
     const printWin = window.open("", "_blank", "width=820,height=900");
     if (!printWin) return;
     const cleanTitle = currentData.asset.replace(".txt", "").replace(/_/g, " ");
@@ -216,9 +216,9 @@ export default function App() {
         </head>
         <body>
           <div class="doc-header">
-            <div class="doc-badge">Approved Governance Deliverable • ${currentData.name}</div>
+            <div class="doc-badge">Stage Document • ${currentData.name}</div>
             <div class="doc-title">${cleanTitle}</div>
-            <div class="doc-meta">Milestone Horizon: ${currentData.duration} • Framework: ${currentData.correctBlock}</div>
+            <div class="doc-meta">Timeline: ${currentData.duration} • Method: ${currentData.correctBlock}</div>
           </div>
           <div class="doc-body">
             <div class="doc-summary"><strong>Stage Scope:</strong> ${currentData.desc}</div>
@@ -392,6 +392,7 @@ export default function App() {
                 <details
                   style={{
                     background: "#F4F6F7",
+                    whiteSpace: "pre-line",
                     padding: "10px",
                     borderRadius: "6px",
                     cursor: "pointer",
@@ -401,7 +402,7 @@ export default function App() {
                     style={{
                       fontWeight: 700,
                       fontSize: "12px",
-                      color: "var(--blue-executive)",
+                      color: "var(--blue-primary)",
                     }}
                   >
                     📋 Quick RACI Matrix Framework Cheat Sheet
@@ -559,7 +560,7 @@ export default function App() {
           >
             <div
               style={{
-                backgroundColor: "var(--blue-executive)",
+                backgroundColor: "var(--blue-primary)",
                 padding: "14px 20px",
                 display: "flex",
                 justifyContent: "space-between",
@@ -641,13 +642,13 @@ export default function App() {
                 {phaseIsCleared && (
                   <button
                     className="btn btn-secondary"
-                    onClick={downloadExecutiveDoc}
+                    onClick={downloadDoc}
                     style={{
-                      borderColor: "var(--blue-executive)",
-                      color: "var(--blue-executive)",
+                      borderColor: "var(--blue-primary)",
+                      color: "var(--blue-primary)",
                     }}
                   >
-                    ⬇ Save PDF Brief
+                    ⬇ Save PDF
                   </button>
                 )}
               </div>

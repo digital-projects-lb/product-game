@@ -670,7 +670,8 @@ export default function App() {
           © 2026 product-lb • Product Delivery Simulation •{" "}
           <a href="#" onClick={globalReset}>
             Reset Dashboard
-          </a>
+          </a>{" "}
+          •{" "}
           <a
             href="https://digital-projects-lb.github.io/product-portfolio/"
             target="_blank"

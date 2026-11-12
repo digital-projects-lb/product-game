@@ -131,38 +131,42 @@ export default function App() {
   };
 
   const commitAndAdvance = () => {
-    let nextMax = maxUnlockedStage;
-    let nextActive = activeStage;
-    if (activeStage === maxUnlockedStage && activeStage < 10) {
-      nextMax = maxUnlockedStage + 1;
-      nextActive = activeStage + 1;
-    } else if (activeStage < 10) {
-      nextActive = activeStage + 1;
-    }
-    setMaxUnlockedStage(nextMax);
-    setActiveStage(nextActive);
-    setDroppedBlock(null);
-    const freshSH = {
-      product: "None",
-      slt: "None",
-      sponsor: "None",
-      ux: "None",
-      dev: "None",
-      legal: "None",
-      risk: "None",
-    };
-    setStakeholders(freshSH);
-    setViewPage("overview");
-    localStorage.setItem(
-      "lifecycle_react_highway_state",
-      JSON.stringify({
-        viewPage: "overview",
-        activeStage: nextActive,
-        maxUnlockedStage: nextMax,
-        droppedBlock: null,
-        stakeholders: freshSH,
-      }),
-    );
+    window.scrollTo({ top: 0, behavior: "smooth" });
+
+    setTimeout(() => {
+      let nextMax = maxUnlockedStage;
+      let nextActive = activeStage;
+      if (activeStage === maxUnlockedStage && activeStage < 10) {
+        nextMax = maxUnlockedStage + 1;
+        nextActive = activeStage + 1;
+      } else if (activeStage < 10) {
+        nextActive = activeStage + 1;
+      }
+      setMaxUnlockedStage(nextMax);
+      setActiveStage(nextActive);
+      setDroppedBlock(null);
+      const freshSH = {
+        product: "None",
+        slt: "None",
+        sponsor: "None",
+        ux: "None",
+        dev: "None",
+        legal: "None",
+        risk: "None",
+      };
+      setStakeholders(freshSH);
+      setViewPage("overview");
+      localStorage.setItem(
+        "lifecycle_react_highway_state",
+        JSON.stringify({
+          viewPage: "overview",
+          activeStage: nextActive,
+          maxUnlockedStage: nextMax,
+          droppedBlock: null,
+          stakeholders: freshSH,
+        }),
+      );
+    }, 450);
   };
 
   const globalReset = (e) => {
@@ -480,6 +484,34 @@ export default function App() {
         </div>
       </header>
 
+      <div
+        style={{
+          width: "100%",
+          maxWidth: "950px",
+          display: "flex",
+          alignItems: "baseline",
+          justifyContent: "space-between",
+          marginTop: "22px",
+          padding: "0 2px",
+        }}
+      >
+        <h2
+          style={{
+            fontSize: "15px",
+            fontWeight: 600,
+            textTransform: "uppercase",
+            letterSpacing: "0.08em",
+            color: "var(--espresso-primary)",
+            margin: 0,
+          }}
+        >
+          Workbench
+        </h2>
+        <span style={{ fontSize: "12px", color: "var(--text-muted)" }}>
+          Complete roles &amp; deliverable to unlock stage document
+        </span>
+      </div>
+
       <nav className="app-subbar-nav">
         <div className="nav-tabs-group">
           <div
@@ -547,24 +579,80 @@ export default function App() {
                   {currentData.desc}
                 </p>
 
-                {/* Kanban Sticky Note Clue */}
+                {/* Kanban Sticky Note Clue (Warm Cappuccino + Push Pin) */}
                 <div
                   style={{
-                    backgroundColor: "#f9f5e3",
-                    border: "1px solid #e6d79c",
-                    borderTop: "6px solid #cbb26a",
-                    padding: "14px 16px",
-                    borderRadius: "2px 2px 8px 2px",
-                    boxShadow: "2px 4px 10px rgba(62, 47, 38, 0.08)",
+                    position: "relative",
+                    backgroundColor: "#f3ece4",
+                    border: "1px solid #d9c5b2",
+                    borderTop: "6px solid #c8a98e",
+                    padding: "20px 18px 16px 18px",
+                    borderRadius: "2px 2px 10px 2px",
+                    boxShadow: "2px 5px 12px rgba(62, 47, 38, 0.09)",
                     transform: "rotate(-0.6deg)",
                     fontWeight: 500,
                     fontSize: "12.5px",
-                    color: "#4a3f28",
+                    color: "#5c4332",
+                    marginTop: "8px",
                     marginBottom: "18px",
                     whiteSpace: "pre-line",
                     lineHeight: "1.65",
                   }}
                 >
+                  {/* Top-Centre Angled Push Pin */}
+                  <div
+                    aria-hidden="true"
+                    style={{
+                      position: "absolute",
+                      top: "-15px",
+                      left: "50%",
+                      transform: "translateX(-50%) rotate(22deg)",
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center",
+                      pointerEvents: "none",
+                    }}
+                  >
+                    {/* Pin Top Cap */}
+                    <div
+                      style={{
+                        width: "12px",
+                        height: "5px",
+                        borderRadius: "3px",
+                        backgroundColor: "#cbb26a",
+                        border: "1.5px solid #5c4332",
+                      }}
+                    />
+                    {/* Pin Body */}
+                    <div
+                      style={{
+                        width: "8px",
+                        height: "7px",
+                        backgroundColor: "#9a7b2c",
+                        borderLeft: "1.5px solid #5c4332",
+                        borderRight: "1.5px solid #5c4332",
+                      }}
+                    />
+                    {/* Pin Base Collar */}
+                    <div
+                      style={{
+                        width: "14px",
+                        height: "5px",
+                        borderRadius: "3px",
+                        backgroundColor: "#cbb26a",
+                        border: "1.5px solid #5c4332",
+                      }}
+                    />
+                    {/* Metal Needle Point */}
+                    <div
+                      style={{
+                        width: "2px",
+                        height: "6px",
+                        backgroundColor: "#5c4332",
+                      }}
+                    />
+                  </div>
+
                   {currentData.hint}
                 </div>
 

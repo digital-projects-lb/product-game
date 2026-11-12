@@ -1,7 +1,7 @@
 export const MetricsMatrix = {
   phases: {
     1: {
-      name: "1. Concept Phase",
+      name: "1. Concept",
       duration: "1-2 Weeks",
       asset: "Product Brief",
       raci: {
@@ -29,7 +29,7 @@ export const MetricsMatrix = {
 • Out of scope for this phase: [List exclusions]`,
     },
     2: {
-      name: "2. Discovery Phase",
+      name: "2. Discovery",
       duration: "2-4 Weeks",
       asset: "Business Requirements Document (BRD)",
       raci: {
@@ -57,7 +57,7 @@ export const MetricsMatrix = {
 • Upstream or downstream system dependencies: [List systems]`,
     },
     3: {
-      name: "3. Stakeholder Engagement",
+      name: "3. Stakeholder Alignment",
       duration: "1-2 Weeks",
       asset: "Business Case",
       raci: {
@@ -111,7 +111,7 @@ export const MetricsMatrix = {
 • Wireframes / prototype link: [Design reference]`,
     },
     5: {
-      name: "5. Tech Engagement",
+      name: "5. Tech Review",
       duration: "1-2 Weeks",
       asset: "MVP Scoping Document",
       raci: {
@@ -138,7 +138,7 @@ export const MetricsMatrix = {
 • Fast-follow (Post-MVP): [Deferred enhancements]`,
     },
     6: {
-      name: "6. Sprints & Development",
+      name: "6. Sprints & Build",
       duration: "2-4 Weeks",
       asset: "Sprint Backlog Planning Document",
       raci: {
@@ -164,7 +164,7 @@ export const MetricsMatrix = {
 • Sprint Planning -> Daily Stand-Up -> Backlog Refinement -> Sprint Review`,
     },
     7: {
-      name: "7. Test Phase",
+      name: "7. Testing",
       duration: "1-2 Weeks",
       asset: "QA & UAT Signoff Log",
       raci: {
@@ -190,7 +190,7 @@ export const MetricsMatrix = {
 • Open critical/blocker defects: [0 blockers required for go-live]`,
     },
     8: {
-      name: "8. Iterate Phase",
+      name: "8. Iteration",
       duration: "1 Week",
       asset: "Sprint Retrospective Action Plan",
       raci: {
@@ -215,7 +215,7 @@ export const MetricsMatrix = {
 • Agreed process action(s): [Owner & due date]`,
     },
     9: {
-      name: "9. Launch Phase",
+      name: "9. Launch",
       duration: "1-2 Weeks",
       asset: "Go-To-Market (GTM) Release Plan",
       raci: {
@@ -241,7 +241,7 @@ export const MetricsMatrix = {
 • Key events tracked from Day 1: [Activation, drop-off, error rate]`,
     },
     10: {
-      name: "10. Add Feature Expansion",
+      name: "10. Post-Launch",
       duration: "Ongoing",
       asset: "Iteration Roadmap (Features, Bugs & Tech Debt Backlog)",
       raci: {

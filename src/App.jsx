@@ -23,24 +23,24 @@ export default function App() {
 
   const tourSlides = [
     {
-      badge: "Welcome • Product Pipeline",
-      title: "Guide a Product from Concept to Scale",
-      text: "This interactive simulation walks through 10 real-world product delivery stages. To unlock each stage along the roadmap highway, you must align the right stakeholders and match the right framework deliverable.",
+      badge: "Welcome • Product Path",
+      title: "Guide a Product from Concept to Launch",
+      text: "This interactive simulation walks through 10 real-world product delivery stages. To unlock each stage along the road, assign the right team roles and match the required deliverable.",
     },
     {
       badge: "Step 1 of 3 • Overview & RACI Tab",
-      title: "Align Your Stakeholders (RACI)",
-      text: "Read the stage description and orange clue box on the left. Then use the dropdowns on the right to assign Responsible (R), Accountable (A), Consulted (C), or Informed (I) roles to the right teams.",
+      title: "Assign Team Roles (RACI)",
+      text: "Read the stage overview and sticky-note clue on the left. Then use the dropdowns on the right to set Responsible (R), Accountable (A), Consulted (C), or Informed (I) roles.",
     },
     {
-      badge: "Step 2 of 3 • Readiness Checklist Tab",
-      title: "Match the Framework Deliverable",
-      text: "Switch to the Readiness Checklist tab. Drag the matching product framework block from the inventory list on the left and drop it into the target slot on the right.",
+      badge: "Step 2 of 3 • Deliverables Tab",
+      title: "Match the Stage Deliverable",
+      text: "Switch to the Deliverables tab. Drag the matching deliverable pill from the list on the left and drop it into the box on the right.",
     },
     {
-      badge: "Step 3 of 3 • Asset Workspace Tab",
-      title: "Unlock & Advance Down the Roadmap",
-      text: "Once your RACI matrix and framework block are both verified, open the Asset Workspace tab to inspect your unlocked deliverable document and click 'Commit & Move' to advance.",
+      badge: "Step 3 of 3 • Documents Tab",
+      title: "Review Document & Advance",
+      text: "Once your team roles and deliverable are both complete, open the Documents tab to view your template, save it as a PDF, and click 'Commit & Move' to advance.",
     },
   ];
 
@@ -108,8 +108,9 @@ export default function App() {
       });
     } else {
       setTickerAlert(
-        `Phase ${sNum} is locked! Clear metrics in Phase ${maxUnlockedStage} to push down the trail.`,
+        `Stage ${sNum} is locked. Complete Stage ${maxUnlockedStage} first.`,
       );
+
       setTimeout(() => setTickerAlert(""), 4000);
     }
   };
@@ -194,38 +195,164 @@ export default function App() {
   const activeLength = coordinates.find((c) => c.s === activeStage).len;
 
   const downloadDoc = () => {
-    const printWin = window.open("", "_blank", "width=820,height=900");
+    const printWin = window.open("", "_blank", "width=820,height=920");
     if (!printWin) return;
-    const cleanTitle = currentData.asset.replace(".txt", "").replace(/_/g, " ");
+
+    const cleanTitle = currentData.asset;
+
+    const roleLabels = {
+      product: "Product",
+      slt: "Senior Leadership (SLT)",
+      sponsor: "Sponsor",
+      ux: "Product Design (UX/CX)",
+      dev: "Engineering (Dev)",
+      legal: "Legal",
+      risk: "Risk & Compliance",
+    };
+
+    const raciRows = Object.entries(currentData.raci)
+      .filter(([, role]) => role !== "None")
+      .map(
+        ([key, role]) =>
+          `<tr>
+            <td>${roleLabels[key] || key}</td>
+            <td><span class="raci-pill">${role}</span></td>
+          </tr>`,
+      )
+      .join("");
+
     printWin.document.write(`
       <!doctype html>
       <html>
         <head>
-          <title>${cleanTitle}</title>
+          <title>${cleanTitle} — Product Path</title>
+          <link rel="preconnect" href="https://googleapis.com" />
+          <link rel="preconnect" href="https://gstatic.com" crossorigin />
+          <link href="https://googleapis.com/css2?family=Raleway:wght@300;400;500;600&display=swap" rel="stylesheet" />
           <style>
-            body { font-family: 'Segoe UI', Arial, sans-serif; color: #2c3e50; margin: 0; padding: 40px; background: #ffffff; }
-            .doc-header { background: #0b1b3d; color: #ffffff; padding: 28px 32px; border-bottom: 4px solid #d4af37; border-radius: 8px 8px 0 0; }
-            .doc-badge { color: #d4af37; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.2px; }
-            .doc-title { font-size: 22px; margin: 6px 0 4px 0; font-weight: 600; }
-            .doc-meta { font-size: 12px; color: #cbd5e1; }
-            .doc-body { border: 1px solid #e5e7eb; border-top: none; padding: 28px 32px; border-radius: 0 0 8px 8px; }
-            .doc-summary { background: #faf9f6; border-left: 4px solid #d4af37; padding: 12px 16px; font-size: 13px; margin-bottom: 20px; }
-            pre { font-family: 'Segoe UI', Arial, sans-serif; white-space: pre-wrap; font-size: 13px; line-height: 1.65; color: #1e2e4f; margin: 0; }
-            .doc-footer { margin-top: 24px; font-size: 11px; color: #7a8b99; text-align: right; }
+            body {
+              font-family: 'Raleway', -apple-system, BlinkMacSystemFont, sans-serif;
+              font-weight: 300;
+              color: #3e2f26;
+              margin: 0;
+              padding: 36px;
+              background: #ffffff;
+              line-height: 1.65;
+            }
+            .doc-header {
+              background: #faf8f5;
+              color: #3e2f26;
+              padding: 24px 28px;
+              border: 1px solid #ece5dd;
+              border-left: 5px solid #cbb26a;
+              border-radius: 6px;
+              margin-bottom: 20px;
+            }
+            .doc-badge {
+              color: #7c6527;
+              font-size: 11px;
+              font-weight: 600;
+              text-transform: uppercase;
+              letter-spacing: 0.08em;
+            }
+            .doc-title {
+              font-size: 22px;
+              margin: 6px 0 4px 0;
+              font-weight: 500;
+              color: #2c211b;
+            }
+            .doc-meta {
+              font-size: 12px;
+              color: #8c7a6b;
+            }
+            .section-label {
+              font-size: 11px;
+              font-weight: 600;
+              text-transform: uppercase;
+              letter-spacing: 0.06em;
+              color: #8c7a6b;
+              margin: 20px 0 8px 0;
+            }
+            .doc-summary {
+              background: #ffffff;
+              border: 1px solid #ece5dd;
+              border-left: 4px solid #3e2f26;
+              padding: 12px 16px;
+              font-size: 13px;
+              margin-bottom: 18px;
+              border-radius: 4px;
+            }
+            .doc-content {
+              font-family: 'Raleway', sans-serif;
+              white-space: pre-wrap;
+              font-size: 13px;
+              line-height: 1.7;
+              color: #3e2f26;
+              background: #faf8f5;
+              border: 1px solid #ece5dd;
+              border-radius: 6px;
+              padding: 16px 20px;
+              margin: 0;
+            }
+            table {
+              width: 100%;
+              border-collapse: collapse;
+              font-size: 13px;
+              margin-top: 8px;
+            }
+            th {
+              text-align: left;
+              background: #faf8f5;
+              color: #3e2f26;
+              font-weight: 600;
+              padding: 8px 12px;
+              border: 1px solid #ece5dd;
+            }
+            td {
+              padding: 8px 12px;
+              border: 1px solid #ece5dd;
+            }
+            .raci-pill {
+              display: inline-block;
+              background: #f9f5e3;
+              border: 1px solid #cbb26a;
+              color: #7c6527;
+              font-weight: 600;
+              font-size: 11px;
+              padding: 2px 10px;
+              border-radius: 12px;
+            }
+            .doc-footer {
+              margin-top: 24px;
+              font-size: 11px;
+              color: #8c7a6b;
+              text-align: right;
+            }
           </style>
         </head>
         <body>
           <div class="doc-header">
             <div class="doc-badge">Stage Document • ${currentData.name}</div>
             <div class="doc-title">${cleanTitle}</div>
-            <div class="doc-meta">Timeline: ${currentData.duration} • Method: ${currentData.correctBlock}</div>
+            <div class="doc-meta">Timeline: ${currentData.duration} • Deliverable: ${currentData.correctBlock}</div>
           </div>
-          <div class="doc-body">
-            <div class="doc-summary"><strong>Stage Scope:</strong> ${currentData.desc}</div>
-            <pre>${currentData.docText}</pre>
-            <div class="doc-footer">Generated via Product Pipeline • © 2026 product-lb</div>
-          </div>
-          <script>window.onload = () => { window.print(); };</script>
+          <div class="doc-summary"><strong>Stage Goal:</strong> ${currentData.desc}</div>
+          <div class="section-label">Deliverable Notes</div>
+          <pre class="doc-content">${currentData.docText}</pre>
+          <div class="section-label">RACI Role Sign-Off</div>
+          <table>
+            <thead>
+              <tr>
+                <th>Team / Stakeholder</th>
+                <th>Assigned Role</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${raciRows}
+            </tbody>
+          </table>
+          <div class="doc-footer">Product Path • © 2026 product-lb</div>
+          <script>window.onload = () => { setTimeout(() => window.print(), 300); };</script>
         </body>
       </html>
     `);
@@ -239,10 +366,19 @@ export default function App() {
         style={{ width: "100%", maxWidth: "950px" }}
       >
         <div className="header-top-row">
-          <div className="pill-badge">Product Pipeline</div>
+          <div className="pill-badge">Product Path</div>
           {tickerAlert && (
             <div className="ticker-wrap">
-              <div className="ticker-content">{tickerAlert}</div>
+              <div
+                className="ticker-content"
+                style={{
+                  color: "#855434",
+                  fontStyle: "normal",
+                  fontWeight: 500,
+                }}
+              >
+                {tickerAlert}
+              </div>
             </div>
           )}
           <div
@@ -254,7 +390,7 @@ export default function App() {
             }}
           >
             <button className="tour-trigger-btn" onClick={resetStage}>
-              Clear Settings
+              Reset Stage
             </button>
             <button className="tour-trigger-btn" onClick={() => setTourStep(0)}>
               How to Play
@@ -288,14 +424,14 @@ export default function App() {
             {[
               { s: 1, x: 40, y: 210, l: "Concept" },
               { s: 2, x: 145, y: 185, l: "Discovery" },
-              { s: 3, x: 250, y: 130, l: "Engagement" },
+              { s: 3, x: 250, y: 130, l: "Alignment" },
               { s: 4, x: 365, y: 140, l: "Specs" },
-              { s: 5, x: 490, y: 180, l: "Tech Eng" },
-              { s: 6, x: 600, y: 125, l: "Dev" },
-              { s: 7, x: 720, y: 70, l: "Test" },
+              { s: 5, x: 490, y: 180, l: "Tech Review" },
+              { s: 6, x: 600, y: 125, l: "Build" },
+              { s: 7, x: 720, y: 70, l: "Testing" },
               { s: 8, x: 815, y: 110, l: "Iterate" },
               { s: 9, x: 895, y: 155, l: "Launch" },
-              { s: 10, x: 960, y: 150, l: "Expand" },
+              { s: 10, x: 960, y: 150, l: "Post-Launch" },
             ].map((n) => (
               <g
                 key={n.s}
@@ -322,23 +458,23 @@ export default function App() {
 
         <div className="metrics-row">
           <div className="metric-cell">
-            <span className="metric-label">Active Phase Station</span>
-            <span className="metric-value blue-text">{currentData.name}</span>
+            <span className="metric-label">Current Stage</span>
+            <span className="metric-value">{currentData.name}</span>
           </div>
           <div className="metric-cell">
-            <span className="metric-label">Estimated Horizon Target</span>
+            <span className="metric-label">Timeline</span>
             <span className="metric-value">{currentData.duration}</span>
           </div>
           <div className="metric-cell">
-            <span className="metric-label">Phase Route Clearance</span>
+            <span className="metric-label">Stage Status</span>
             <span
               className={`metric-value ${phaseIsCleared ? "status-low" : "status-high"}`}
             >
               {phaseIsCleared
-                ? "Verified ✔"
+                ? "Complete ✔"
                 : !raciIsValid
-                  ? "RACI Disconnect"
-                  : "Asset Incomplete"}
+                  ? "Update RACI"
+                  : "Update Deliverable"}
             </span>
           </div>
         </div>
@@ -356,32 +492,36 @@ export default function App() {
             className={`nav-link ${viewPage === "checklist" ? "active" : ""}`}
             onClick={() => setViewPage("checklist")}
           >
-            Readiness Checklist
+            Deliverables
           </div>
           <div
             className={`nav-link ${viewPage === "documentation" ? "active" : ""}`}
             onClick={() => setViewPage("documentation")}
           >
-            Asset Workspace
+            Documents
           </div>
         </div>
 
         <button
-          className="btn btn-primary"
+          className="btn"
           disabled={!phaseIsCleared}
           onClick={commitAndAdvance}
           style={{
-            backgroundColor: phaseIsCleared ? "var(--gold-accent)" : "#D1D5DB",
-            color: phaseIsCleared ? "var(--blue-deep)" : "#9CA3AF",
+            backgroundColor: phaseIsCleared ? "#f9f5e3" : "#f4f1ed",
+            border: phaseIsCleared
+              ? "1.5px solid #cbb26a"
+              : "1px solid #dcd3c9",
+            color: phaseIsCleared ? "#3e2f26" : "#8c7a6b",
             padding: "8px 18px",
             fontSize: "13px",
+            fontWeight: 600,
           }}
         >
           {phaseIsCleared
             ? activeStage === 10
-              ? "Lifecycle Finalized"
+              ? "All Stages Complete ✔"
               : "Commit & Move ➔"
-            : "Blocked: Awaiting Validation"}
+            : "Complete Stage to Continue"}
         </button>
       </nav>
 
@@ -389,81 +529,97 @@ export default function App() {
         {viewPage === "overview" && (
           <div className="content-grid">
             <section className="content-card">
-              <h2 className="card-heading">Stage Description & Scope</h2>
+              <h2 className="card-heading">Stage Overview</h2>
               <div
                 style={{
                   fontSize: "13px",
                   color: "var(--text-primary)",
-                  lineHeight: "1.6",
+                  lineHeight: "1.65",
                 }}
               >
                 <p
                   style={{
-                    fontWeight: 500,
-                    marginBottom: "12px",
-                    color: "var(--blue-deep)",
+                    fontWeight: 400,
+                    marginBottom: "16px",
+                    color: "var(--espresso-primary)",
                   }}
                 >
                   {currentData.desc}
                 </p>
+
+                {/* Kanban Sticky Note Clue */}
                 <div
                   style={{
-                    backgroundColor: "#FDF2E9",
-                    borderLeft: "4px solid #E67E22",
-                    padding: "10px 14px",
-                    borderRadius: "4px",
-                    fontWeight: 600,
-                    fontSize: "12px",
-                    color: "#D35400",
-                    marginBottom: "16px",
+                    backgroundColor: "#f9f5e3",
+                    border: "1px solid #e6d79c",
+                    borderTop: "6px solid #cbb26a",
+                    padding: "14px 16px",
+                    borderRadius: "2px 2px 8px 2px",
+                    boxShadow: "2px 4px 10px rgba(62, 47, 38, 0.08)",
+                    transform: "rotate(-0.6deg)",
+                    fontWeight: 500,
+                    fontSize: "12.5px",
+                    color: "#4a3f28",
+                    marginBottom: "18px",
                     whiteSpace: "pre-line",
+                    lineHeight: "1.65",
                   }}
                 >
                   {currentData.hint}
                 </div>
+
                 <details
                   style={{
-                    background: "#F4F6F7",
-                    padding: "10px",
+                    background: "var(--cream-canvas)",
+                    border: "1px solid var(--border-light)",
+                    padding: "10px 12px",
                     borderRadius: "6px",
                     cursor: "pointer",
                   }}
                 >
                   <summary
                     style={{
-                      fontWeight: 700,
+                      fontWeight: 600,
                       fontSize: "12px",
-                      color: "var(--blue-primary)",
+                      color: "var(--espresso-primary)",
                     }}
                   >
-                    📋 Quick RACI Matrix Framework Cheat Sheet
+                    📋 RACI Role Guide
                   </summary>
                   <ul
                     style={{
-                      fontSize: "11px",
+                      fontSize: "11.5px",
                       marginTop: "8px",
                       paddingLeft: "16px",
                       display: "flex",
                       flexDirection: "column",
-                      gap: "4px",
-                      color: "#566573",
+                      gap: "5px",
+                      color: "var(--text-muted)",
                     }}
                   >
                     <li>
-                      <strong>Responsible (R):</strong> The team member actively
-                      executing the work tasks.
+                      <strong style={{ color: "var(--espresso-primary)" }}>
+                        Responsible (R):
+                      </strong>{" "}
+                      The team doing the work.
                     </li>
                     <li>
-                      <strong>Accountable (A):</strong> Single owner who holds
-                      absolute sign-off approvals.
+                      <strong style={{ color: "var(--espresso-primary)" }}>
+                        Accountable (A):
+                      </strong>{" "}
+                      The owner who signs off on the work.
                     </li>
                     <li>
-                      <strong>Consulted (C):</strong> Experts providing vital
-                      workflow strategic advice.
+                      <strong style={{ color: "var(--espresso-primary)" }}>
+                        Consulted (C):
+                      </strong>{" "}
+                      Experts who give input before decisions are made.
                     </li>
                     <li>
-                      <strong>Informed (I):</strong> Oversight groups receiving
-                      passive push updates.
+                      <strong style={{ color: "var(--espresso-primary)" }}>
+                        Informed (I):
+                      </strong>{" "}
+                      Stakeholders kept updated on progress.
                     </li>
                   </ul>
                 </details>
@@ -471,9 +627,7 @@ export default function App() {
             </section>
 
             <section className="content-card">
-              <h2 className="card-heading">
-                Stakeholder Alignment Matrix (RACI)
-              </h2>
+              <h2 className="card-heading">Team Roles (RACI)</h2>
               <div className="matrix-table">
                 {Object.keys(currentData.raci).map((sh) => (
                   <div key={sh} className="matrix-row-item">
@@ -482,11 +636,11 @@ export default function App() {
                       style={{ textTransform: "capitalize" }}
                     >
                       {sh === "slt"
-                        ? "Steering Committee (SLT)"
+                        ? "Senior Leadership (SLT)"
                         : sh === "ux"
                           ? "Product Design (UX/CX)"
                           : sh === "dev"
-                            ? "Engineering Team (Dev)"
+                            ? "Engineering (Dev)"
                             : sh}
                     </span>
                     <select
@@ -518,10 +672,10 @@ export default function App() {
         {viewPage === "checklist" && (
           <div className="content-grid">
             <section className="content-card">
-              <h2 className="card-heading">Framework Architecture Inventory</h2>
+              <h2 className="card-heading">Stage Deliverables</h2>
               <p className="drag-instruction">
-                Drag the accurate asset block matching this delivery stage into
-                the target document workspace slot:
+                Drag the matching deliverable for this stage into the box on the
+                right:
               </p>
               <div className="drag-tray">
                 {Object.values(MetricsMatrix.phases).map((p, idx) => (
@@ -540,7 +694,7 @@ export default function App() {
             </section>
 
             <section className="content-card">
-              <h2 className="card-heading">Framework Alignment Target</h2>
+              <h2 className="card-heading">Stage Match</h2>
               <div
                 className={`drop-zone ${blockIsValid ? "correct" : ""}`}
                 onDragOver={(e) => e.preventDefault()}
@@ -551,29 +705,28 @@ export default function App() {
                 }}
               >
                 {droppedBlock
-                  ? `Active Component: ${droppedBlock}`
-                  : "Drop Framework Requirement Component Block Here"}
+                  ? `Selected Deliverable: ${droppedBlock}`
+                  : "Drop matching deliverable here"}
               </div>
               <div
                 style={{
-                  fontSize: "12px",
+                  fontSize: "12.5px",
                   color: "var(--text-muted)",
-                  lineHeight: "1.4",
+                  lineHeight: "1.5",
                 }}
               >
                 {droppedBlock ? (
                   blockIsValid ? (
-                    <span style={{ color: "#27AE60", fontWeight: "bold" }}>
-                      Component validated cleanly against parameters. Lane
-                      unlocked.
+                    <span style={{ color: "#7c6527", fontWeight: 600 }}>
+                      Deliverable matched.
                     </span>
                   ) : (
-                    <span style={{ color: "#C0392B", fontWeight: "bold" }}>
-                      Alignment Error: Framework item mismatch. Review criteria.
+                    <span style={{ color: "#855434", fontWeight: 600 }}>
+                      Not a match for this stage. Try again — see clue notes.
                     </span>
                   )
                 ) : (
-                  "Awaiting block placement..."
+                  "Drag a pill from the left to match this stage."
                 )}
               </div>
             </section>
@@ -588,43 +741,50 @@ export default function App() {
               borderRadius: "12px",
               border: "1px solid var(--border-light)",
               overflow: "hidden",
+              padding: 0,
             }}
           >
             <div
               style={{
-                backgroundColor: "#FAF9F6",
-                padding: "16px 24px",
+                backgroundColor: "#FAF8F5",
+                padding: "20px 26px",
                 borderBottom: "1px solid var(--border-light)",
                 borderLeft: "5px solid var(--gold-accent)",
                 display: "flex",
                 justifyContent: "space-between",
                 alignItems: "center",
+                flexWrap: "wrap",
+                gap: "12px",
               }}
             >
               <div
-                style={{ display: "flex", flexDirection: "column", gap: "3px" }}
+                style={{ display: "flex", flexDirection: "column", gap: "4px" }}
               >
                 <span
                   style={{
                     fontSize: "11px",
                     fontWeight: 600,
-                    color: "#8A6D1B",
+                    color: "#7c6527",
                     textTransform: "uppercase",
-                    letterSpacing: "0.06em",
+                    letterSpacing: "0.08em",
                   }}
                 >
-                  Unlocked Asset
+                  Stage Document • {currentData.name}
                 </span>
                 <h3
                   style={{
-                    fontSize: "18px",
+                    fontSize: "20px",
                     fontWeight: 500,
                     margin: 0,
-                    color: "var(--blue-deep)",
+                    color: "var(--espresso-primary)",
                   }}
                 >
                   {currentData.asset}
                 </h3>
+                <span style={{ fontSize: "12px", color: "#8c7a6b" }}>
+                  Timeline: {currentData.duration} • Deliverable:{" "}
+                  {currentData.correctBlock}
+                </span>
               </div>
 
               {phaseIsCleared && (
@@ -632,11 +792,11 @@ export default function App() {
                   className="btn btn-secondary"
                   onClick={downloadDoc}
                   style={{
-                    backgroundColor: "#FFFFFF",
+                    backgroundColor: "#f9f5e3",
                     borderColor: "var(--gold-accent)",
-                    color: "var(--blue-deep)",
+                    color: "var(--espresso-primary)",
                     fontWeight: 600,
-                    padding: "8px 16px",
+                    padding: "8px 18px",
                   }}
                 >
                   ⬇ Save PDF
@@ -644,32 +804,165 @@ export default function App() {
               )}
             </div>
 
-            <div style={{ padding: "24px", background: "#FFFFFF" }}>
-              <div
-                className="document-preview-box"
-                style={{
-                  background: "#FAF9F6",
-                  border: "1px solid var(--border-light)",
-                  borderRadius: "8px",
-                  padding: "20px 24px",
-                }}
-              >
-                <pre
+            <div style={{ padding: "24px 26px", background: "#FFFFFF" }}>
+              {phaseIsCleared ? (
+                <>
+                  <div
+                    style={{
+                      background: "#FFFFFF",
+                      border: "1px solid #ece5dd",
+                      borderLeft: "4px solid var(--espresso-primary)",
+                      padding: "12px 16px",
+                      fontSize: "13px",
+                      marginBottom: "20px",
+                      borderRadius: "4px",
+                      color: "var(--text-primary)",
+                    }}
+                  >
+                    <strong>Stage Goal:</strong> {currentData.desc}
+                  </div>
+
+                  <div
+                    style={{
+                      fontSize: "11px",
+                      fontWeight: 600,
+                      textTransform: "uppercase",
+                      letterSpacing: "0.06em",
+                      color: "#8c7a6b",
+                      marginBottom: "8px",
+                    }}
+                  >
+                    Deliverable Notes
+                  </div>
+                  <pre
+                    style={{
+                      color: "var(--text-primary)",
+                      fontFamily: "'Raleway', sans-serif",
+                      fontWeight: 400,
+                      fontSize: "13px",
+                      lineHeight: "1.7",
+                      whiteSpace: "pre-wrap",
+                      background: "#FAF8F5",
+                      border: "1px solid #ece5dd",
+                      borderRadius: "6px",
+                      padding: "16px 20px",
+                      margin: "0 0 22px 0",
+                    }}
+                  >
+                    {currentData.docText}
+                  </pre>
+                  <div
+                    style={{
+                      fontSize: "11px",
+                      fontWeight: 600,
+                      textTransform: "uppercase",
+                      letterSpacing: "0.06em",
+                      color: "#8c7a6b",
+                      marginBottom: "8px",
+                    }}
+                  >
+                    RACI Role Sign-Off
+                  </div>
+                  <table
+                    style={{
+                      width: "100%",
+                      borderCollapse: "collapse",
+                      fontSize: "13px",
+                    }}
+                  >
+                    <thead>
+                      <tr>
+                        <th
+                          style={{
+                            textAlign: "left",
+                            background: "#FAF8F5",
+                            color: "var(--espresso-primary)",
+                            fontWeight: 600,
+                            padding: "8px 12px",
+                            border: "1px solid #ece5dd",
+                          }}
+                        >
+                          Team / Stakeholder
+                        </th>
+                        <th
+                          style={{
+                            textAlign: "left",
+                            background: "#FAF8F5",
+                            color: "var(--espresso-primary)",
+                            fontWeight: 600,
+                            padding: "8px 12px",
+                            border: "1px solid #ece5dd",
+                          }}
+                        >
+                          Assigned Role
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {Object.entries(currentData.raci)
+                        .filter(([, role]) => role !== "None")
+                        .map(([key, role]) => {
+                          const labels = {
+                            product: "Product",
+                            slt: "Senior Leadership (SLT)",
+                            sponsor: "Sponsor",
+                            ux: "Product Design (UX/CX)",
+                            dev: "Engineering (Dev)",
+                            legal: "Legal",
+                            risk: "Risk & Compliance",
+                          };
+                          return (
+                            <tr key={key}>
+                              <td
+                                style={{
+                                  padding: "8px 12px",
+                                  border: "1px solid #ece5dd",
+                                }}
+                              >
+                                {labels[key] || key}
+                              </td>
+                              <td
+                                style={{
+                                  padding: "8px 12px",
+                                  border: "1px solid #ece5dd",
+                                }}
+                              >
+                                <span
+                                  style={{
+                                    display: "inline-block",
+                                    background: "#f9f5e3",
+                                    border: "1px solid var(--gold-accent)",
+                                    color: "#7c6527",
+                                    fontWeight: 600,
+                                    fontSize: "11px",
+                                    padding: "2px 10px",
+                                    borderRadius: "12px",
+                                  }}
+                                >
+                                  {role}
+                                </span>
+                              </td>
+                            </tr>
+                          );
+                        })}
+                    </tbody>
+                  </table>
+                </>
+              ) : (
+                <div
                   style={{
-                    color: "var(--text-primary)",
-                    fontFamily: "'Raleway', sans-serif",
-                    fontWeight: 400,
+                    background: "#FAF8F5",
+                    border: "1px solid #ece5dd",
+                    borderRadius: "8px",
+                    padding: "24px",
                     fontSize: "13px",
-                    lineHeight: "1.7",
-                    whiteSpace: "pre-wrap",
-                    margin: 0,
+                    color: "#8c7a6b",
                   }}
                 >
-                  {phaseIsCleared
-                    ? currentData.docText
-                    : "Stage Locked: Complete the RACI alignment and match the framework block to unlock this document."}
-                </pre>
-              </div>
+                  Stage Locked: Set the team roles and match the stage
+                  deliverable to view this document.
+                </div>
+              )}
             </div>
           </div>
         )}
@@ -705,10 +998,12 @@ export default function App() {
                   </button>
                 ) : (
                   <button
-                    className="btn btn-primary"
+                    className="btn"
                     style={{
-                      backgroundColor: "var(--gold-accent)",
-                      color: "var(--blue-deep)",
+                      backgroundColor: "#f9f5e3",
+                      border: "1.5px solid var(--gold-accent)",
+                      color: "var(--espresso-primary)",
+                      fontWeight: 600,
                     }}
                     onClick={closeTour}
                   >
@@ -723,9 +1018,9 @@ export default function App() {
 
       <footer className="game-footer">
         <p>
-          © 2026 product-lb • Product Pipeline •{" "}
+          © 2026 product-lb • Product Path •{" "}
           <a href="#" onClick={globalReset}>
-            Reset Dashboard
+            Reset All Progress
           </a>{" "}
           •{" "}
           <a

@@ -3,7 +3,7 @@ export const MetricsMatrix = {
     1: {
       name: "1. Concept Phase",
       duration: "1-2 Weeks",
-      asset: "Product_Brief.pdf",
+      asset: "Product Brief",
       raci: {
         product: "A",
         slt: "C",
@@ -13,22 +13,25 @@ export const MetricsMatrix = {
         legal: "None",
         risk: "None",
       },
-      correctBlock: "Vision & Strategy Brief",
-      hint: "💡 CLUE:\n• Product owns the concept (A)\n• Consult SLT for early advice (C)\n• Drag: Vision & Strategy Brief",
+      correctBlock: "Product Vision & Problem Statement",
+      hint: "💡 CLUE:\n• Product owns the concept (A)\n• Consult SLT for early advice (C)\n• Drag: Product Vision & Problem Statement",
       desc: "Define the product goal, check how it fits company priorities, and identify the main customer problem we want to solve.",
-      docText: `PRODUCT BRIEF
-Status: Approved
-
-1. Goal & Purpose
-Explain the main problem this product solves and why it matters to our users and the business.
+      docText: `1. Problem Statement
+• What user or business problem are we solving?
+• Why does solving this matter right now?
 
 2. Target Audience & Opportunity
-Outline who will use this product, what gaps exist today, and the core idea we are testing.`,
+• Primary user group(s): [Define segment]
+• Current workaround or gap: [Describe friction]
+
+3. Success Measures
+• Primary outcome metric: [e.g. Task completion rate, adoption %]
+• Out of scope for this phase: [List exclusions]`,
     },
     2: {
       name: "2. Discovery Phase",
       duration: "2-4 Weeks",
-      asset: "Business_Requirements_Document.pdf",
+      asset: "Business Requirements Document (BRD)",
       raci: {
         product: "A",
         slt: "C",
@@ -38,22 +41,25 @@ Outline who will use this product, what gaps exist today, and the core idea we a
         legal: "None",
         risk: "None",
       },
-      correctBlock: "BABOK Market Analysis Mapping",
-      hint: "💡 CLUE:\n• Product stays Accountable (A)\n• Consult SLT on business constraints (C)\n• Drag: BABOK Market Analysis Mapping",
-      desc: "Run user interviews, review competing products, and narrow down requirements using practical BABOK business analysis methods.",
-      docText: `BUSINESS REQUIREMENTS DOCUMENT (BRD)
-Status: Signed Off
+      correctBlock: "Customer Discovery & Market Analysis",
+      hint: "💡 CLUE:\n• Product stays Accountable (A)\n• Consult SLT on business constraints (C)\n• Drag: Customer Discovery & Market Analysis",
+      desc: "Run user interviews, review competing products, and narrow down requirements based on real customer needs.",
+      docText: `1. Discovery & User Research
+• User interviews conducted: [Number & key insights]
+• Competitor & market review: [Strengths, gaps, positioning]
 
-1. Research & Analysis (BABOK)
-Review user interview findings, customer feedback, and competitor gaps to confirm what users actually need.
+2. Core Business Requirements
+• Functional needs: [What the product must do]
+• Operational & compliance rules: [Policies, data handling, SLAs]
 
-2. Scoped Problem & User Needs
-Turn broad ideas into clear user workflows and list the specific problems the product must fix.`,
+3. Assumptions & Dependencies
+• Key assumptions to validate: [List assumptions]
+• Upstream or downstream system dependencies: [List systems]`,
     },
     3: {
       name: "3. Stakeholder Engagement",
       duration: "1-2 Weeks",
-      asset: "Business_Case.pdf",
+      asset: "Business Case",
       raci: {
         product: "A",
         sponsor: "A",
@@ -63,21 +69,24 @@ Turn broad ideas into clear user workflows and list the specific problems the pr
         dev: "None",
         risk: "None",
       },
-      correctBlock: "PMBOK Triple Constraint Baseline",
-      hint: "💡 CLUE:\n• Product & Sponsor both sign off (A)\n• Consult Legal on compliance risks (C)\n• Keep SLT Informed (I)\n• Drag: PMBOK Triple Constraint Baseline",
-      desc: "Check budget, timeline, and legal constraints with key stakeholders and build a clear business case using PMBOK baselines.",
-      docText: `BUSINESS CASE
-Status: Budget & Scope Approved
+      correctBlock: "Time, Cost & Scope Baseline",
+      hint: "💡 CLUE:\n• Product & Sponsor both sign off (A)\n• Consult Legal on compliance risks (C)\n• Keep SLT Informed (I)\n• Drag: Time, Cost & Scope Baseline",
+      desc: "Check budget, timeline, and legal constraints with key stakeholders and build a clear business case.",
+      docText: `1. Time, Cost & Scope Baseline
+• Schedule: [Target discovery, build, and launch dates]
+• Cost: [Build effort, tooling/licensing, ongoing support]
+• Scope: [Confirmed Phase 1 deliverables vs deferred items]
 
-1. Time, Cost & Scope Baselines (PMBOK)
-• Schedule: Set realistic delivery dates and key milestones.
-• Cost: Estimate build costs, tools, and ongoing running expenses.
-• Scope: Confirm what is included, what is out, and any legal or compliance rules.`,
+2. Expected Value & Return
+• Commercial or efficiency impact: [Revenue, cost savings, risk reduction]
+
+3. Legal, Privacy & Governance Sign-Off
+• Regulatory or privacy checks required: [Legal / Risk notes]`,
     },
     4: {
       name: "4. Stories & Specs",
       duration: "2-3 Weeks",
-      asset: "Product_Requirements_Spec.pdf",
+      asset: "Product Requirements Brief (PRD)",
       raci: {
         ux: "C",
         dev: "C",
@@ -87,23 +96,24 @@ Status: Budget & Scope Approved
         legal: "None",
         risk: "None",
       },
-      correctBlock: "Epic Breakdown & Lifecycle Flows",
-      hint: "💡 CLUE:\n• Consult UX Design & Dev early before building (C)\n• Drag: Epic Breakdown & Lifecycle Flows",
+      correctBlock: "User Stories & Acceptance Criteria",
+      hint: "💡 CLUE:\n• Consult UX Design & Dev early before building (C)\n• Drag: User Stories & Acceptance Criteria",
       desc: "Break large features down into smaller epics and clear user stories with practical acceptance criteria.",
-      docText: `PRODUCT REQUIREMENTS SPECIFICATION (PRD)
-Status: Stories Ready
+      docText: `1. Epic & User Story Format
+• Epic: [Feature group name]
+• User Story: "As a [user role], I want to [complete action], so that [measurable outcome]."
 
-1. Epics & User Stories
-Break large features into small, testable user stories using the standard format:
-"As a [user], I want to [do something], so that [I get a clear benefit]."
+2. Acceptance Criteria
+• Given [starting context], when [user action occurs], then [expected system result].
+• Edge cases & error states: [Empty states, validation errors, timeouts]
 
-2. End-to-End User Flow
-Map out each screen and step from first visit through to task completion.`,
+3. UX & Design Reference
+• Wireframes / prototype link: [Design reference]`,
     },
     5: {
       name: "5. Tech Engagement",
       duration: "1-2 Weeks",
-      asset: "MVP_Scoping_Plan.pdf",
+      asset: "MVP Scoping Document",
       raci: {
         product: "A",
         dev: "R",
@@ -113,22 +123,24 @@ Map out each screen and step from first visit through to task completion.`,
         legal: "None",
         risk: "None",
       },
-      correctBlock: "Technical Debt & Feasibility Audit",
-      hint: "💡 CLUE:\n• Product is Accountable for priorities (A)\n• Dev is Responsible for technical checks (R)\n• Drag: Technical Debt & Feasibility Audit",
+      correctBlock: "Tech Debt & Feasibility Audit",
+      hint: "💡 CLUE:\n• Product is Accountable for priorities (A)\n• Dev is Responsible for technical checks (R)\n• Drag: Tech Debt & Feasibility Audit",
       desc: "Review technical feasibility with developers, spot existing tech debt, and agree on a realistic Minimum Viable Product (MVP).",
-      docText: `MVP SCOPING PLAN
-Status: Technically Feasible
+      docText: `1. Technical Feasibility & Architecture
+• Data, API & integration changes: [Summary of technical scope]
+• Security, performance & accessibility checks: [Key requirements]
 
-1. Technical Check & Risks
-Review database needs, security rules, and any existing tech debt that could slow down the build.
+2. Tech Debt & Risk Assessment
+• Existing tech debt impacting delivery: [Known constraints & mitigation]
 
-2. MVP Cut-Off Line
-Separate must-have features for launch from nice-to-have items that can wait until later.`,
+3. MVP Cut-Off Line
+• Must-have for launch (MVP): [Core slice]
+• Fast-follow (Post-MVP): [Deferred enhancements]`,
     },
     6: {
       name: "6. Sprints & Development",
       duration: "2-4 Weeks",
-      asset: "Sprint_Backlog_Plan.pdf",
+      asset: "Sprint Backlog Planning Document",
       raci: {
         dev: "R",
         product: "None",
@@ -138,22 +150,23 @@ Separate must-have features for launch from nice-to-have items that can wait unt
         legal: "None",
         risk: "None",
       },
-      correctBlock: "Agile Scrum Bible Ceremony Loop",
-      hint: "💡 CLUE:\n• Dev is Responsible for building during sprints (R)\n• Drag: Agile Scrum Bible Ceremony Loop",
-      desc: "Build prioritized stories in short 1-2 week sprints, size tasks with story points, and run daily team check-ins.",
-      docText: `SPRINT BACKLOG PLAN
-Status: Sprint Active
+      correctBlock: "Sprint Planning & Scrum Ceremonies",
+      hint: "💡 CLUE:\n• Dev is Responsible for building during sprints (R)\n• Drag: Sprint Planning & Scrum Ceremonies",
+      desc: "Build prioritised stories in short 1-2 week sprints, size tasks with story points, and run daily team check-ins.",
+      docText: `1. Sprint Goal & Commitment
+• Sprint objective: [Single clear outcome for this iteration]
+• Committed stories & story points: [Capacity vs points allocated]
 
-1. Agile Scrum Workflow
-Estimate tasks using story points and commit only what the team can realistically finish in this sprint.
+2. Definition of Done (DoD)
+• Code reviewed, unit tests passing, acceptance criteria verified, and deployed to staging.
 
-2. Team Rhythm
-Sprint Planning -> Daily Stand-up -> Sprint Review -> Retrospective.`,
+3. Team Cadence
+• Sprint Planning -> Daily Stand-Up -> Backlog Refinement -> Sprint Review`,
     },
     7: {
       name: "7. Test Phase",
       duration: "1-2 Weeks",
-      asset: "QA_UAT_Signoff_Log.pdf",
+      asset: "QA & UAT Signoff Log",
       raci: {
         product: "A",
         dev: "R",
@@ -163,22 +176,23 @@ Sprint Planning -> Daily Stand-up -> Sprint Review -> Retrospective.`,
         legal: "None",
         risk: "None",
       },
-      correctBlock: "User Acceptance Testing (UAT) Controls",
-      hint: "💡 CLUE:\n• Product approves final sign-off (A)\n• Dev is Responsible for running tests (R)\n• Drag: User Acceptance Testing (UAT) Controls",
+      correctBlock: "User Acceptance Testing (UAT)",
+      hint: "💡 CLUE:\n• Product approves final sign-off (A)\n• Dev is Responsible for running tests (R)\n• Drag: User Acceptance Testing (UAT)",
       desc: "Test every feature against acceptance criteria and run User Acceptance Testing (UAT) before going live.",
-      docText: `QA & UAT SIGN-OFF LOG
-Status: Staging Passed
+      docText: `1. User Acceptance Testing (UAT) Summary
+• Test scenarios verified against PRD acceptance criteria: [Pass / Fail count]
+• Cross-browser & mobile responsiveness check: [Desktop, iOS, Android]
 
-1. Functional & UAT Testing
-Check all user flows against the acceptance criteria in the PRD and verify bug fixes in staging.
+2. Non-Functional & Security Checks
+• Page load speed, data privacy, and permission rules verified: [Status]
 
-2. Security & Speed Check
-Confirm user data is protected and pages load quickly before approving release.`,
+3. Release Readiness Sign-Off
+• Open critical/blocker defects: [0 blockers required for go-live]`,
     },
     8: {
       name: "8. Iterate Phase",
       duration: "1 Week",
-      asset: "Retrospective_Action_Plan.pdf",
+      asset: "Sprint Retrospective Action Plan",
       raci: {
         dev: "R",
         product: "None",
@@ -188,22 +202,22 @@ Confirm user data is protected and pages load quickly before approving release.`
         legal: "None",
         risk: "None",
       },
-      correctBlock: "Sprint Retrospective Workflow Refinement",
-      hint: "💡 CLUE:\n• Dev is Responsible for workflow fixes (R)\n• Drag: Sprint Retrospective Workflow Refinement",
+      correctBlock: "Sprint Retrospective & Bug Triage",
+      hint: "💡 CLUE:\n• Dev is Responsible for workflow fixes (R)\n• Drag: Sprint Retrospective & Bug Triage",
       desc: "Log bugs and usability issues found during testing, hold a team retrospective, and agree on practical improvements.",
-      docText: `SPRINT RETROSPECTIVE ACTION PLAN
-Status: Actions Logged
+      docText: `1. Defect & Usability Triage
+• Must-fix before launch: [High-severity bugs & UX friction]
+• Logged for post-launch backlog: [Minor polish items]
 
-1. Team Review & Fixes
-List what went well, what slowed the team down, and small process changes for the next sprint.
-
-2. Bug & Polish Queue
-Prioritise remaining edge cases and UI fixes before launch.`,
+2. Sprint Retrospective Outcomes
+• What went well: [Team strengths to keep]
+• What slowed us down: [Bottlenecks or unclear specs]
+• Agreed process action(s): [Owner & due date]`,
     },
     9: {
       name: "9. Launch Phase",
       duration: "1-2 Weeks",
-      asset: "GoToMarket_Release_Plan.pdf",
+      asset: "Go-To-Market (GTM) Release Plan",
       raci: {
         product: "A",
         sponsor: "I",
@@ -213,22 +227,23 @@ Prioritise remaining edge cases and UI fixes before launch.`,
         legal: "None",
         risk: "None",
       },
-      correctBlock: "Usage & Adoption Telemetry Logging",
-      hint: "💡 CLUE:\n• Product is Accountable for launch (A)\n• Dev is Responsible for release rollout (R)\n• Keep Sponsor & SLT Informed (I)\n• Drag: Usage & Adoption Telemetry Logging",
+      correctBlock: "Staged Rollout & Usage Tracking",
+      hint: "💡 CLUE:\n• Product is Accountable for launch (A)\n• Dev is Responsible for release rollout (R)\n• Keep Sponsor & SLT Informed (I)\n• Drag: Staged Rollout & Usage Tracking",
       desc: "Roll out the product safely in stages, share release notes, and turn on usage tracking to monitor adoption.",
-      docText: `GO-TO-MARKET RELEASE PLAN
-Status: Live in Production
+      docText: `1. Staged Rollout & Rollback Plan
+• Rollout stages: [Internal beta -> 10% cohort -> 100% general availability]
+• Rollback trigger & owner: [Error threshold & immediate fallback plan]
 
-1. Staged Rollout
-Release safely in small steps (1% -> 10% -> 100%) while monitoring errors and performance.
+2. Enablement & Communications
+• Release notes, user guides, and support team briefing: [Completed]
 
-2. Launch Readiness & Tracking
-Share user guides, notify stakeholders, and track active usage from day one.`,
+3. Live Usage & Health Monitoring
+• Key events tracked from Day 1: [Activation, drop-off, error rate]`,
     },
     10: {
       name: "10. Add Feature Expansion",
       duration: "Ongoing",
-      asset: "Product_Improvement_Roadmap.pdf",
+      asset: "Iteration Roadmap (Features, Bugs & Tech Debt Backlog)",
       raci: {
         product: "A",
         slt: "None",
@@ -238,17 +253,17 @@ Share user guides, notify stakeholders, and track active usage from day one.`,
         legal: "None",
         risk: "None",
       },
-      correctBlock: "Sentiment Instrumentation Hooks (NPS/CSAT)",
-      hint: "💡 CLUE:\n• Product owns the roadmap (A)\n• Consult UX/CX on user feedback (C)\n• Drag: Sentiment Instrumentation Hooks (NPS/CSAT)",
+      correctBlock: "Customer Feedback & NPS Tracking",
+      hint: "💡 CLUE:\n• Product owns the roadmap (A)\n• Consult UX/CX on user feedback (C)\n• Drag: Customer Feedback & NPS Tracking",
       desc: "Review post-launch results against goals, collect customer feedback, and prioritise the next set of improvements.",
-      docText: `PRODUCT IMPROVEMENT ROADMAP
-Status: Cycle Complete
+      docText: `1. Post-Launch Performance Review
+• Actual adoption vs target KPIs: [30/60/90-day outcomes]
+• Customer sentiment: [CSAT, Customer Effort Score (CES), and NPS trends]
 
-1. Customer Feedback & Metrics
-Track customer satisfaction (CSAT), ease of use, and Net Promoter Score (NPS) to spot friction.
-
-2. Next Priorities
-Use real usage data and customer feedback to plan the next round of product updates.`,
+2. Balanced Iteration Backlog
+• New feature opportunities: [Validated user requests]
+• Bug fixes & UX improvements: [Friction points from analytics/support]
+• Tech debt & maintenance: [Scalability & code health items]`,
     },
   },
 };

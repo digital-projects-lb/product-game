@@ -240,15 +240,26 @@ export default function App() {
       >
         <div className="header-top-row">
           <div className="pill-badge">Product Pipeline</div>
-          <div className="ticker-wrap">
-            <div className="ticker-content">
-              {tickerAlert ||
-                `[ROADMAP GUIDELINES] Required Artifact: ${currentData.asset} | Milestone Horizon: ${currentData.duration}`}
+          {tickerAlert && (
+            <div className="ticker-wrap">
+              <div className="ticker-content">{tickerAlert}</div>
             </div>
+          )}
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "8px",
+              marginLeft: "auto",
+            }}
+          >
+            <button className="tour-trigger-btn" onClick={resetStage}>
+              Clear Settings
+            </button>
+            <button className="tour-trigger-btn" onClick={() => setTourStep(0)}>
+              How to Play
+            </button>
           </div>
-          <button className="tour-trigger-btn" onClick={() => setTourStep(0)}>
-            How to Play
-          </button>
         </div>
 
         <div className="svg-container">
@@ -334,24 +345,44 @@ export default function App() {
       </header>
 
       <nav className="app-subbar-nav">
-        <div
-          className={`nav-link ${viewPage === "overview" ? "active" : ""}`}
-          onClick={() => setViewPage("overview")}
-        >
-          Overview & RACI
+        <div className="nav-tabs-group">
+          <div
+            className={`nav-link ${viewPage === "overview" ? "active" : ""}`}
+            onClick={() => setViewPage("overview")}
+          >
+            Overview & RACI
+          </div>
+          <div
+            className={`nav-link ${viewPage === "checklist" ? "active" : ""}`}
+            onClick={() => setViewPage("checklist")}
+          >
+            Readiness Checklist
+          </div>
+          <div
+            className={`nav-link ${viewPage === "documentation" ? "active" : ""}`}
+            onClick={() => setViewPage("documentation")}
+          >
+            Asset Workspace
+          </div>
         </div>
-        <div
-          className={`nav-link ${viewPage === "checklist" ? "active" : ""}`}
-          onClick={() => setViewPage("checklist")}
+
+        <button
+          className="btn btn-primary"
+          disabled={!phaseIsCleared}
+          onClick={commitAndAdvance}
+          style={{
+            backgroundColor: phaseIsCleared ? "var(--gold-accent)" : "#D1D5DB",
+            color: phaseIsCleared ? "var(--blue-deep)" : "#9CA3AF",
+            padding: "8px 18px",
+            fontSize: "13px",
+          }}
         >
-          Readiness Checklist
-        </div>
-        <div
-          className={`nav-link ${viewPage === "documentation" ? "active" : ""}`}
-          onClick={() => setViewPage("documentation")}
-        >
-          Asset Workspace
-        </div>
+          {phaseIsCleared
+            ? activeStage === 10
+              ? "Lifecycle Finalized"
+              : "Commit & Move ➔"
+            : "Blocked: Awaiting Validation"}
+        </button>
       </nav>
 
       <main className="app-viewport">
@@ -555,121 +586,90 @@ export default function App() {
             style={{
               backgroundColor: "#FFFFFF",
               borderRadius: "12px",
+              border: "1px solid var(--border-light)",
               overflow: "hidden",
             }}
           >
             <div
               style={{
-                backgroundColor: "var(--blue-primary)",
-                padding: "14px 20px",
+                backgroundColor: "#FAF9F6",
+                padding: "16px 24px",
+                borderBottom: "1px solid var(--border-light)",
+                borderLeft: "5px solid var(--gold-accent)",
                 display: "flex",
                 justifyContent: "space-between",
                 alignItems: "center",
-                color: "white",
               }}
             >
               <div
-                style={{ display: "flex", flexDirection: "column", gap: "2px" }}
+                style={{ display: "flex", flexDirection: "column", gap: "3px" }}
               >
                 <span
                   style={{
-                    fontSize: "10px",
-                    fontWeight: 700,
-                    color: "var(--gold-accent)",
+                    fontSize: "11px",
+                    fontWeight: 600,
+                    color: "#8A6D1B",
                     textTransform: "uppercase",
+                    letterSpacing: "0.06em",
                   }}
                 >
-                  Unlocked Asset Output
+                  Unlocked Asset
                 </span>
                 <h3
                   style={{
-                    fontSize: "14px",
-                    fontWeight: 700,
+                    fontSize: "18px",
+                    fontWeight: 500,
                     margin: 0,
-                    fontFamily: "monospace",
+                    color: "var(--blue-deep)",
                   }}
                 >
                   {currentData.asset}
                 </h3>
               </div>
-              <div
-                style={{
-                  background: "rgba(255,255,255,0.1)",
-                  padding: "4px 10px",
-                  borderRadius: "4px",
-                  fontSize: "11px",
-                  fontWeight: 600,
-                }}
-              >
-                📄 TXT READY
-              </div>
+
+              {phaseIsCleared && (
+                <button
+                  className="btn btn-secondary"
+                  onClick={downloadDoc}
+                  style={{
+                    backgroundColor: "#FFFFFF",
+                    borderColor: "var(--gold-accent)",
+                    color: "var(--blue-deep)",
+                    fontWeight: 600,
+                    padding: "8px 16px",
+                  }}
+                >
+                  ⬇ Save PDF
+                </button>
+              )}
             </div>
-            <div style={{ padding: "24px", background: "#111A2E" }}>
+
+            <div style={{ padding: "24px", background: "#FFFFFF" }}>
               <div
                 className="document-preview-box"
                 style={{
-                  background: "transparent",
-                  border: "none",
-                  padding: 0,
+                  background: "#FAF9F6",
+                  border: "1px solid var(--border-light)",
+                  borderRadius: "8px",
+                  padding: "20px 24px",
                 }}
               >
                 <pre
                   style={{
-                    color: "#A9B7C6",
-                    fontFamily: "monospace",
-                    fontSize: "12px",
+                    color: "var(--text-primary)",
+                    fontFamily: "'Raleway', sans-serif",
+                    fontWeight: 400,
+                    fontSize: "13px",
+                    lineHeight: "1.7",
+                    whiteSpace: "pre-wrap",
+                    margin: 0,
                   }}
                 >
                   {phaseIsCleared
                     ? currentData.docText
-                    : "[GOVERNANCE HOLD]: Awaiting full RACI alignment mapping matrix and correct architecture component drop to baseline specs."}
+                    : "Stage Locked: Complete the RACI alignment and match the framework block to unlock this document."}
                 </pre>
               </div>
-            </div>
-            <div
-              style={{
-                padding: "16px 24px",
-                background: "#FAF9F6",
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-              }}
-            >
-              <div style={{ display: "flex", gap: "10px" }}>
-                <button className="btn btn-secondary" onClick={resetStage}>
-                  Clear Settings
-                </button>
-                {phaseIsCleared && (
-                  <button
-                    className="btn btn-secondary"
-                    onClick={downloadDoc}
-                    style={{
-                      borderColor: "var(--blue-primary)",
-                      color: "var(--blue-primary)",
-                    }}
-                  >
-                    ⬇ Save PDF
-                  </button>
-                )}
-              </div>
-
-              <button
-                className="btn btn-primary"
-                disabled={!phaseIsCleared}
-                onClick={commitAndAdvance}
-                style={{
-                  backgroundColor: phaseIsCleared
-                    ? "var(--gold-accent)"
-                    : "#D1D5DB",
-                  color: phaseIsCleared ? "var(--blue-deep)" : "#9CA3AF",
-                }}
-              >
-                {phaseIsCleared
-                  ? activeStage === 10
-                    ? "Lifecycle Finalized"
-                    : "Commit & Move ➔"
-                  : "Blocked: Awaiting Validation"}
-              </button>
             </div>
           </div>
         )}

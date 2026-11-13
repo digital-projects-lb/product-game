@@ -493,11 +493,12 @@ svg {
 .tour-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(11, 27, 61, 0.78);
+  background-color: rgba(62, 47, 38, 0.45);
+  backdrop-filter: blur(2px);
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 999;
+  z-index: 1000;
   padding: 20px;
 }
 

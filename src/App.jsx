@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { MetricsMatrix } from "./metrics.js";
+import Resources from "./Resources";
 
 export default function App() {
   const [viewPage, setViewPage] = useState("overview");
@@ -20,6 +21,8 @@ export default function App() {
   const [tourStep, setTourStep] = useState(() => {
     return localStorage.getItem("lifecycle_tour_seen") ? null : 0;
   });
+
+  const [showResources, setShowResources] = useState(false);
 
   const tourSlides = [
     {
@@ -393,8 +396,14 @@ export default function App() {
               marginLeft: "auto",
             }}
           >
+            <button
+              className="tour-trigger-btn"
+              onClick={() => setShowResources(true)}
+            >
+              Product Resources
+            </button>
             <button className="tour-trigger-btn" onClick={resetStage}>
-              Reset Stage
+              Game Reset
             </button>
             <button className="tour-trigger-btn" onClick={() => setTourStep(0)}>
               How to Play
@@ -539,14 +548,21 @@ export default function App() {
           disabled={!phaseIsCleared}
           onClick={commitAndAdvance}
           style={{
-            backgroundColor: phaseIsCleared ? "#f9f5e3" : "#f4f1ed",
+            background: phaseIsCleared
+              ? "linear-gradient(135deg, #f3e6b8 0%, #cbb26a 55%, #b59746 100%)"
+              : "#efe8df",
             border: phaseIsCleared
-              ? "1.5px solid #cbb26a"
-              : "1px solid #dcd3c9",
-            color: phaseIsCleared ? "#3e2f26" : "#8c7a6b",
-            padding: "8px 18px",
+              ? "1.5px solid #9a7b2c"
+              : "1px solid #d5c7b8",
+            color: phaseIsCleared ? "#2c211b" : "#6e5d4f",
+            padding: "9px 20px",
             fontSize: "13px",
             fontWeight: 600,
+            borderRadius: "8px",
+            boxShadow: phaseIsCleared
+              ? "0 4px 12px rgba(154, 123, 44, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.65)"
+              : "inset 0 1px 2px rgba(62, 47, 38, 0.06)",
+            transition: "all 0.25s ease",
           }}
         >
           {phaseIsCleared
@@ -1103,6 +1119,7 @@ export default function App() {
           </div>
         </div>
       )}
+      {showResources && <Resources onClose={() => setShowResources(false)} />}
 
       <footer className="game-footer">
         <p>

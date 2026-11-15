@@ -186,14 +186,7 @@ export default function Resources({ onClose }) {
   };
 
   return (
-    <div
-      className="tour-overlay"
-      style={{
-        alignItems: "flex-start",
-        overflowY: "auto",
-        padding: "32px 16px",
-      }}
-    >
+    <div className="resources-overlay">
       <div
         style={{
           background: "#ffffff",
@@ -302,23 +295,8 @@ export default function Resources({ onClose }) {
           </button>
         </div>
 
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "250px 1fr",
-            minHeight: "420px",
-          }}
-        >
-          <div
-            style={{
-              background: "#faf8f5",
-              borderRight: "1px solid #ece5dd",
-              padding: "16px",
-              display: "flex",
-              flexDirection: "column",
-              gap: "8px",
-            }}
-          >
+        <div className="resources-grid">
+          <div className="resources-sidebar">
             {activeTab === "guides"
               ? RESOURCES.map((item) => (
                   <button
@@ -399,7 +377,7 @@ export default function Resources({ onClose }) {
                 ))}
           </div>
 
-          <div style={{ padding: "24px 28px" }}>
+          <div className="resources-body">
             {activeTab === "guides" ? (
               <>
                 <div

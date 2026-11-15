@@ -558,3 +558,62 @@ svg {
     margin-left: 0;
   }
 }
+
+.resources-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(62, 47, 38, 0.45);
+  backdrop-filter: blur(2px);
+  z-index: 1000;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 20px 12px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.resources-grid {
+  display: grid;
+  grid-template-columns: 250px 1fr;
+  min-height: 420px;
+}
+
+.resources-sidebar {
+  background: #faf8f5;
+  border-right: 1px solid #ece5dd;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.resources-body {
+  padding: 24px 28px;
+}
+
+@media (max-width: 720px) {
+  .resources-overlay {
+    padding: 12px 8px;
+  }
+  .resources-grid {
+    grid-template-columns: 1fr;
+    min-height: auto;
+  }
+  .resources-sidebar {
+    border-right: none;
+    border-bottom: 1px solid #ece5dd;
+    flex-direction: row;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 12px;
+    gap: 8px;
+  }
+  .resources-sidebar button {
+    min-width: 175px;
+    flex-shrink: 0;
+  }
+  .resources-body {
+    padding: 18px 16px;
+  }
+}

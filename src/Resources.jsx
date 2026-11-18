@@ -1,13 +1,13 @@
 import React, { useState } from "react";
-import { MetricsMatrix } from "./metrics";
+import { StageData } from "./Data";
 
-const RESOURCES = [
+const PRODUCT_GUIDES = [
   {
     id: "frameworks",
     tag: "Core Frameworks",
-    title: "PMBOK, BABOK & RACI Reference Guide",
+    title: "PMBOK, BABOK & Delivery Roles Guide",
     summary:
-      "Plain-English takeaways from the three core delivery frameworks—when to use each and how they fit together.",
+      "Plain-English takeaways from core delivery frameworks—when to use each and how they fit together.",
     sections: [
       {
         heading: "PMBOK (Project Management Body of Knowledge)",
@@ -19,15 +19,16 @@ const RESOURCES = [
       {
         heading: "BABOK (Business Analysis Body of Knowledge)",
         points: [
-          "Focuses on WHAT problem we are solving and WHY: requirements elicitation, gap analysis, and acceptance criteria.",
+          "Focuses on WHAT problem we are solving and WHY: requirements gathering, gap analysis, and acceptance rules.",
           "Key Product habit: Trace every user story back to a measurable business outcome so engineering never builds features without clear value.",
         ],
       },
       {
-        heading: "RACI Decision Matrix",
+        heading: "Practical Squad Alignment Roles",
         points: [
-          "Responsible (R): The team executing the work. Accountable (A): The single decision-maker who signs off (never more than one A).",
-          "Consulted (C): Subject-matter experts giving two-way input before sign-off. Informed (I): Stakeholders kept updated on progress.",
+          "Scrum Team: Product, UX, and Engineering building and shipping work day-to-day.",
+          "Peer / Subject Matter Expert: End-Users, Finance, or Operations giving specialist input.",
+          "Sign-Off: SLT, Legal, or QA formally approving budget, risk, or launch readiness.",
         ],
       },
     ],
@@ -37,20 +38,20 @@ const RESOURCES = [
     tag: "Process Map",
     title: "Design Thinking to Agile Delivery Map",
     summary:
-      "How customer discovery flows seamlessly into iterative Scrum sprints without losing sight of user value.",
+      "How customer discovery flows into two-week Scrum sprints without losing sight of user value.",
     sections: [
       {
         heading: "Phase 1: Design Thinking (Discover the Right Thing)",
         points: [
-          "1. Empathise & Define: Run customer interviews and analytics reviews to frame a sharp Problem Statement.",
-          "2. Ideate & Prototype: Sketch low-cost flows and clickable wireframes to test assumptions before writing production code.",
+          "1. Empathise & Define: Run customer interviews and support ticket reviews to frame a sharp Problem Statement.",
+          "2. Ideate & Prototype: Sketch simple flows and clickable wireframes to test assumptions before writing code.",
         ],
       },
       {
         heading: "Phase 2: Agile Scrum (Build the Thing Right)",
         points: [
-          "3. Backlog Refinement & Sprint Planning: Break validated prototypes into small, vertical user stories with clear acceptance criteria.",
-          "4. Daily Standups, Sprint Review & Retro: Ship working increments every 1–2 weeks, demo to stakeholders, and improve team workflow.",
+          "3. Backlog Refinement & Sprint Planning: Break tested prototypes into small user stories with clear acceptance rules.",
+          "4. Daily Standups, Sprint Review & Retro: Ship working increments every two weeks, demo to stakeholders, and improve team workflow.",
         ],
       },
     ],
@@ -60,20 +61,20 @@ const RESOURCES = [
     tag: "Commercial Strategy",
     title: "Business Case & NPV Basics",
     summary:
-      "How to justify investment to Senior Leadership using Net Present Value (NPV), payback period, and commercial sizing.",
+      "How to justify investment to SLT using Net Present Value (NPV), payback period, and CLV:CAC.",
     sections: [
       {
         heading: "Net Present Value (NPV) in Plain English",
         points: [
           "A dollar earned today is worth more than a dollar earned in three years because of inflation and opportunity cost.",
-          "NPV discounts future cash inflows back to today's value minus upfront build costs. Positive NPV (> $0) means the initiative creates net financial value.",
+          "NPV discounts future cash inflows back to today's value minus upfront build costs. Positive NPV (> $0) means the project creates net financial value.",
         ],
       },
       {
-        heading: "What Sponsors Look For in a Business Case",
+        heading: "What SLT Looks For in a Business Case",
         points: [
-          "Revenue Uplift or Cost Reduction: Quantify conversion gains, retention lift, or manual hours saved per month.",
-          "Payback Period & Opportunity Cost: Show how many months until the build cost is recovered—and what happens if we do nothing.",
+          "Payback Period & CLV:CAC Ratio: Show how many months until build cost is recovered and target a CLV:CAC ratio of 3:1 or higher.",
+          "Retention & ARR Lift: Quantify expected gains in Customer Retention Rate (CRR) and Annual Recurring Revenue (ARR).",
         ],
       },
     ],
@@ -83,49 +84,53 @@ const RESOURCES = [
     tag: "Applied AI Product",
     title: "Building AI Chatbots: Product Playbook",
     summary:
-      "Practical end-to-end steps for scoping, grounding, and safely launching conversational AI assistants.",
+      "Practical steps for scoping, grounding, and safely launching conversational AI assistants.",
     sections: [
       {
         heading: "1. Use-Case Scoping & Intent Mapping",
         points: [
-          "Start with high-volume, repetitive customer or internal queries where fast answers cut support load or boost conversion.",
-          "Define clear boundaries: what the assistant handles automatically vs. when it hands off cleanly to a human agent.",
+          "Start with high-volume, repetitive customer queries where fast answers cut support tickets and improve Time to Value (TTV).",
+          "Define clear boundaries: what the assistant handles automatically versus when it hands off cleanly to a support agent.",
         ],
       },
       {
         heading: "2. Knowledge Grounding & Guardrails",
         points: [
-          "Ground responses in verified company docs (RAG) rather than relying on open model memory to prevent hallucinations.",
+          "Ground responses in verified company help docs rather than open model memory to prevent inaccurate answers.",
           "Set system prompt guardrails for tone, data privacy, and fallback responses when confidence is low.",
         ],
       },
       {
-        heading: "3. Evaluation & Continuous Tuning",
+        heading: "3. Testing & Ongoing Tuning",
         points: [
-          "Test against a golden dataset of real user questions (including edge cases) before launch.",
-          "Track containment rate, thumbs-up/down feedback, and fallback triggers post-launch to refine prompts and knowledge articles.",
+          "Test against a benchmark set of real customer questions (including edge cases) before launch.",
+          "Track containment rate, CSAT feedback, and fallback triggers post-launch to refine prompts and help articles.",
         ],
       },
     ],
   },
 ];
+
 export default function Resources({ onClose }) {
   const [activeTab, setActiveTab] = useState("guides");
-  const [selectedId, setSelectedId] = useState("frameworks");
-  const [selectedStage, setSelectedStage] = useState(1);
+  const [selectedGuideId, setSelectedGuideId] = useState("frameworks");
+  const [selectedStageNum, setSelectedStageNum] = useState(1);
 
-  const phases = Object.entries(MetricsMatrix.phases).map(([num, data]) => ({
+  const stageList = Object.entries(StageData.stages).map(([num, data]) => ({
     num: Number(num),
     ...data,
   }));
 
   const currentGuide =
-    RESOURCES.find((r) => r.id === selectedId) || RESOURCES[0];
-  const currentPhase = phases.find((p) => p.num === selectedStage) || phases[0];
-
-  const printResource = (title, badge, subtitle, bodyHtml) => {
+    PRODUCT_GUIDES.find((g) => g.id === selectedGuideId) || PRODUCT_GUIDES[0];
+  const currentStage =
+    stageList.find((s) => s.num === selectedStageNum) || stageList[0];
+  const printDocument = (title, badge, metaItems, bodyHtml) => {
     const win = window.open("", "_blank", "width=820,height=920");
     if (!win) return;
+    const metaHtml = metaItems
+      .map((item) => `<span class="meta-item">${item}</span>`)
+      .join("");
     win.document.write(`
       <!doctype html>
       <html>
@@ -133,26 +138,31 @@ export default function Resources({ onClose }) {
           <title>${title} — Product Path</title>
           <link href="https://googleapis.com" rel="stylesheet" />
           <style>
-            body { font-family: 'Raleway', sans-serif; color: #3e2f26; padding: 36px; line-height: 1.65; }
-            .header { background: #faf8f5; padding: 22px 26px; border: 1px solid #ece5dd; border-left: 5px solid #cbb26a; border-radius: 6px; margin-bottom: 20px; }
-            .badge { color: #7c6527; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; }
-            h1 { font-size: 22px; font-weight: 500; margin: 6px 0 4px 0; color: #2c211b; }
-            .sub { font-size: 12px; color: #8c7a6b; }
-            h3 { font-size: 14px; font-weight: 600; color: #3e2f26; margin: 18px 0 8px 0; }
-            ul { padding-left: 20px; font-size: 13px; }
+            body { font-family: 'Raleway', sans-serif; font-weight: 300; color: #3e2f26; padding: 36px; line-height: 1.65; }
+            .header { background: #faf8f4; padding: 20px 24px; border: 1px solid #dcd6ca; border-top: 3px solid #dfc3a6; border-radius: 10px; margin-bottom: 22px; }
+            .badge { color: #8f7356; font-size: 11px; font-weight: 400; text-transform: uppercase; letter-spacing: 0.09em; }
+            h1 { font-size: 21px; font-weight: 400; margin: 6px 0 4px 0; color: #3e2f26; }
+            .meta-row { display: flex; flex-wrap: wrap; gap: 18px; margin-top: 10px; }
+            .meta-item { font-size: 12px; font-weight: 400; padding: 3px 2px; color: #3e2f26; border-bottom: 1.5px solid rgba(199, 169, 138, 0.55); }
+            h3 { font-size: 14px; font-weight: 400; color: #3e2f26; margin: 20px 0 8px 0; }
+            ul { padding-left: 18px; font-size: 13px; }
             li { margin-bottom: 8px; }
-            pre { font-family: 'Raleway', sans-serif; white-space: pre-wrap; font-size: 13px; background: #faf8f5; border: 1px solid #ece5dd; padding: 16px 20px; border-radius: 6px; }
-            .footer { margin-top: 24px; font-size: 11px; color: #8c7a6b; text-align: right; }
+            .goal-box { background: #faf8f4; border: 1px solid #e8e3d9; border-left: 3px solid #cbb994; border-radius: 6px; padding: 12px 16px; font-size: 13px; margin-bottom: 16px; }
+            pre { font-family: 'Raleway', sans-serif; font-weight: 300; white-space: pre-wrap; font-size: 13px; background: #faf8f4; border: 1px solid #dcd6ca; padding: 18px 20px; border-radius: 8px; }
+            .footer { margin-top: 24px; padding: 8px 12px; background: #faf8f4; border: 1px solid #e8e3d9; border-left: 3px solid #97b09f; border-radius: 6px; font-size: 11px; color: #756558; display: flex; justify-content: space-between; }
           </style>
         </head>
         <body>
           <div class="header">
             <div class="badge">${badge}</div>
             <h1>${title}</h1>
-            <div class="sub">${subtitle}</div>
+            <div class="meta-row">${metaHtml}</div>
           </div>
           ${bodyHtml}
-          <div class="footer">Product Path • Product Resource Library</div>
+          <div class="footer">
+            <span>Product Path • Product Resource Library</span>
+            <span>© 2026</span>
+          </div>
           <script>window.onload = () => { setTimeout(() => window.print(), 300); };</script>
         </body>
       </html>
@@ -164,314 +174,114 @@ export default function Resources({ onClose }) {
     const html = currentGuide.sections
       .map(
         (sec) =>
-          `<h3>${sec.heading}</h3><ul>${sec.points.map((pt) => `<li>${pt}</li>`).join("")}</ul>`,
+          `<h3>${sec.heading}</h3><ul>${sec.points
+            .map((pt) => `<li>${pt}</li>`)
+            .join("")}</ul>`,
       )
       .join("");
-    printResource(
+    printDocument(
       currentGuide.title,
       `Product Reference Guide • ${currentGuide.tag}`,
-      currentGuide.summary,
+      [currentGuide.summary],
       html,
     );
   };
 
-  const handlePrintTemplate = () => {
-    const html = `<p style="font-size:13px;"><strong>Stage Goal:</strong> ${currentPhase.desc}</p><pre>${currentPhase.docText}</pre>`;
-    printResource(
-      currentPhase.asset,
-      `Stage Template • ${currentPhase.name}`,
-      `Timeline: ${currentPhase.duration} • Deliverable: ${currentPhase.correctBlock}`,
+  const handlePrintStageDoc = () => {
+    const docTitle = currentStage.documents.join(" & ");
+    const html = `<div class="goal-box">Stage OKR: ${currentStage.okr}</div><pre>${currentStage.template}</pre>`;
+    printDocument(
+      docTitle,
+      `Stage Document • ${currentStage.label}`,
+      [
+        `Timeline: ${currentStage.timeline}`,
+        `Window: ${currentStage.window}`,
+        `Move: ${currentStage.move}`,
+      ],
       html,
     );
   };
 
   return (
-    <div className="resources-overlay">
-      <div
-        style={{
-          background: "#ffffff",
-          border: "1px solid #ece5dd",
-          borderRadius: "14px",
-          width: "100%",
-          maxWidth: "880px",
-          boxShadow: "0 16px 40px rgba(62, 47, 38, 0.16)",
-          overflow: "hidden",
-        }}
-      >
-        <div
-          style={{
-            background: "#faf8f5",
-            borderBottom: "2px solid #cbb26a",
-            padding: "18px 24px",
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            flexWrap: "wrap",
-            gap: "12px",
-          }}
-        >
+    <div className="modal-overlay">
+      <div className="modal-panel">
+        <div className="modal-header">
           <div>
-            <span
-              style={{
-                fontSize: "11px",
-                fontWeight: 600,
-                textTransform: "uppercase",
-                letterSpacing: "0.08em",
-                color: "#7c6527",
-              }}
-            >
-              Product Path • Reference Hub
-            </span>
-            <h2
-              style={{
-                fontSize: "20px",
-                fontWeight: 500,
-                color: "#3e2f26",
-                margin: "2px 0 0 0",
-              }}
-            >
-              Product Resources &amp; Templates
-            </h2>
+            <span className="modal-kicker">Product Path • Reference Hub</span>
+            <h2 className="modal-title">Product Resources &amp; Templates</h2>
           </div>
-
-          <button
-            className="btn"
-            onClick={onClose}
-            style={{
-              background: "#ffffff",
-              border: "1px solid #d5c7b8",
-              color: "#3e2f26",
-              padding: "7px 16px",
-              fontSize: "12px",
-              fontWeight: 600,
-            }}
-          >
+          <button className="nav-link-clean" onClick={onClose}>
             ✕ Close
           </button>
         </div>
 
-        <div
-          style={{
-            display: "flex",
-            gap: "8px",
-            padding: "14px 24px",
-            background: "#f3ece4",
-            borderBottom: "1px solid #e2d5c7",
-          }}
-        >
+        <div className="modal-tabs">
           <button
-            className="btn"
+            className={`light-tab oat ${activeTab === "guides" ? "active" : ""}`}
             onClick={() => setActiveTab("guides")}
-            style={{
-              background: activeTab === "guides" ? "#f9f5e3" : "#ffffff",
-              border:
-                activeTab === "guides"
-                  ? "1.5px solid #cbb26a"
-                  : "1px solid #d5c7b8",
-              color: "#3e2f26",
-              padding: "7px 16px",
-              fontSize: "12.5px",
-              fontWeight: 600,
-            }}
           >
-            Product Guides &amp; Playbooks ({RESOURCES.length})
+            Product Guides &amp; Playbooks ({PRODUCT_GUIDES.length})
           </button>
           <button
-            className="btn"
+            className={`light-tab baltic ${activeTab === "templates" ? "active" : ""}`}
             onClick={() => setActiveTab("templates")}
-            style={{
-              background: activeTab === "templates" ? "#f9f5e3" : "#ffffff",
-              border:
-                activeTab === "templates"
-                  ? "1.5px solid #cbb26a"
-                  : "1px solid #d5c7b8",
-              color: "#3e2f26",
-              padding: "7px 16px",
-              fontSize: "12.5px",
-              fontWeight: 600,
-            }}
           >
-            All 10 Stage Templates
+            All 10 Stage Documents
           </button>
         </div>
 
-        <div className="resources-grid">
+        <div className="resources-split">
           <div className="resources-sidebar">
             {activeTab === "guides"
-              ? RESOURCES.map((item) => (
+              ? PRODUCT_GUIDES.map((guide) => (
                   <button
-                    key={item.id}
-                    onClick={() => setSelectedId(item.id)}
-                    style={{
-                      textAlign: "left",
-                      padding: "10px 12px",
-                      borderRadius: "8px",
-                      border:
-                        selectedId === item.id
-                          ? "1.5px solid #cbb26a"
-                          : "1px solid #ece5dd",
-                      background:
-                        selectedId === item.id ? "#f9f5e3" : "#ffffff",
-                      cursor: "pointer",
-                    }}
+                    key={guide.id}
+                    className={`sidebar-item-btn ${
+                      selectedGuideId === guide.id ? "active" : ""
+                    }`}
+                    onClick={() => setSelectedGuideId(guide.id)}
                   >
-                    <div
-                      style={{
-                        fontSize: "10px",
-                        fontWeight: 600,
-                        textTransform: "uppercase",
-                        color: "#7c6527",
-                      }}
-                    >
-                      {item.tag}
-                    </div>
-                    <div
-                      style={{
-                        fontSize: "12.5px",
-                        fontWeight: 600,
-                        color: "#3e2f26",
-                        marginTop: "2px",
-                      }}
-                    >
-                      {item.title}
-                    </div>
+                    <div className="sidebar-item-tag">{guide.tag}</div>
+                    <div className="sidebar-item-title">{guide.title}</div>
                   </button>
                 ))
-              : phases.map((p) => (
+              : stageList.map((st) => (
                   <button
-                    key={p.num}
-                    onClick={() => setSelectedStage(p.num)}
-                    style={{
-                      textAlign: "left",
-                      padding: "9px 12px",
-                      borderRadius: "8px",
-                      border:
-                        selectedStage === p.num
-                          ? "1.5px solid #cbb26a"
-                          : "1px solid #ece5dd",
-                      background:
-                        selectedStage === p.num ? "#f9f5e3" : "#ffffff",
-                      cursor: "pointer",
-                    }}
+                    key={st.num}
+                    className={`sidebar-item-btn ${
+                      selectedStageNum === st.num ? "active" : ""
+                    }`}
+                    onClick={() => setSelectedStageNum(st.num)}
                   >
-                    <div
-                      style={{
-                        fontSize: "10px",
-                        fontWeight: 600,
-                        color: "#7c6527",
-                      }}
-                    >
-                      {p.name}
-                    </div>
-                    <div
-                      style={{
-                        fontSize: "12px",
-                        fontWeight: 500,
-                        color: "#3e2f26",
-                        marginTop: "2px",
-                      }}
-                    >
-                      {p.asset}
+                    <div className="sidebar-item-tag">{st.label}</div>
+                    <div className="sidebar-item-title">
+                      {st.documents.join(" • ")}
                     </div>
                   </button>
                 ))}
           </div>
 
-          <div className="resources-body">
+          <div className="resources-content">
             {activeTab === "guides" ? (
               <>
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "flex-start",
-                    gap: "12px",
-                    marginBottom: "14px",
-                  }}
-                >
+                <div className="ref-header-row">
                   <div>
-                    <span
-                      style={{
-                        fontSize: "11px",
-                        fontWeight: 600,
-                        textTransform: "uppercase",
-                        color: "#7c6527",
-                      }}
-                    >
-                      {currentGuide.tag}
-                    </span>
-                    <h3
-                      style={{
-                        fontSize: "19px",
-                        fontWeight: 500,
-                        color: "#3e2f26",
-                        marginTop: "2px",
-                      }}
-                    >
-                      {currentGuide.title}
-                    </h3>
+                    <span className="modal-kicker">{currentGuide.tag}</span>
+                    <h3 className="detail-heading">{currentGuide.title}</h3>
                   </div>
-                  <button
-                    className="btn"
-                    onClick={handlePrintGuide}
-                    style={{
-                      background: "#f9f5e3",
-                      border: "1px solid #cbb26a",
-                      color: "#3e2f26",
-                      padding: "7px 14px",
-                      fontSize: "12px",
-                      fontWeight: 600,
-                      whiteSpace: "nowrap",
-                    }}
-                  >
+                  <button className="nav-link-clean" onClick={handlePrintGuide}>
                     ⬇ Save PDF
                   </button>
                 </div>
 
-                <p
-                  style={{
-                    fontSize: "13px",
-                    color: "#8c7a6b",
-                    marginBottom: "18px",
-                  }}
-                >
-                  {currentGuide.summary}
-                </p>
+                <p className="ref-intro">{currentGuide.summary}</p>
 
                 {currentGuide.sections.map((sec, idx) => (
-                  <div
-                    key={idx}
-                    style={{
-                      background: "#faf8f5",
-                      border: "1px solid #ece5dd",
-                      borderLeft: "4px solid #cbb26a",
-                      borderRadius: "6px",
-                      padding: "14px 16px",
-                      marginBottom: "14px",
-                    }}
-                  >
-                    <h4
-                      style={{
-                        fontSize: "13.5px",
-                        fontWeight: 600,
-                        color: "#3e2f26",
-                        marginBottom: "8px",
-                      }}
-                    >
-                      {sec.heading}
-                    </h4>
-                    <ul
-                      style={{
-                        paddingLeft: "18px",
-                        fontSize: "12.5px",
-                        color: "#3e2f26",
-                        lineHeight: "1.6",
-                      }}
-                    >
+                  <div key={idx} className="guide-section-card">
+                    <h4>{sec.heading}</h4>
+                    <ul>
                       {sec.points.map((pt, pIdx) => (
-                        <li key={pIdx} style={{ marginBottom: "6px" }}>
-                          {pt}
-                        </li>
+                        <li key={pIdx}>{pt}</li>
                       ))}
                     </ul>
                   </div>
@@ -479,78 +289,39 @@ export default function Resources({ onClose }) {
               </>
             ) : (
               <>
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "flex-start",
-                    gap: "12px",
-                    marginBottom: "14px",
-                  }}
-                >
+                <div className="ref-header-row">
                   <div>
-                    <span
-                      style={{
-                        fontSize: "11px",
-                        fontWeight: 600,
-                        textTransform: "uppercase",
-                        color: "#7c6527",
-                      }}
-                    >
-                      {currentPhase.name} • {currentPhase.duration}
+                    <span className="modal-kicker">
+                      {currentStage.label} • {currentStage.timeline}
                     </span>
-                    <h3
-                      style={{
-                        fontSize: "19px",
-                        fontWeight: 500,
-                        color: "#3e2f26",
-                        marginTop: "2px",
-                      }}
-                    >
-                      {currentPhase.asset}
+                    <h3 className="detail-heading">
+                      {currentStage.documents.join(" & ")}
                     </h3>
                   </div>
                   <button
-                    className="btn"
-                    onClick={handlePrintTemplate}
-                    style={{
-                      background: "#f9f5e3",
-                      border: "1px solid #cbb26a",
-                      color: "#3e2f26",
-                      padding: "7px 14px",
-                      fontSize: "12px",
-                      fontWeight: 600,
-                      whiteSpace: "nowrap",
-                    }}
+                    className="nav-link-clean"
+                    onClick={handlePrintStageDoc}
                   >
                     ⬇ Save PDF
                   </button>
                 </div>
 
-                <p
-                  style={{
-                    fontSize: "13px",
-                    color: "#3e2f26",
-                    marginBottom: "14px",
-                  }}
-                >
-                  <strong>Stage Goal:</strong> {currentPhase.desc}
-                </p>
+                <div className="pdf-meta-row" style={{ marginBottom: "16px" }}>
+                  <span className="pdf-meta-item">
+                    Timeline: {currentStage.timeline}
+                  </span>
+                  <span className="pdf-meta-item">
+                    Window: {currentStage.window}
+                  </span>
+                  <span className="pdf-meta-item">
+                    Move: {currentStage.move}
+                  </span>
+                </div>
 
-                <pre
-                  style={{
-                    fontFamily: "'Raleway', sans-serif",
-                    fontSize: "12.5px",
-                    lineHeight: "1.65",
-                    whiteSpace: "pre-wrap",
-                    background: "#faf8f5",
-                    border: "1px solid #ece5dd",
-                    borderRadius: "6px",
-                    padding: "16px",
-                    color: "#3e2f26",
-                  }}
-                >
-                  {currentPhase.docText}
+                <p className="stage-goal-line">Stage OKR: {currentStage.okr}</p>
+
+                <pre className="template-preview-box">
+                  {currentStage.template}
                 </pre>
               </>
             )}

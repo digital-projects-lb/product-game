@@ -5,16 +5,123 @@ import Calculator from "./Calculator";
 import Resources from "./Resources";
 
 const STAGE_COORDINATES = [
-  { s: 1, x: 40, y: 210, l: "Concept", len: 0 },
-  { s: 2, x: 145, y: 185, l: "Business Case", len: 112 },
-  { s: 3, x: 250, y: 130, l: "Discovery", len: 230 },
-  { s: 4, x: 365, y: 155, l: "Design", len: 348 },
-  { s: 5, x: 490, y: 180, l: "Plan", len: 476 },
-  { s: 6, x: 590, y: 115, l: "Build", len: 595 },
-  { s: 7, x: 675, y: 68, l: "Test", len: 693 },
-  { s: 8, x: 775, y: 92, l: "Launch", len: 796 },
-  { s: 9, x: 870, y: 148, l: "Review", len: 907 },
-  { s: 10, x: 960, y: 150, l: "Iterate", len: 1000 },
+  {
+    s: 1,
+    x: 90,
+    y: 222,
+    l: "Concept",
+    len: 0,
+    dx: 0,
+    dy: 24,
+    anchor: "middle",
+  },
+  {
+    s: 2,
+    x: 215,
+    y: 180,
+    l: "Business Case",
+    len: 135,
+    dx: 0,
+    dy: -21,
+    anchor: "middle",
+  },
+  {
+    s: 3,
+    x: 320,
+    y: 218,
+    l: "Discovery",
+    len: 255,
+    dx: 0,
+    dy: 24,
+    anchor: "middle",
+  },
+  {
+    s: 4,
+    x: 415,
+    y: 192,
+    l: "Design",
+    len: 375,
+    dx: 18,
+    dy: 4,
+    anchor: "start",
+  },
+  {
+    s: 5,
+    x: 395,
+    y: 155,
+    l: "Plan",
+    len: 465,
+    dx: 0,
+    dy: -21,
+    anchor: "middle",
+  },
+  {
+    s: 6,
+    x: 510,
+    y: 165,
+    l: "Build",
+    len: 590,
+    dx: 0,
+    dy: 25,
+    anchor: "middle",
+  },
+  {
+    s: 7,
+    x: 600,
+    y: 110,
+    l: "Test",
+    len: 705,
+    dx: 0,
+    dy: -21,
+    anchor: "middle",
+  },
+  {
+    s: 8,
+    x: 695,
+    y: 132,
+    l: "Launch",
+    len: 805,
+    dx: 0,
+    dy: -21,
+    anchor: "middle",
+  },
+  {
+    s: 9,
+    x: 795,
+    y: 144,
+    l: "Review",
+    len: 905,
+    dx: 0,
+    dy: 25,
+    anchor: "middle",
+  },
+  {
+    s: 10,
+    x: 895,
+    y: 80,
+    l: "Iterate",
+    len: 1000,
+    dx: 0,
+    dy: -21,
+    anchor: "middle",
+  },
+];
+
+// Road waypoints including dummy curve points between 3-4, 4-5, and 6-7
+const ROAD_WAYPOINTS = [
+  { x: 90, y: 222 }, // Stage 1
+  { x: 215, y: 180 }, // Stage 2
+  { x: 320, y: 218 }, // Stage 3
+  { x: 380, y: 213 }, // Dummy bend 3 -> 4 (hugs lower curve)
+  { x: 415, y: 192 }, // Stage 4
+  { x: 377, y: 177 }, // Dummy hairpin 4 -> 5 (swings left around switchback)
+  { x: 395, y: 155 }, // Stage 5
+  { x: 510, y: 165 }, // Stage 6
+  { x: 500, y: 130 }, // Dummy bend 6 -> 7 (follows cliff base before climbing)
+  { x: 600, y: 110 }, // Stage 7
+  { x: 695, y: 132 }, // Stage 8
+  { x: 795, y: 144 }, // Stage 9
+  { x: 895, y: 80 }, // Stage 10
 ];
 
 function createEmptyProgress() {
@@ -39,6 +146,13 @@ export default function App() {
   const [showCalculator, setShowCalculator] = useState(false);
   const [showResources, setShowResources] = useState(false);
   const [tourStep, setTourStep] = useState(null);
+
+  const smoothRoadPath = ROAD_WAYPOINTS.reduce((acc, pt, idx, arr) => {
+    if (idx === 0) return `M ${pt.x} ${pt.y}`;
+    const prev = arr[idx - 1];
+    const midX = Math.round((prev.x + pt.x) / 2);
+    return `${acc} C ${midX} ${prev.y}, ${midX} ${pt.y}, ${pt.x} ${pt.y}`;
+  }, "");
 
   useEffect(() => {
     try {
@@ -80,8 +194,7 @@ export default function App() {
   ];
 
   const currentStageData = StageData.stages[activeStage];
-  const currentProgress =
-    stageProgress[activeStage] || createEmptyProgress();
+  const currentProgress = stageProgress[activeStage] || createEmptyProgress();
 
   const updateCurrentProgress = (updatedFields) => {
     setStageProgress((prev) => ({
@@ -103,9 +216,10 @@ export default function App() {
     currentProgress.budget.tech;
   const isBudgetClose =
     budgetTotal === 100 &&
-    Math.abs(currentProgress.budget.user - currentStageData.budget.user) <= 10 &&
+    Math.abs(currentProgress.budget.user - currentStageData.budget.user) <=
+      10 &&
     Math.abs(
-      currentProgress.budget.business - currentStageData.budget.business
+      currentProgress.budget.business - currentStageData.budget.business,
     ) <= 10 &&
     Math.abs(currentProgress.budget.tech - currentStageData.budget.tech) <= 10;
   const isWhatDone =
@@ -116,8 +230,8 @@ export default function App() {
     currentStageData.stakeholders.every((target) =>
       currentProgress.stakeholders.some(
         (picked) =>
-          picked.group === target.group && picked.role === target.role
-      )
+          picked.group === target.group && picked.role === target.role,
+      ),
     );
 
   const isHowDone =
@@ -137,7 +251,7 @@ export default function App() {
   const handleNodeClick = (stageNum) => {
     if (stageNum > maxUnlockedStage) {
       setStatusBanner(
-        `Locked: Complete all 6 steps in Stage ${maxUnlockedStage} before advancing.`
+        `Locked: Complete all 6 steps in Stage ${maxUnlockedStage} before advancing.`,
       );
       return;
     }
@@ -158,7 +272,7 @@ export default function App() {
       setStatusBanner("");
     } else {
       setStatusBanner(
-        "Simulation Complete: You guided the product from Concept to Iteration."
+        "Simulation Complete: You guided the product from Concept to Iteration.",
       );
     }
   };
@@ -206,10 +320,7 @@ export default function App() {
             <button className="nav-link-clean" onClick={resetStage}>
               Reset
             </button>
-            <button
-              className="nav-link-clean"
-              onClick={() => setTourStep(0)}
-            >
+            <button className="nav-link-clean" onClick={() => setTourStep(0)}>
               How to Play
             </button>
           </div>
@@ -221,27 +332,22 @@ export default function App() {
             viewBox="0 0 1000 260"
             preserveAspectRatio="xMidYMid meet"
           >
-            <line
-              className="baseline-guide"
-              x1="40"
-              y1="210"
-              x2="960"
-              y2="150"
-            />
-            <path
-              className="highway-backdrop"
-              d="M 40 210 C 90 210, 100 185, 145 185 C 195 185, 200 130, 250 130 C 310 130, 315 155, 365 155 C 430 155, 435 180, 490 180 C 545 180, 540 115, 590 115 C 635 115, 635 68, 675 68 C 725 68, 725 92, 775 92 C 825 92, 825 148, 870 148 C 915 148, 920 150, 960 150"
-            />
-            <path
-              className="graph-path"
-              d="M 40 210 C 90 210, 100 185, 145 185 C 195 185, 200 130, 250 130 C 310 130, 315 155, 365 155 C 430 155, 435 180, 490 180 C 545 180, 540 115, 590 115 C 635 115, 635 68, 675 68 C 725 68, 725 92, 775 92 C 825 92, 825 148, 870 148 C 915 148, 920 150, 960 150"
-            />
+            <defs>
+              <linearGradient id="nodeCeramicSheen" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor="#ffffff" stopOpacity="0.78" />
+                <stop offset="48%" stopColor="#ffffff" stopOpacity="0.18" />
+                <stop offset="52%" stopColor="#3e2f26" stopOpacity="0.05" />
+                <stop offset="100%" stopColor="#ffffff" stopOpacity="0.14" />
+              </linearGradient>
+            </defs>
+            <path className="highway-backdrop" d={smoothRoadPath} />
+            <path className="graph-path" d={smoothRoadPath} />
             <path
               id="progress-fill"
               className="graph-path-fill"
               pathLength="1000"
               strokeDasharray={`${activeLength} 1000`}
-              d="M 40 210 C 90 210, 100 185, 145 185 C 195 185, 200 130, 250 130 C 310 130, 315 155, 365 155 C 430 155, 435 180, 490 180 C 545 180, 540 115, 590 115 C 635 115, 635 68, 675 68 C 725 68, 725 92, 775 92 C 825 92, 825 148, 870 148 C 915 148, 920 150, 960 150"
+              d={smoothRoadPath}
             />
 
             <g id="nodes-layer">
@@ -253,19 +359,32 @@ export default function App() {
                 if (isCompleted) cls += " completed";
                 if (isActive) cls += " active";
                 if (isLocked) cls += " locked";
-                const labelY = n.s === 7 ? n.y + 32 : n.y - 24;
-
                 return (
                   <g
                     key={n.s}
                     className={cls}
                     onClick={() => handleNodeClick(n.s)}
                   >
-                    <circle cx={n.x} cy={n.y} r="13" />
+                    <circle cx={n.x} cy={n.y} r="11.5" />
+                    {(isCompleted || isActive) && (
+                      <circle
+                        cx={n.x}
+                        cy={n.y}
+                        r="11.5"
+                        fill="url(#nodeCeramicSheen)"
+                        stroke="none"
+                        pointerEvents="none"
+                      />
+                    )}
                     <text className="node-num" x={n.x} y={n.y}>
                       {n.s}
                     </text>
-                    <text className="node-label" x={n.x} y={labelY}>
+                    <text
+                      className="node-label"
+                      x={n.x + n.dx}
+                      y={n.y + n.dy}
+                      style={{ textAnchor: n.anchor }}
+                    >
                       {n.l}
                     </text>
                   </g>
@@ -393,8 +512,8 @@ export default function App() {
         <div className="hud-widget">
           <div className="widget-title">Stage Budget Split</div>
           <div className="widget-metric">
-            {currentProgress.budget.user}% / {currentProgress.budget.business}% /{" "}
-            {currentProgress.budget.tech}%
+            {currentProgress.budget.user}% / {currentProgress.budget.business}%
+            / {currentProgress.budget.tech}%
           </div>
           <div className="budget-bar-visual">
             <div
@@ -451,7 +570,9 @@ export default function App() {
               <button className="nav-link-clean" onClick={closeTour}>
                 Skip Tour
               </button>
-              <div style={{ display: "flex", gap: "12px", alignItems: "center" }}>
+              <div
+                style={{ display: "flex", gap: "12px", alignItems: "center" }}
+              >
                 {tourStep > 0 && (
                   <button
                     className="nav-link-clean"
@@ -485,11 +606,7 @@ export default function App() {
             Reset All Progress
           </a>{" "}
           •{" "}
-          <a
-            href="https://github.io"
-            target="_blank"
-            rel="noreferrer"
-          >
+          <a href="https://github.io" target="_blank" rel="noreferrer">
             View Case Study &amp; Docs
           </a>
         </p>

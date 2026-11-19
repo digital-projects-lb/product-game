@@ -27,7 +27,7 @@ const PRODUCT_GUIDES = [
         heading: "Practical Squad Alignment Roles",
         points: [
           "Scrum Team: Product, UX, and Engineering building and shipping work day-to-day.",
-          "Peer / Subject Matter Expert: End-Users, Finance, or Operations giving specialist input.",
+          "Peer / Subject Matter Expert: Customer, Finance, or Operations giving specialist input.",
           "Sign-Off: SLT, Legal, or QA formally approving budget, risk, or launch readiness.",
         ],
       },
@@ -138,18 +138,18 @@ export default function Resources({ onClose }) {
           <title>${title} — Product Path</title>
           <link href="https://googleapis.com" rel="stylesheet" />
           <style>
-            body { font-family: 'Raleway', sans-serif; font-weight: 300; color: #3e2f26; padding: 36px; line-height: 1.65; }
+            body { font-family: 'Raleway', sans-serif; font-weight: 300; colour: #3e2f26; padding: 36px; line-height: 1.65; }
             .header { background: #faf8f4; padding: 20px 24px; border: 1px solid #dcd6ca; border-top: 3px solid #dfc3a6; border-radius: 10px; margin-bottom: 22px; }
-            .badge { color: #8f7356; font-size: 11px; font-weight: 400; text-transform: uppercase; letter-spacing: 0.09em; }
-            h1 { font-size: 21px; font-weight: 400; margin: 6px 0 4px 0; color: #3e2f26; }
+            .badge { colour: #8f7356; font-size: 11px; font-weight: 400; text-transform: uppercase; letter-spacing: 0.09em; }
+            h1 { font-size: 21px; font-weight: 400; margin: 6px 0 4px 0; colour: #3e2f26; }
             .meta-row { display: flex; flex-wrap: wrap; gap: 18px; margin-top: 10px; }
-            .meta-item { font-size: 12px; font-weight: 400; padding: 3px 2px; color: #3e2f26; border-bottom: 1.5px solid rgba(199, 169, 138, 0.55); }
-            h3 { font-size: 14px; font-weight: 400; color: #3e2f26; margin: 20px 0 8px 0; }
+            .meta-item { font-size: 12px; font-weight: 400; padding: 3px 2px; colour: #3e2f26; border-bottom: 1.5px solid rgba(199, 169, 138, 0.55); }
+            h3 { font-size: 14px; font-weight: 400; colour: #3e2f26; margin: 20px 0 8px 0; }
             ul { padding-left: 18px; font-size: 13px; }
             li { margin-bottom: 8px; }
             .goal-box { background: #faf8f4; border: 1px solid #e8e3d9; border-left: 3px solid #cbb994; border-radius: 6px; padding: 12px 16px; font-size: 13px; margin-bottom: 16px; }
             pre { font-family: 'Raleway', sans-serif; font-weight: 300; white-space: pre-wrap; font-size: 13px; background: #faf8f4; border: 1px solid #dcd6ca; padding: 18px 20px; border-radius: 8px; }
-            .footer { margin-top: 24px; padding: 8px 12px; background: #faf8f4; border: 1px solid #e8e3d9; border-left: 3px solid #97b09f; border-radius: 6px; font-size: 11px; color: #756558; display: flex; justify-content: space-between; }
+            .footer { margin-top: 24px; padding: 8px 12px; background: #faf8f4; border: 1px solid #e8e3d9; border-left: 3px solid #97b09f; border-radius: 6px; font-size: 11px; colour: #756558; display: flex; justify-content: space-between; }
           </style>
         </head>
         <body>

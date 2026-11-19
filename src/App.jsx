@@ -110,17 +110,23 @@ const STAGE_COORDINATES = [
 // Road waypoints including dummy curve points between 3-4, 4-5, and 6-7
 const ROAD_WAYPOINTS = [
   { x: 90, y: 222 }, // Stage 1
+  { x: 152, y: 214 }, // Dummy bend 1 -> 2
   { x: 215, y: 180 }, // Stage 2
+  { x: 268, y: 186 }, // Dummy bend 2 -> 3
   { x: 320, y: 218 }, // Stage 3
-  { x: 380, y: 213 }, // Dummy bend 3 -> 4 (hugs lower curve)
+  { x: 382, y: 216 }, // Dummy bend 3 -> 4
   { x: 415, y: 192 }, // Stage 4
-  { x: 377, y: 177 }, // Dummy hairpin 4 -> 5 (swings left around switchback)
+  { x: 376, y: 174 }, // Dummy hairpin 4 -> 5
   { x: 395, y: 155 }, // Stage 5
+  { x: 440, y: 147 }, // Dummy bend 5 -> 6
   { x: 510, y: 165 }, // Stage 6
-  { x: 500, y: 130 }, // Dummy bend 6 -> 7 (follows cliff base before climbing)
+  { x: 500, y: 135 }, // Dummy bend 6 -> 7
   { x: 600, y: 110 }, // Stage 7
+  { x: 650, y: 112 }, // Dummy bend 7 -> 8
   { x: 695, y: 132 }, // Stage 8
+  { x: 750, y: 150 }, // Dummy bend 8 -> 9
   { x: 795, y: 144 }, // Stage 9
+  { x: 848, y: 126 }, // Dummy bend 9 -> 10
   { x: 895, y: 80 }, // Stage 10
 ];
 
@@ -129,10 +135,12 @@ function createEmptyProgress() {
     facts: [],
     move: "",
     budget: { user: 40, business: 35, tech: 25 },
+    budgetTouched: false,
     stakeholders: [],
     deliverable: "",
     window: "",
-    outcome: "",
+    okrOutcome: "",
+    kpiOutcome: "",
   };
 }
 
@@ -145,13 +153,33 @@ export default function App() {
   const [statusBanner, setStatusBanner] = useState("");
   const [showCalculator, setShowCalculator] = useState(false);
   const [showResources, setShowResources] = useState(false);
+  const [showMilestoneModal, setShowMilestoneModal] = useState(false);
+  const [isLifecycleFinished, setIsLifecycleFinished] = useState(false);
   const [tourStep, setTourStep] = useState(null);
+  const [activeTab, setActiveTab] = useState("why");
+  const [showClue, setShowClue] = useState(false);
+  const [pinGlow, setPinGlow] = useState(false);
 
-  const smoothRoadPath = ROAD_WAYPOINTS.reduce((acc, pt, idx, arr) => {
-    if (idx === 0) return `M ${pt.x} ${pt.y}`;
-    const prev = arr[idx - 1];
-    const midX = Math.round((prev.x + pt.x) / 2);
-    return `${acc} C ${midX} ${prev.y}, ${midX} ${pt.y}, ${pt.x} ${pt.y}`;
+  useEffect(() => {
+    setShowClue(false);
+    setPinGlow(false);
+    const timer = setTimeout(() => {
+      setPinGlow(true);
+    }, 10000);
+    return () => clearTimeout(timer);
+  }, [activeStage, activeTab]);
+
+  const smoothRoadPath = ROAD_WAYPOINTS.reduce((acc, pt, i, pts) => {
+    if (i === 0) return `M ${pt.x} ${pt.y}`;
+    const p0 = pts[i - 2] || { x: 40, y: 204 };
+    const p1 = pts[i - 1];
+    const p2 = pt;
+    const p3 = pts[i + 1] || p2;
+    const cp1x = Math.round(p1.x + (p2.x - p0.x) / 6);
+    const cp1y = Math.round(p1.y + (p2.y - p0.y) / 6);
+    const cp2x = Math.round(p2.x - (p3.x - p1.x) / 6);
+    const cp2y = Math.round(p2.y - (p3.y - p1.y) / 6);
+    return `${acc} C ${cp1x} ${cp1y}, ${cp2x} ${cp2y}, ${p2.x} ${p2.y}`;
   }, "");
 
   useEffect(() => {
@@ -223,7 +251,9 @@ export default function App() {
     ) <= 10 &&
     Math.abs(currentProgress.budget.tech - currentStageData.budget.tech) <= 10;
   const isWhatDone =
-    currentProgress.move === currentStageData.move && isBudgetClose;
+    currentProgress.move === currentStageData.move &&
+    Boolean(currentProgress.budgetTouched) &&
+    isBudgetClose;
 
   const isWhoDone =
     currentProgress.stakeholders.length === 2 &&
@@ -238,7 +268,9 @@ export default function App() {
     currentProgress.deliverable === currentStageData.deliverable;
   const isWhenDone = currentProgress.window === currentStageData.window;
   const validOutcomeId = currentStageData.outcomes.find((o) => o.valid)?.id;
-  const isImpactDone = currentProgress.outcome === validOutcomeId;
+  const isImpactDone =
+    currentProgress.okrOutcome === validOutcomeId &&
+    currentProgress.kpiOutcome === validOutcomeId;
 
   const isStageComplete =
     isWhyDone &&
@@ -247,6 +279,15 @@ export default function App() {
     isHowDone &&
     isWhenDone &&
     isImpactDone;
+
+  useEffect(() => {
+    if (isStageComplete) {
+      const timer = setTimeout(() => {
+        window.scrollTo({ top: 0, behaviour: "smooth" });
+      }, 550);
+      return () => clearTimeout(timer);
+    }
+  }, [isStageComplete]);
 
   const handleNodeClick = (stageNum) => {
     if (stageNum > maxUnlockedStage) {
@@ -271,8 +312,9 @@ export default function App() {
       setActiveStage(nextStage);
       setStatusBanner("");
     } else {
+      setIsLifecycleFinished(true);
       setStatusBanner(
-        "Simulation Complete: You guided the product from Concept to Iteration.",
+        "Simulation Complete: You guided the product from Concept to Iteration across all 12 months.",
       );
     }
   };
@@ -289,6 +331,7 @@ export default function App() {
     e.preventDefault();
     setActiveStage(1);
     setMaxUnlockedStage(1);
+    setIsLifecycleFinished(false);
     setStageProgress({ 1: createEmptyProgress() });
     setStatusBanner("");
   };
@@ -297,7 +340,10 @@ export default function App() {
     STAGE_COORDINATES.find((n) => n.s === maxUnlockedStage) ||
     STAGE_COORDINATES[0];
   const activeLength = activeNode.len;
-  const timelinePercent = Math.round((maxUnlockedStage / 10) * 100);
+  const timelinePercent = isLifecycleFinished
+    ? 100
+    : Math.round(((maxUnlockedStage - 1) / 10) * 100);
+
   return (
     <>
       <header className="dashboard-header">
@@ -333,27 +379,158 @@ export default function App() {
             preserveAspectRatio="xMidYMid meet"
           >
             <defs>
-              <linearGradient id="nodeCeramicSheen" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor="#ffffff" stopOpacity="0.78" />
-                <stop offset="48%" stopColor="#ffffff" stopOpacity="0.18" />
-                <stop offset="52%" stopColor="#3e2f26" stopOpacity="0.05" />
-                <stop offset="100%" stopColor="#ffffff" stopOpacity="0.14" />
+              <linearGradient
+                id="nodeCompletedCeramic"
+                x1="0"
+                y1="0"
+                x2="0"
+                y2="1"
+              >
+                <stop offset="0%" stopColor="#fcfaf6" />
+                <stop offset="46%" stopColor="#ece4d6" />
+                <stop offset="52%" stopColor="#ded3c1" />
+                <stop offset="100%" stopColor="#f3ece0" />
               </linearGradient>
+
+              <linearGradient
+                id="nodeActiveCeramic"
+                x1="0"
+                y1="0"
+                x2="0"
+                y2="1"
+              >
+                <stop offset="0%" stopColor="#f5e7d7" />
+                <stop offset="46%" stopColor="#dfc3a6" />
+                <stop offset="52%" stopColor="#cfa985" />
+                <stop offset="100%" stopColor="#e8cfb5" />
+              </linearGradient>
+              <radialGradient id="mistyGlowOat" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stopColor="#fffdf8" stopOpacity="0.95" />
+                <stop offset="40%" stopColor="#ebe2ce" stopOpacity="0.55" />
+                <stop offset="100%" stopColor="#ebe2ce" stopOpacity="0" />
+              </radialGradient>
+              <radialGradient id="mistyGlowApricot" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stopColor="#fffaf2" stopOpacity="0.95" />
+                <stop offset="40%" stopColor="#dfc3a6" stopOpacity="0.55" />
+                <stop offset="100%" stopColor="#dfc3a6" stopOpacity="0" />
+              </radialGradient>
             </defs>
+
             <path className="highway-backdrop" d={smoothRoadPath} />
             <path className="graph-path" d={smoothRoadPath} />
-            <path
-              id="progress-fill"
-              className="graph-path-fill"
-              pathLength="1000"
-              strokeDasharray={`${activeLength} 1000`}
-              d={smoothRoadPath}
-            />
+
+            {(() => {
+              if (maxUnlockedStage <= 1) return null;
+              const buildSliceD = (startIdx, endIdx) =>
+                ROAD_WAYPOINTS.reduce((acc, pt, i, pts) => {
+                  if (i < startIdx || i > endIdx) return acc;
+                  if (i === startIdx) return `M ${pt.x} ${pt.y}`;
+                  const p0 = pts[i - 2] || { x: 40, y: 204 };
+                  const p1 = pts[i - 1];
+                  const p2 = pt;
+                  const p3 = pts[i + 1] || p2;
+                  const cp1x = Math.round(p1.x + (p2.x - p0.x) / 6);
+                  const cp1y = Math.round(p1.y + (p2.y - p0.y) / 6);
+                  const cp2x = Math.round(p2.x - (p3.x - p1.x) / 6);
+                  const cp2y = Math.round(p2.y - (p3.y - p1.y) / 6);
+                  return `${acc} C ${cp1x} ${cp1y}, ${cp2x} ${cp2y}, ${p2.x} ${p2.y}`;
+                }, "");
+
+              const prevIdx = ROAD_WAYPOINTS.findIndex(
+                (p) =>
+                  p.x === STAGE_COORDINATES[maxUnlockedStage - 2].x &&
+                  p.y === STAGE_COORDINATES[maxUnlockedStage - 2].y,
+              );
+              const targetIdx = ROAD_WAYPOINTS.findIndex(
+                (p) =>
+                  p.x === STAGE_COORDINATES[maxUnlockedStage - 1].x &&
+                  p.y === STAGE_COORDINATES[maxUnlockedStage - 1].y,
+              );
+
+              const settledPathD = prevIdx > 0 ? buildSliceD(0, prevIdx) : "";
+              const newSegmentD = buildSliceD(prevIdx, targetIdx);
+              const unlockedWaypoints = ROAD_WAYPOINTS.slice(0, targetIdx + 1);
+
+              const stardustDots = unlockedWaypoints
+                .slice(1)
+                .flatMap((pt, idx) => {
+                  const prev = unlockedWaypoints[idx];
+                  const mx = (prev.x + pt.x) / 2;
+                  const my = (prev.y + pt.y) / 2;
+                  const isNew = idx >= prevIdx;
+                  const baseDelay = isNew ? 2.6 : 0;
+                  return [
+                    {
+                      key: `${idx}-a`,
+                      x: prev.x + (pt.x - prev.x) * 0.28,
+                      y: prev.y + (pt.y - prev.y) * 0.28 - 6,
+                      r: 1.1,
+                      delay: `${baseDelay + 0.2}s`,
+                    },
+                    {
+                      key: `${idx}-b`,
+                      x: mx + 4,
+                      y: my + 5,
+                      r: 1.5,
+                      delay: `${baseDelay + 0.8}s`,
+                    },
+                    {
+                      key: `${idx}-c`,
+                      x: prev.x + (pt.x - prev.x) * 0.74,
+                      y: prev.y + (pt.y - prev.y) * 0.74 - 4,
+                      r: 1.0,
+                      delay: `${baseDelay + 1.4}s`,
+                    },
+                  ];
+                });
+
+              return (
+                <g>
+                  {settledPathD && (
+                    <>
+                      <path
+                        className="pearl-ribbon-aura settled"
+                        d={settledPathD}
+                      />
+                      <path
+                        className="pearl-ribbon-core settled"
+                        d={settledPathD}
+                      />
+                    </>
+                  )}
+                  <g key={`new-seg-${maxUnlockedStage}`}>
+                    <path
+                      className="pearl-ribbon-aura"
+                      pathLength="1000"
+                      d={newSegmentD}
+                    />
+                    <path
+                      id="progress-fill"
+                      className="pearl-ribbon-core"
+                      pathLength="1000"
+                      d={newSegmentD}
+                    />
+                  </g>
+                  <g className="pearl-stardust" pointerEvents="none">
+                    {stardustDots.map((dot) => (
+                      <circle
+                        key={dot.key}
+                        cx={dot.x}
+                        cy={dot.y}
+                        r={dot.r}
+                        style={{ animationDelay: dot.delay }}
+                      />
+                    ))}
+                  </g>
+                </g>
+              );
+            })()}
 
             <g id="nodes-layer">
               {STAGE_COORDINATES.map((n) => {
-                const isCompleted = n.s < maxUnlockedStage;
-                const isActive = n.s === activeStage;
+                const isCompleted =
+                  n.s < maxUnlockedStage || (n.s === 10 && isLifecycleFinished);
+                const isActive = n.s === activeStage && !isLifecycleFinished;
                 const isLocked = n.s > maxUnlockedStage;
                 let cls = "node-group";
                 if (isCompleted) cls += " completed";
@@ -365,20 +542,87 @@ export default function App() {
                     className={cls}
                     onClick={() => handleNodeClick(n.s)}
                   >
-                    <circle cx={n.x} cy={n.y} r="11.5" />
+                    {n.s === 10 && isLifecycleFinished && (
+                      <g className="milestone-dandelion" pointerEvents="none">
+                        <g style={{ filter: "blur(6px)" }}>
+                          <circle
+                            cx={n.x}
+                            cy={n.y}
+                            r="23"
+                            fill="url(#mistyGlowApricot)"
+                          />
+                          {Array.from({ length: 64 }).map((_, i) => {
+                            const angle = (i * (360 / 64) * Math.PI) / 180;
+                            const len = i % 2 === 0 ? 30 : 22;
+                            const ex = Math.round(n.x + Math.cos(angle) * len);
+                            const ey = Math.round(
+                              n.y + Math.sin(angle) * len + 3,
+                            );
+                            const qx = Math.round(
+                              n.x + Math.cos(angle) * (len * 0.55),
+                            );
+                            const qy = Math.round(
+                              n.y + Math.sin(angle) * (len * 0.55) - 2,
+                            );
+                            return (
+                              <path
+                                key={i}
+                                className={`dandelion-strand ${i % 2 === 0 ? "oat" : "apricot"}`}
+                                pathLength="100"
+                                d={`M ${n.x} ${n.y} Q ${qx} ${qy} ${ex} ${ey}`}
+                              />
+                            );
+                          })}
+                        </g>
+
+                        {Array.from({ length: 18 }).map((_, i) => {
+                          const angle = ((i * 20 + 7) * Math.PI) / 180;
+                          const dist = 16 + (i % 3) * 7;
+                          const sx = Math.round(n.x + Math.cos(angle) * dist);
+                          const sy = Math.round(n.y + Math.sin(angle) * dist);
+                          return (
+                            <circle
+                              key={`spark-${i}`}
+                              cx={sx}
+                              cy={sy}
+                              r={i % 3 === 0 ? ".1" : "0.01"}
+                              className={`firework-sparkle ${i % 2 === 0 ? "oat" : "apricot"}`}
+                              style={{
+                                animationDelay: `${(i * 0.22).toFixed(2)}s`,
+                              }}
+                            />
+                          );
+                        })}
+                      </g>
+                    )}
+
+                    <circle
+                      cx={n.x}
+                      cy={n.y}
+                      r="12"
+                      style={
+                        isCompleted
+                          ? { fill: "url(#nodeCompletedCeramic)" }
+                          : isActive
+                            ? { fill: "url(#nodeActiveCeramic)" }
+                            : undefined
+                      }
+                    />
                     {(isCompleted || isActive) && (
-                      <circle
+                      <ellipse
                         cx={n.x}
-                        cy={n.y}
-                        r="11.5"
-                        fill="url(#nodeCeramicSheen)"
-                        stroke="none"
+                        cy={n.y - 5.2}
+                        rx="7.5"
+                        ry="3.2"
+                        fill="rgba(255, 255, 255, 0.72)"
                         pointerEvents="none"
                       />
                     )}
+
                     <text className="node-num" x={n.x} y={n.y}>
                       {n.s}
                     </text>
+
                     <text
                       className="node-label"
                       x={n.x + n.dx}
@@ -416,35 +660,14 @@ export default function App() {
         </div>
       </header>
 
-      <div className="workspace-heading-row">
-        <h2 className="workspace-heading">Workspace</h2>
-        <button
-          className={`btn-next-4a ${isStageComplete ? "ready" : ""}`}
-          disabled={!isStageComplete}
-          onClick={commitAndAdvance}
-        >
-          {isStageComplete
-            ? activeStage === 10
-              ? "All Complete ✔"
-              : "Next Stage ➔"
-            : "Progress"}
-        </button>
-      </div>
-
-      <div className={`workspace-status-bar ${statusBanner ? "alert" : ""}`}>
-        {statusBanner
-          ? statusBanner
-          : `${currentStageData.label} (${currentStageData.timeline}) — Complete all 6 workspace tabs below to unlock the next stage.`}
-      </div>
-
       <section className="hud-widgets-row">
         <div className="hud-widget">
-          <div className="widget-title">Product Value Venn</div>
+          <div className="widget-title">Product Value</div>
           <div className="venn-widget-body">
             <svg
               viewBox="0 0 120 88"
               className="mini-venn-svg"
-              aria-label="End-User, Business, and Technology Venn Diagram"
+              aria-label="Customer, Business, and Technology Venn Diagram"
             >
               <defs>
                 <linearGradient id="sheenTop" x1="0" y1="0" x2="0" y2="1">
@@ -488,7 +711,7 @@ export default function App() {
               <circle cx="60" cy="55" r="24" fill="url(#sheenTop)" />
             </svg>
             <div className="venn-legend">
-              <div>User: {currentProgress.budget.user}%</div>
+              <div>Customer: {currentProgress.budget.user}%</div>
               <div>Business: {currentProgress.budget.business}%</div>
               <div>Tech: {currentProgress.budget.tech}%</div>
             </div>
@@ -529,19 +752,126 @@ export default function App() {
               style={{ width: `${currentProgress.budget.tech}%` }}
             />
           </div>
-          <div className="widget-sub">User • Business • Tech</div>
+          <div className="widget-sub">Customer • Business • Tech</div>
         </div>
       </section>
 
-      <div className="answer-sticky-note">
-        <div className="sticky-push-pin" aria-hidden="true">
-          <div className="pin-cap" />
-          <div className="pin-body" />
-          <div className="pin-collar" />
-          <div className="pin-needle" />
+      <div className="workspace-heading-row">
+        <h2 className="workspace-heading">Workspace</h2>
+        <button
+          className={`btn-next-4a ${isStageComplete || isLifecycleFinished ? "ready" : ""}`}
+          disabled={!isStageComplete && !isLifecycleFinished}
+          onClick={
+            isLifecycleFinished
+              ? () => setShowMilestoneModal(true)
+              : commitAndAdvance
+          }
+        >
+          {isLifecycleFinished
+            ? "Project Retrospective"
+            : isStageComplete
+              ? activeStage === 10
+                ? "All Complete ✔"
+                : "Next Stage ➔"
+              : "Progress"}
+        </button>
+      </div>
+
+      <div className="workspace-split-header">
+        <div className={`workspace-status-bar ${statusBanner ? "alert" : ""}`}>
+          {statusBanner ? (
+            statusBanner
+          ) : (
+            <>
+              <div className="status-stage-headline">
+                Stage {activeStage} &nbsp;•&nbsp;{" "}
+                {currentStageData.label.replace(/^\d+\.\s*/, "")} &nbsp;•&nbsp;{" "}
+                {currentStageData.timeline}
+              </div>
+              <div className="status-stage-sub">
+                Complete all 6 workspace tabs below to unlock the next stage.
+              </div>
+            </>
+          )}
         </div>
-        <div className="answer-guide-title">Stage Answer Guide</div>
-        <div className="answer-guide-body">{currentStageData.clue}</div>
+
+        <aside className="clue-postit-card">
+          <div
+            className={`sticky-push-pin ${pinGlow && !showClue ? "glowing" : ""}`}
+            aria-hidden="true"
+          >
+            <div className="pin-cap" />
+            <div className="pin-body" />
+            <div className="pin-collar" />
+            <div className="pin-needle" />
+          </div>
+
+          <div className="clue-postit-top">
+            <span className="answer-guide-title">Stage Clue</span>
+            <button
+              className="nav-link-clean"
+              onClick={() => {
+                setShowClue((prev) => !prev);
+                setPinGlow(false);
+              }}
+            >
+              {showClue ? "Hide Clue" : "Show Clue"}
+            </button>
+          </div>
+
+          {showClue ? (
+            <div className="clue-postit-body">
+              {activeTab === "why" &&
+                currentStageData.facts
+                  .filter((f) => f.valid)
+                  .map((f) => (
+                    <div key={f.id} className="clue-line-item">
+                      {f.text}
+                    </div>
+                  ))}
+              {activeTab === "what" && (
+                <>
+                  <div className="clue-line-item">
+                    <strong>Move:</strong> {currentStageData.move}
+                  </div>
+                  <div className="clue-line-item">
+                    <strong>Budget:</strong> {currentStageData.budget.user}%
+                    User / {currentStageData.budget.business}% Business /{" "}
+                    {currentStageData.budget.tech}% Tech
+                  </div>
+                </>
+              )}
+              {activeTab === "who" &&
+                currentStageData.stakeholders.map((s, idx) => (
+                  <div key={idx} className="clue-line-item">
+                    <strong>{s.group}:</strong> {s.role}
+                  </div>
+                ))}
+              {activeTab === "how" && (
+                <div className="clue-line-item">
+                  {currentStageData.deliverable}
+                </div>
+              )}
+              {activeTab === "when" && (
+                <div className="clue-line-item">{currentStageData.window}</div>
+              )}
+              {activeTab === "impact" && (
+                <>
+                  <div className="clue-line-item">
+                    <strong>OKR:</strong> {currentStageData.okr}
+                  </div>
+                  <div className="clue-line-item">
+                    <strong>KPI:</strong> {currentStageData.kpi}
+                  </div>
+                </>
+              )}
+            </div>
+          ) : (
+            <div className="clue-postit-placeholder">
+              Need a nudge on this step? Click above.
+            </div>
+          )}
+        </aside>
       </div>
 
       <main className="app-viewport">
@@ -550,6 +880,11 @@ export default function App() {
           progress={currentProgress}
           onUpdateProgress={updateCurrentProgress}
           onOpenDocuments={() => setShowResources(true)}
+          isStageComplete={isStageComplete}
+          onNextStage={commitAndAdvance}
+          isFinalStage={activeStage === 10}
+          activeTab={activeTab}
+          onTabChange={setActiveTab}
         />
       </main>
 
@@ -557,6 +892,61 @@ export default function App() {
         <Calculator onClose={() => setShowCalculator(false)} />
       )}
       {showResources && <Resources onClose={() => setShowResources(false)} />}
+
+      {showMilestoneModal && (
+        <div className="tour-overlay">
+          <div className="tour-card milestone-modal">
+            <span className="tour-step-badge">
+              Milestone Reached • Stage 10 Complete
+            </span>
+            <h3>Product Lifecycle Complete</h3>
+            <p>
+              You successfully guided your product from early Concept to
+              post-launch Iteration across all 10 stages. Where would you like
+              to go next?
+            </p>
+            <div className="milestone-actions">
+              <button
+                className="btn-next-4a ready"
+                onClick={() => {
+                  setShowMilestoneModal(false);
+                  setActiveStage(1);
+                  setMaxUnlockedStage(1);
+                  setIsLifecycleFinished(false);
+                  setStageProgress({ 1: createEmptyProgress() });
+                  setStatusBanner("");
+                }}
+              >
+                Start Again
+              </button>
+              <button
+                className="nav-link-clean"
+                onClick={() => {
+                  setShowMilestoneModal(false);
+                  setShowCalculator(true);
+                }}
+              >
+                KPI Calculator
+              </button>
+              <button
+                className="nav-link-clean"
+                onClick={() => {
+                  setShowMilestoneModal(false);
+                  setShowResources(true);
+                }}
+              >
+                Resources
+              </button>
+              <button
+                className="nav-link-clean"
+                onClick={() => setShowMilestoneModal(false)}
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {tourStep !== null && (
         <div className="tour-overlay">
@@ -571,7 +961,7 @@ export default function App() {
                 Skip Tour
               </button>
               <div
-                style={{ display: "flex", gap: "12px", alignItems: "center" }}
+                style={{ display: "flex", gap: "12px", alignItems: "centre" }}
               >
                 {tourStep > 0 && (
                   <button

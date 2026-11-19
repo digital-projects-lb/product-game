@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { StageData } from "./Data";
 
 export default function Workspace({
@@ -6,9 +6,16 @@ export default function Workspace({
   progress,
   onUpdateProgress,
   onOpenDocuments,
+  isStageComplete,
+  onNextStage,
+  isFinalStage,
+  activeTab,
+  onTabChange,
 }) {
-  const [activeTab, setActiveTab] = useState("why");
   const [draggedDeliverable, setDraggedDeliverable] = useState(null);
+
+  const [draggedKanbanCard, setDraggedKanbanCard] = useState(null);
+  const prevDoneRef = useRef({});
 
   const validFactIds = stage.facts.filter((f) => f.valid).map((f) => f.id);
   const isWhyDone =
@@ -22,7 +29,10 @@ export default function Workspace({
     Math.abs(progress.budget.user - stage.budget.user) <= 10 &&
     Math.abs(progress.budget.business - stage.budget.business) <= 10 &&
     Math.abs(progress.budget.tech - stage.budget.tech) <= 10;
-  const isWhatDone = progress.move === stage.move && isBudgetClose;
+  const isWhatDone =
+    progress.move === stage.move &&
+    Boolean(progress.budgetTouched) &&
+    isBudgetClose;
 
   const isWhoDone =
     progress.stakeholders.length === 2 &&
@@ -37,7 +47,9 @@ export default function Workspace({
   const isWhenDone = progress.window === stage.window;
 
   const validOutcomeId = stage.outcomes.find((o) => o.valid)?.id;
-  const isImpactDone = progress.outcome === validOutcomeId;
+  const isImpactDone =
+    progress.okrOutcome === validOutcomeId &&
+    progress.kpiOutcome === validOutcomeId;
 
   const tabs = [
     { id: "why", step: "1. Why", sub: "Opportunity", done: isWhyDone },
@@ -47,6 +59,49 @@ export default function Workspace({
     { id: "when", step: "5. When", sub: "Timeline", done: isWhenDone },
     { id: "impact", step: "6. Impact", sub: "Measure", done: isImpactDone },
   ];
+
+  // Reset to Tab 1 when switching stages
+  useEffect(() => {
+    onTabChange("why");
+    prevDoneRef.current = {};
+  }, [stage.label]);
+
+  // Auto-advance to the next incomplete step when the current tab completes
+  useEffect(() => {
+    const currentTabObj = tabs.find((t) => t.id === activeTab);
+    const wasDone = prevDoneRef.current[activeTab];
+    prevDoneRef.current = tabs.reduce((acc, t) => {
+      acc[t.id] = t.done;
+      return acc;
+    }, {});
+
+    if (
+      currentTabObj &&
+      currentTabObj.done &&
+      !wasDone &&
+      activeTab !== "what"
+    ) {
+      const currentIdx = tabs.findIndex((t) => t.id === activeTab);
+
+      const nextIncomplete =
+        tabs.slice(currentIdx + 1).find((t) => !t.done) ||
+        tabs.find((t) => !t.done);
+      if (nextIncomplete) {
+        const timer = setTimeout(() => {
+          onTabChange(nextIncomplete.id);
+        }, 450);
+        return () => clearTimeout(timer);
+      }
+    }
+  }, [
+    isWhyDone,
+    isWhatDone,
+    isWhoDone,
+    isHowDone,
+    isWhenDone,
+    isImpactDone,
+    activeTab,
+  ]);
 
   const toggleFact = (factId) => {
     const exists = progress.facts.includes(factId);
@@ -58,8 +113,9 @@ export default function Workspace({
     onUpdateProgress({ ...progress, facts: updated });
   };
 
-  const handleBudgetChange = (pillar, rawVal) => {
-    const val = Math.max(0, Math.min(100, Number(rawVal)));
+  // Slider proportional adjustment
+  const handleBudgetSlider = (pillar, rawVal) => {
+    const val = Math.max(0, Math.min(100, Number(rawVal) || 0));
     const remaining = 100 - val;
     if (pillar === "user") {
       const otherTotal = progress.budget.business + progress.budget.tech;
@@ -69,11 +125,8 @@ export default function Workspace({
           : Math.round(remaining / 2);
       onUpdateProgress({
         ...progress,
-        budget: {
-          user: val,
-          business: bizShare,
-          tech: remaining - bizShare,
-        },
+        budgetTouched: true,
+        budget: { user: val, business: bizShare, tech: remaining - bizShare },
       });
     } else if (pillar === "business") {
       const otherTotal = progress.budget.user + progress.budget.tech;
@@ -83,11 +136,8 @@ export default function Workspace({
           : Math.round(remaining / 2);
       onUpdateProgress({
         ...progress,
-        budget: {
-          user: userShare,
-          business: val,
-          tech: remaining - userShare,
-        },
+        budgetTouched: true,
+        budget: { user: userShare, business: val, tech: remaining - userShare },
       });
     } else {
       const otherTotal = progress.budget.user + progress.budget.business;
@@ -97,13 +147,20 @@ export default function Workspace({
           : Math.round(remaining / 2);
       onUpdateProgress({
         ...progress,
-        budget: {
-          user: userShare,
-          business: remaining - userShare,
-          tech: val,
-        },
+        budgetTouched: true,
+        budget: { user: userShare, business: remaining - userShare, tech: val },
       });
     }
+  };
+
+  // Direct numeric override (lets user type exact values without fighting auto-balance)
+  const handleBudgetDirectInput = (pillar, rawVal) => {
+    const val = Math.max(0, Math.min(100, Number(rawVal) || 0));
+    onUpdateProgress({
+      ...progress,
+      budgetTouched: true,
+      budget: { ...progress.budget, [pillar]: val },
+    });
   };
 
   const toggleStakeholderRole = (group, role) => {
@@ -128,6 +185,17 @@ export default function Workspace({
       setDraggedDeliverable(null);
     }
   };
+
+  const handleDropKanban = (e) => {
+    e.preventDefault();
+    if (!draggedKanbanCard) return;
+    if (draggedKanbanCard.type === "okr") {
+      onUpdateProgress({ ...progress, okrOutcome: draggedKanbanCard.id });
+    } else if (draggedKanbanCard.type === "kpi") {
+      onUpdateProgress({ ...progress, kpiOutcome: draggedKanbanCard.id });
+    }
+    setDraggedKanbanCard(null);
+  };
   return (
     <div className="workspace-box">
       <div className="tab-flow-bar">
@@ -137,7 +205,7 @@ export default function Workspace({
               className={`flow-tab-pill ${activeTab === tab.id ? "current" : ""} ${
                 tab.done ? "completed" : ""
               }`}
-              onClick={() => setActiveTab(tab.id)}
+              onClick={() => onTabChange(tab.id)}
             >
               <span className="flow-tab-step">
                 {tab.done ? "✓ " : ""}
@@ -194,8 +262,8 @@ export default function Workspace({
                   Product Move &amp; Budget Allocation
                 </h3>
                 <p className="panel-help">
-                  Pick the right <strong>Product Move</strong> and balance the{" "}
-                  <strong>100% Budget Split</strong> across End-User, Business,
+                  Choose the right <strong>Product Move</strong> and balance the{" "}
+                  <strong>100% Budget Split</strong> across Customer, Business,
                   and Technology.
                 </p>
               </div>
@@ -206,10 +274,8 @@ export default function Workspace({
             >
               <div className="move-callout-header">
                 <span>
-                  Step 2A • Choose Strategic Product Move{" "}
-                  {progress.move
-                    ? `(Selected: ${progress.move})`
-                    : "(Required)"}
+                  Choose Strategic Product Move{" "}
+                  {progress.move ? `— ${progress.move}` : ""}
                 </span>
               </div>
               <div className="move-pill-row">
@@ -230,26 +296,56 @@ export default function Workspace({
             </div>
 
             <div className="budget-split-box">
+              <div className="budget-instructions-row">
+                <span>
+                  Drag the sliders to auto-balance, or type exact percentages
+                  directly into the boxes on the right:
+                </span>
+                <span
+                  className={`budget-total-badge ${
+                    budgetTotal === 100 ? "valid" : "warn"
+                  }`}
+                >
+                  Total: {budgetTotal}%{" "}
+                  {budgetTotal !== 100 ? "(Must equal 100%)" : "✓"}
+                </span>
+              </div>
+
               <div className="budget-bar-visual">
                 <div
                   className="budget-seg user sheen"
-                  style={{ width: `${progress.budget.user}%` }}
+                  style={{ width: `${Math.min(100, progress.budget.user)}%` }}
                 />
                 <div
                   className="budget-seg business sheen"
-                  style={{ width: `${progress.budget.business}%` }}
+                  style={{
+                    width: `${Math.min(100, progress.budget.business)}%`,
+                  }}
                 />
                 <div
                   className="budget-seg tech sheen"
-                  style={{ width: `${progress.budget.tech}%` }}
+                  style={{ width: `${Math.min(100, progress.budget.tech)}%` }}
                 />
               </div>
 
               <div className="budget-sliders">
-                <label className="slider-row">
-                  <span>
-                    End-User Focus: <strong>{progress.budget.user}%</strong>
-                  </span>
+                <div className="slider-row">
+                  <div className="slider-label-row">
+                    <span>Customer Focus</span>
+                    <div className="budget-num-wrap">
+                      <input
+                        type="number"
+                        min="0"
+                        max="100"
+                        step="5"
+                        value={progress.budget.user}
+                        onChange={(e) =>
+                          handleBudgetDirectInput("user", e.target.value)
+                        }
+                      />
+                      <span>%</span>
+                    </div>
+                  </div>
                   <input
                     className="slider-user"
                     type="range"
@@ -257,14 +353,27 @@ export default function Workspace({
                     max="100"
                     step="5"
                     value={progress.budget.user}
-                    onChange={(e) => handleBudgetChange("user", e.target.value)}
+                    onChange={(e) => handleBudgetSlider("user", e.target.value)}
                   />
-                </label>
+                </div>
 
-                <label className="slider-row">
-                  <span>
-                    Business Value: <strong>{progress.budget.business}%</strong>
-                  </span>
+                <div className="slider-row">
+                  <div className="slider-label-row">
+                    <span>Business Value</span>
+                    <div className="budget-num-wrap">
+                      <input
+                        type="number"
+                        min="0"
+                        max="100"
+                        step="5"
+                        value={progress.budget.business}
+                        onChange={(e) =>
+                          handleBudgetDirectInput("business", e.target.value)
+                        }
+                      />
+                      <span>%</span>
+                    </div>
+                  </div>
                   <input
                     className="slider-business"
                     type="range"
@@ -273,15 +382,28 @@ export default function Workspace({
                     step="5"
                     value={progress.budget.business}
                     onChange={(e) =>
-                      handleBudgetChange("business", e.target.value)
+                      handleBudgetSlider("business", e.target.value)
                     }
                   />
-                </label>
+                </div>
 
-                <label className="slider-row">
-                  <span>
-                    Technology Build: <strong>{progress.budget.tech}%</strong>
-                  </span>
+                <div className="slider-row">
+                  <div className="slider-label-row">
+                    <span>Technology Build</span>
+                    <div className="budget-num-wrap">
+                      <input
+                        type="number"
+                        min="0"
+                        max="100"
+                        step="5"
+                        value={progress.budget.tech}
+                        onChange={(e) =>
+                          handleBudgetDirectInput("tech", e.target.value)
+                        }
+                      />
+                      <span>%</span>
+                    </div>
+                  </div>
                   <input
                     className="slider-tech"
                     type="range"
@@ -289,10 +411,27 @@ export default function Workspace({
                     max="100"
                     step="5"
                     value={progress.budget.tech}
-                    onChange={(e) => handleBudgetChange("tech", e.target.value)}
+                    onChange={(e) => handleBudgetSlider("tech", e.target.value)}
                   />
-                </label>
+                </div>
               </div>
+
+              {isWhatDone && (
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "flex-end",
+                    marginTop: "6px",
+                  }}
+                >
+                  <button
+                    className="btn-next-4a ready"
+                    onClick={() => onTabChange("who")}
+                  >
+                    Continue to Who ➔
+                  </button>
+                </div>
+              )}
             </div>
           </div>
         )}
@@ -411,7 +550,7 @@ export default function Workspace({
                 <h3 className="panel-title">Timeline Window</h3>
                 <p className="panel-help">
                   Select the <strong>delivery window</strong> where this stage
-                  sits on the 16-week roadmap.
+                  sits on the 12-month roadmap.
                 </p>
               </div>
             </div>
@@ -441,72 +580,122 @@ export default function Workspace({
               <div>
                 <h3 className="panel-title">Impact &amp; Outcome Board</h3>
                 <p className="panel-help">
-                  Move the matching <strong>OKR &amp; KPI Benchmark</strong>{" "}
-                  ticket across the Kanban board into <strong>Done</strong>.
+                  Drag the matching{" "}
+                  <strong>Objective &amp; Key Results (OKR)</strong> card and{" "}
+                  <strong>Key Performance Indicator (KPI)</strong> card across
+                  the Kanban board into <strong>Done</strong>.
                 </p>
               </div>
             </div>
 
-            <div className="kanban-outcome-grid">
+            <div className="kanban-board-wrap">
+              {/* Column 1: OKR Backlog */}
               <div className="kanban-col">
-                <div className="kanban-col-head">Backlog Options</div>
+                <div className="kanban-col-head">
+                  1. Objective &amp; Key Results (OKR)
+                </div>
                 {stage.outcomes.map((item) => {
-                  const isDone = progress.outcome === item.id;
-                  if (isDone) return null;
+                  if (progress.okrOutcome === item.id) return null;
                   return (
-                    <button
-                      key={item.id}
-                      className="kanban-ticket"
-                      onClick={() =>
-                        onUpdateProgress({ ...progress, outcome: item.id })
+                    <div
+                      key={`okr-${item.id}`}
+                      draggable
+                      onDragStart={() =>
+                        setDraggedKanbanCard({ type: "okr", id: item.id })
                       }
+                      className="kanban-card-draggable"
                     >
-                      <div className="ticket-line">
-                        <strong>OKR:</strong> {item.okr}
-                      </div>
-                      <div className="ticket-line">
-                        <strong>KPI:</strong> {item.kpi}
-                      </div>
-                      <span className="ticket-action">Move to Done ➔</span>
-                    </button>
+                      <span className="kanban-card-badge">OKR Card</span>
+                      <p>{item.okr}</p>
+                      <span className="kanban-drag-hint">⋮⋮ Drag to Done</span>
+                    </div>
                   );
                 })}
               </div>
 
+              {/* Column 2: KPI Backlog */}
+              <div className="kanban-col">
+                <div className="kanban-col-head">
+                  2. Key Performance Indicator (KPI)
+                </div>
+                {stage.outcomes.map((item) => {
+                  if (progress.kpiOutcome === item.id) return null;
+                  return (
+                    <div
+                      key={`kpi-${item.id}`}
+                      draggable
+                      onDragStart={() =>
+                        setDraggedKanbanCard({ type: "kpi", id: item.id })
+                      }
+                      className="kanban-card-draggable"
+                    >
+                      <span className="kanban-card-badge">KPI Card</span>
+                      <p>{item.kpi}</p>
+                      <span className="kanban-drag-hint">⋮⋮ Drag to Done</span>
+                    </div>
+                  );
+                })}
+              </div>
+
+              {/* Column 3: Done Dropzone */}
               <div
                 className={`kanban-col done-col ${isImpactDone ? "complete" : ""}`}
+                onDragOver={(e) => e.preventDefault()}
+                onDrop={handleDropKanban}
               >
-                <div className="kanban-col-head">Done</div>
-                {progress.outcome ? (
-                  (() => {
-                    const chosen = stage.outcomes.find(
-                      (o) => o.id === progress.outcome,
-                    );
-                    return chosen ? (
-                      <div className="kanban-ticket active-ticket">
-                        <div className="ticket-line">
-                          <strong>OKR:</strong> {chosen.okr}
+                <div className="kanban-col-head">Done (Drop OKR &amp; KPI)</div>
+
+                <div className="kanban-slot">
+                  <div className="kanban-slot-label">Selected OKR</div>
+                  {progress.okrOutcome ? (
+                    (() => {
+                      const chosenOkr = stage.outcomes.find(
+                        (o) => o.id === progress.okrOutcome,
+                      );
+                      return chosenOkr ? (
+                        <div className="kanban-card-done">
+                          <p>{chosenOkr.okr}</p>
+                          <button
+                            className="ticket-remove"
+                            onClick={() =>
+                              onUpdateProgress({ ...progress, okrOutcome: "" })
+                            }
+                          >
+                            Remove
+                          </button>
                         </div>
-                        <div className="ticket-line">
-                          <strong>KPI:</strong> {chosen.kpi}
+                      ) : null;
+                    })()
+                  ) : (
+                    <div className="kanban-slot-empty">Drop OKR card here</div>
+                  )}
+                </div>
+
+                <div className="kanban-slot">
+                  <div className="kanban-slot-label">Selected KPI</div>
+                  {progress.kpiOutcome ? (
+                    (() => {
+                      const chosenKpi = stage.outcomes.find(
+                        (o) => o.id === progress.kpiOutcome,
+                      );
+                      return chosenKpi ? (
+                        <div className="kanban-card-done">
+                          <p>{chosenKpi.kpi}</p>
+                          <button
+                            className="ticket-remove"
+                            onClick={() =>
+                              onUpdateProgress({ ...progress, kpiOutcome: "" })
+                            }
+                          >
+                            Remove
+                          </button>
                         </div>
-                        <button
-                          className="ticket-remove"
-                          onClick={() =>
-                            onUpdateProgress({ ...progress, outcome: "" })
-                          }
-                        >
-                          Return to Backlog
-                        </button>
-                      </div>
-                    ) : null;
-                  })()
-                ) : (
-                  <div className="kanban-empty">
-                    Select an OKR &amp; KPI ticket on the left to move it to
-                    Done
-                  </div>
-                )}
+                      ) : null;
+                    })()
+                  ) : (
+                    <div className="kanban-slot-empty">Drop KPI card here</div>
+                  )}
+                </div>
               </div>
             </div>
           </div>

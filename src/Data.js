@@ -3,29 +3,28 @@ export const StageData = {
     1: {
       title: "Stage 01: Concept",
       label: "1. Concept",
-      timeline: "Weeks 1–2",
-      window: "Weeks 1–2 (Concept Review)",
-      clue: "1. Why: Pick 45% sign-up drop-off & competitor self-serve.\n2. What: New Build (Self-Serve) • Budget: 50% End-User / 35% Business / 15% Technology.\n3. Who: End-Users (Peer / Subject Matter Expert) & SLT (Sign-Off).\n4. How: Approved opportunity summary to kick off discovery.\n5. When: Weeks 1–2 (Concept Review) • 6. Impact: Formal SLT approval & ≥ 70% surveyed users OKR.",
+      timeline: "Month 1",
+      window: "Concept Review - Month 1",
       facts: [
-        {
-          id: "f1",
-          text: "Customer drop-off during sign-up is rising (currently 45%), driving up our Churn Rate.",
-          valid: true,
-        },
-        {
-          id: "f2",
-          text: "Our top three competitors already offer an easy self-serve sign-up option.",
-          valid: true,
-        },
         {
           id: "f3",
           text: "One regional sales manager requested a custom dark-mode dashboard theme.",
           valid: false,
         },
         {
+          id: "f1",
+          text: "Customer drop-off during sign-up is rising (currently 45%), driving up our Churn Rate.",
+          valid: true,
+        },
+        {
           id: "f4",
           text: "Internal newsletter open rates dipped slightly last quarter.",
           valid: false,
+        },
+        {
+          id: "f2",
+          text: "Our top three competitors already offer an easy self-serve sign-up option.",
+          valid: true,
         },
       ],
       move: "New Build (Self-Serve)",
@@ -34,24 +33,24 @@ export const StageData = {
         "UX / Flow Discovery",
         "UX / Flow Refine",
         "Operational Readiness",
-        "Decommission / Optimize",
+        "Continuous Optimisation",
       ],
       budget: { user: 50, business: 35, tech: 15 },
       stakeholders: [
-        { group: "End-Users", role: "Peer / Subject Matter Expert" },
+        { group: "Customer", role: "SME" },
         { group: "SLT", role: "Sign-Off" },
       ],
       deliverable: "Approved opportunity summary to kick off discovery",
       options: [
-        "Approved opportunity summary to kick off discovery",
         "Working software built and demoed every two weeks",
         "Public release notes and live adoption report",
+        "Approved opportunity summary to kick off discovery",
       ],
       documents: ["Product Brief", "Opportunity Assessment"],
       windows: [
-        "Weeks 1–2 (Concept Review)",
-        "Weeks 6–7 (Specification Check)",
-        "Week 15 (Release Week)",
+        "Release Window - Month 10",
+        "Concept Review - Month 1",
+        "Specification Check - Month 4",
       ],
       okr: "Get everyone on the same page about the problem before spending money on research.",
       kpi: "Formal SLT approval on the problem statement, and at least 70% of surveyed users confirm sign-up hurdles are a major issue.",
@@ -76,17 +75,17 @@ export const StageData = {
         },
       ],
       template: `PRODUCT BRIEF & OPPORTUNITY ASSESSMENT
-Stage: 01 Concept | Timeline: Weeks 1–2
+Stage: 01 Concept | Timeline: Month 1
 
 1. PROBLEM STATEMENT
 Customer drop-off during sign-up has reached 45%, increasing Churn Rate while top competitors offer self-serve onboarding.
 
 2. PRODUCT MOVE & BUDGET SPLIT
 Direction: New Build (Self-Serve)
-Budget Allocation: 50% End-User | 35% Business | 15% Technology
+Budget Allocation: 50% Customer | 35% Business | 15% Technology
 
 3. STAKEHOLDER ALIGNMENT
-• End-Users: Peer / Subject Matter Expert
+• Customers: SME
 • SLT: Sign-Off
 
 4. TARGET OKR & KPI BENCHMARK
@@ -96,28 +95,27 @@ KPI: Formal SLT approval on the problem statement, and ≥ 70% of surveyed users
     2: {
       title: "Stage 02: Discovery",
       label: "2. Discovery",
-      timeline: "Weeks 3–4",
-      window: "Weeks 3–4 (Research Sprint)",
-      clue: "1. Why: Pick 12 End-User interviews & 40% repeat support tickets.\n2. What: UX / Flow Discovery • Budget: 60% End-User / 20% Business / 20% Technology.\n3. Who: End-Users (Peer / Subject Matter Expert) & Product & UX (Scrum Team).\n4. How: Tested clickable design of the new self-serve flow.\n5. When: Weeks 3–4 (Research Sprint) • 6. Impact: ≥ 80% prototype completion OKR.",
+      timeline: "Month 2",
+      window: "Research Sprint - Month 2",
       facts: [
-        {
-          id: "f1",
-          text: "12 End-User interviews show the manual process is too slow, delaying Time to Value (TTV).",
-          valid: true,
-        },
         {
           id: "f2",
           text: "Support logs show 40% of help tickets are repeat questions about how to sign up.",
           valid: true,
         },
         {
-          id: "f3",
-          text: "Server CPU usage peaked at 35% during Tuesday afternoon backups.",
+          id: "f4",
+          text: "Finance prefers annual billing invoices to be sent on Fridays.",
           valid: false,
         },
         {
-          id: "f4",
-          text: "Finance prefers annual billing invoices to be sent on Fridays.",
+          id: "f1",
+          text: "12 Customer interviews show the manual process is too slow, delaying Time to Value (TTV).",
+          valid: true,
+        },
+        {
+          id: "f3",
+          text: "Server CPU usage peaked at 35% during Tuesday afternoon backups.",
           valid: false,
         },
       ],
@@ -127,18 +125,18 @@ KPI: Formal SLT approval on the problem statement, and ≥ 70% of surveyed users
         "UX / Flow Discovery",
         "New Build (Investment Approval)",
         "Operational Readiness",
-        "Decommission / Optimize",
+        "Continuous Optimisation",
       ],
       budget: { user: 60, business: 20, tech: 20 },
       stakeholders: [
-        { group: "End-Users", role: "Peer / Subject Matter Expert" },
-        { group: "Product & UX", role: "Scrum Team" },
+        { group: "Customer", role: "SME" },
+        { group: "CX / UX", role: "Scrum Team" },
       ],
       deliverable: "Tested clickable design of the new self-serve flow",
       options: [
+        "30-day post-launch cohort retention review",
         "Tested clickable design of the new self-serve flow",
         "Final security penetration audit and legal sign-off",
-        "30-day post-launch cohort retention review",
       ],
       documents: [
         "Discovery Summary Report",
@@ -146,19 +144,13 @@ KPI: Formal SLT approval on the problem statement, and ≥ 70% of surveyed users
         "Clickable Prototype",
       ],
       windows: [
-        "Weeks 3–4 (Research Sprint)",
-        "Week 8 (Pre-Sprint Check)",
-        "Week 13 (Quality Check)",
+        "Research Sprint - Month 2",
+        "Architecture Sign-Off - Month 5",
+        "Quality Check - Month 8",
       ],
       okr: "Find where users get stuck and test a simple self-serve prototype with real people.",
       kpi: "At least 80% of test users complete the prototype without help across 8 or more sessions.",
       outcomes: [
-        {
-          id: "o1",
-          okr: "Find where users get stuck and test a simple self-serve prototype with real people.",
-          kpi: "At least 80% of test users complete the prototype without help across 8 or more sessions.",
-          valid: true,
-        },
         {
           id: "o2",
           okr: "Lock in final database schema without testing user flows.",
@@ -171,19 +163,25 @@ KPI: Formal SLT approval on the problem statement, and ≥ 70% of surveyed users
           kpi: "Three media briefings scheduled in Week 4.",
           valid: false,
         },
+        {
+          id: "o1",
+          okr: "Find where users get stuck and test a simple self-serve prototype with real people.",
+          kpi: "At least 80% of test users complete the prototype without help across 8 or more sessions.",
+          valid: true,
+        },
       ],
       template: `DISCOVERY SUMMARY REPORT
-Stage: 02 Discovery | Timeline: Weeks 3–4
+Stage: 02 Discovery | Timeline: Month 2
 
 1. RESEARCH FINDINGS
-12 End-User interviews confirmed manual onboarding delays Time to Value (TTV), and 40% of support tickets stem from sign-up confusion.
+12 Customer interviews confirmed manual onboarding delays Time to Value (TTV), and 40% of support tickets stem from sign-up confusion.
 
 2. PRODUCT MOVE & BUDGET SPLIT
 Direction: UX / Flow Discovery
-Budget Allocation: 60% End-User | 20% Business | 20% Technology
+Budget Allocation: 60% Customer | 20% Business | 20% Technology
 
 3. STAKEHOLDER ALIGNMENT
-• End-Users: Peer / Subject Matter Expert
+• Customers: SME
 • Product & UX: Scrum Team
 
 4. TARGET OKR & KPI BENCHMARK
@@ -193,14 +191,13 @@ KPI: ≥ 80% of test users complete the prototype without help across 8 or more 
     3: {
       title: "Stage 03: Business Case",
       label: "3. Business Case",
-      timeline: "Week 5",
-      window: "Week 5 (Funding Check)",
-      clue: "1. Why: Pick 18-month payback & 15% lift in Customer Retention Rate (CRR).\n2. What: New Build (Investment Approval) • Budget: 20% End-User / 60% Business / 20% Technology.\n3. Who: SLT (Sign-Off) & Finance & Operations (Peer / Subject Matter Expert).\n4. How: Approved budget and commercial forecast.\n5. When: Week 5 (Funding Check) • 6. Impact: Projected CLV:CAC ratio of 3:1 or higher OKR.",
+      timeline: "Month 3",
+      window: "Funding Check - Month 3",
       facts: [
         {
-          id: "f1",
-          text: "Financial forecasts show the project will pay for itself in 18 months.",
-          valid: true,
+          id: "f4",
+          text: "Staging test environments refresh automatically every Sunday night.",
+          valid: false,
         },
         {
           id: "f2",
@@ -213,9 +210,9 @@ KPI: ≥ 80% of test users complete the prototype without help across 8 or more 
           valid: false,
         },
         {
-          id: "f4",
-          text: "Staging test environments refresh automatically every Sunday night.",
-          valid: false,
+          id: "f1",
+          text: "Financial forecasts show the project will pay for itself in 18 months.",
+          valid: true,
         },
       ],
       move: "New Build (Investment Approval)",
@@ -224,12 +221,12 @@ KPI: ≥ 80% of test users complete the prototype without help across 8 or more 
         "New Build (Investment Approval)",
         "New Build (Scoping)",
         "UX / Flow Refine",
-        "Decommission / Optimize",
+        "Continuous Optimisation",
       ],
       budget: { user: 20, business: 60, tech: 20 },
       stakeholders: [
         { group: "SLT", role: "Sign-Off" },
-        { group: "Finance & Operations", role: "Peer / Subject Matter Expert" },
+        { group: "Operations", role: "SME" },
       ],
       deliverable: "Approved budget and commercial forecast",
       options: [
@@ -239,13 +236,19 @@ KPI: ≥ 80% of test users complete the prototype without help across 8 or more 
       ],
       documents: ["Commercial Business Case", "Financial Return Forecast"],
       windows: [
-        "Week 5 (Funding Check)",
-        "Weeks 9–12 (Build Sprints)",
-        "Week 16+ (Post-Launch)",
+        "Build Sprints - Months 6–7",
+        "Post-Launch Iteration - Months 11–12",
+        "Funding Check - Month 3",
       ],
       okr: "Secure build funding by proving the project will make money over three years and lower Customer Acquisition Cost (CAC).",
       kpi: "Projected CLV:CAC ratio of 3:1 or higher, at least 15% projected ARR growth, and SLT budget approval within 5 business days.",
       outcomes: [
+        {
+          id: "o3",
+          okr: "Focus solely on internal code refactoring with zero customer metrics.",
+          kpi: "Reduce stylesheet file size by 15%.",
+          valid: false,
+        },
         {
           id: "o1",
           okr: "Secure build funding by proving the project will make money over three years and lower Customer Acquisition Cost (CAC).",
@@ -258,26 +261,20 @@ KPI: ≥ 80% of test users complete the prototype without help across 8 or more 
           kpi: "Spend 100% of departmental funds within 30 days.",
           valid: false,
         },
-        {
-          id: "o3",
-          okr: "Focus solely on internal code refactoring with zero customer metrics.",
-          kpi: "Reduce stylesheet file size by 15%.",
-          valid: false,
-        },
       ],
       template: `COMMERCIAL BUSINESS CASE
-Stage: 03 Business Case | Timeline: Week 5
+Stage: 03 Business Case | Timeline: Month 3
 
 1. COMMERCIAL JUSTIFICATION
 18-month payback period with a projected 15% lift in Customer Retention Rate (CRR) and stronger Customer Lifetime Value (CLV).
 
 2. PRODUCT MOVE & BUDGET SPLIT
 Direction: New Build (Investment Approval)
-Budget Allocation: 20% End-User | 60% Business | 20% Technology
+Budget Allocation: 20% Customer | 60% Business | 20% Technology
 
 3. STAKEHOLDER ALIGNMENT
 • SLT: Sign-Off
-• Finance & Operations: Peer / Subject Matter Expert
+• Finance & Operations: SME
 
 4. TARGET OKR & KPI BENCHMARK
 OKR: Secure build funding by proving the project will make money over three years and lower CAC.
@@ -286,24 +283,23 @@ KPI: Projected CLV:CAC ≥ 3:1, ≥ 15% ARR growth, and SLT approval within 5 bu
     4: {
       title: "Stage 04: Product Specs",
       label: "4. Product Specs",
-      timeline: "Weeks 6–7",
-      window: "Weeks 6–7 (Specification Check)",
-      clue: "1. Why: Pick finalized prototype feedback & core user stories.\n2. What: New Build (Scoping) • Budget: 40% End-User / 20% Business / 40% Technology.\n3. Who: Product & UX (Scrum Team) & Engineering (Scrum Team).\n4. How: Clear, step-by-step build instructions for developers.\n5. When: Weeks 6–7 (Specification Check) • 6. Impact: All MVP user stories estimated OKR.",
+      timeline: "Month 4",
+      window: "Specification Check - Month 4",
       facts: [
         {
           id: "f1",
-          text: "Prototype testing feedback is finalized and ready to use.",
-          valid: true,
-        },
-        {
-          id: "f2",
-          text: "Core user stories, edge cases, and rules for completion are written down.",
+          text: "Prototype testing feedback is finalised and ready to use.",
           valid: true,
         },
         {
           id: "f3",
           text: "Competitor marketing campaigns launched on LinkedIn this week.",
           valid: false,
+        },
+        {
+          id: "f2",
+          text: "Core user stories, edge cases, and rules for completion are written down.",
+          valid: true,
         },
         {
           id: "f4",
@@ -317,27 +313,27 @@ KPI: Projected CLV:CAC ≥ 3:1, ≥ 15% ARR growth, and SLT approval within 5 bu
         "New Build (Scoping)",
         "New Build (Architecture)",
         "Operational Readiness",
-        "Decommission / Optimize",
+        "Continuous Optimisation",
       ],
       budget: { user: 40, business: 20, tech: 40 },
       stakeholders: [
-        { group: "Product & UX", role: "Scrum Team" },
+        { group: "Product", role: "Scrum Team" },
         { group: "Engineering", role: "Scrum Team" },
       ],
       deliverable: "Clear, step-by-step build instructions for developers",
       options: [
-        "Clear, step-by-step build instructions for developers",
         "Phased rollout health monitor and live uptime log",
         "Initial opportunity assessment for SLT",
+        "Clear, step-by-step build instructions for developers",
       ],
       documents: [
         "Product Requirements Document (PRD)",
-        "Prioritized Product Backlog",
+        "Prioritised Product Backlog",
       ],
       windows: [
-        "Weeks 6–7 (Specification Check)",
-        "Weeks 1–2 (Concept Review)",
-        "Week 14 (Readiness Check)",
+        "Readiness Check - Month 9",
+        "Specification Check - Month 4",
+        "Concept Review - Month 1",
       ],
       okr: "Turn validated user designs into clear, practical instructions that developers can build right away.",
       kpi: "All MVP user stories estimated and accepted by Engineering with no unclear requirements holding up work.",
@@ -362,14 +358,14 @@ KPI: Projected CLV:CAC ≥ 3:1, ≥ 15% ARR growth, and SLT approval within 5 bu
         },
       ],
       template: `PRODUCT REQUIREMENTS DOCUMENT (PRD)
-Stage: 04 Product Specs | Timeline: Weeks 6–7
+Stage: 04 Product Specs | Timeline: Month 4
 
 1. SPECIFICATION SCOPE
-Validated prototype flows translated into prioritized MVP user stories, edge cases, and clear acceptance criteria.
+Validated prototype flows translated into prioritised MVP user stories, edge cases, and clear acceptance criteria.
 
 2. PRODUCT MOVE & BUDGET SPLIT
 Direction: New Build (Scoping)
-Budget Allocation: 40% End-User | 20% Business | 40% Technology
+Budget Allocation: 40% Customer | 20% Business | 40% Technology
 
 3. STAKEHOLDER ALIGNMENT
 • Product & UX: Scrum Team
@@ -382,29 +378,28 @@ KPI: All MVP user stories estimated and accepted by Engineering with zero unclea
     5: {
       title: "Stage 05: Tech Review",
       label: "5. Tech Review",
-      timeline: "Week 8",
-      window: "Week 8 (Pre-Sprint Check)",
-      clue: "1. Why: Pick speed/privacy standards & CRM/billing dependencies.\n2. What: New Build (Architecture) • Budget: 10% End-User / 20% Business / 70% Technology.\n3. Who: Engineering (Scrum Team) & Legal, Security & Risk (Sign-Off).\n4. How: Formal technical and compliance approval to start coding.\n5. When: Week 8 (Pre-Sprint Check) • 6. Impact: Zero unresolved high-risk security issues OKR.",
+      timeline: "Month 5",
+      window: "Architecture Sign-Off - Month 5",
       facts: [
-        {
-          id: "f1",
-          text: "Technical assessments confirm the proposed architecture meets enterprise speed, security, and data privacy standards.",
-          valid: true,
-        },
-        {
-          id: "f2",
-          text: "Integration dependencies across existing CRM and billing platforms are fully documented and mapped.",
-          valid: true,
-        },
         {
           id: "f3",
           text: "Customer support agents requested ergonomic desk chairs.",
           valid: false,
         },
         {
+          id: "f1",
+          text: "Technical assessments confirm the proposed architecture meets enterprise speed, security, and data privacy standards.",
+          valid: true,
+        },
+        {
           id: "f4",
           text: "Blog traffic increased 8% following last month's webinar.",
           valid: false,
+        },
+        {
+          id: "f2",
+          text: "Integration dependencies across existing CRM and billing platforms are fully documented and mapped.",
+          valid: true,
         },
       ],
       move: "New Build (Architecture)",
@@ -418,32 +413,26 @@ KPI: All MVP user stories estimated and accepted by Engineering with zero unclea
       budget: { user: 10, business: 20, tech: 70 },
       stakeholders: [
         { group: "Engineering", role: "Scrum Team" },
-        { group: "Legal, Security & Risk", role: "Sign-Off" },
+        { group: "Legal & Support", role: "Sign-Off" },
       ],
       deliverable: "Formal technical and compliance approval to start coding",
       options: [
+        "30-day cohort retention and NPS review",
         "Formal technical and compliance approval to start coding",
         "Customer interview synthesis and clickable wireframe",
-        "30-day cohort retention and NPS review",
       ],
       documents: [
         "Technical Architecture Diagram",
         "Security & Privacy Impact Assessment",
       ],
       windows: [
-        "Week 8 (Pre-Sprint Check)",
-        "Weeks 3–4 (Research Sprint)",
-        "Week 15 (Release Week)",
+        "Architecture Sign-Off - Month 5",
+        "Research Sprint - Month 2",
+        "Release Window - Month 10",
       ],
       okr: "Make sure the system design is safe, fast, and follows all privacy rules before writing code.",
-      kpi: "Zero unresolved high-risk security or privacy issues, and all third-party system connections mapped.",
+      kpi: "Zero unresolved high-risk security or privacy issues, and all Partner system connections mapped.",
       outcomes: [
-        {
-          id: "o1",
-          okr: "Make sure the system design is safe, fast, and follows all privacy rules before writing code.",
-          kpi: "Zero unresolved high-risk security or privacy issues, and all third-party system connections mapped.",
-          valid: true,
-        },
         {
           id: "o2",
           okr: "Bypass privacy impact reviews to save two days of schedule.",
@@ -456,16 +445,22 @@ KPI: All MVP user stories estimated and accepted by Engineering with zero unclea
           kpi: "Require manual CSV uploads every night.",
           valid: false,
         },
+        {
+          id: "o1",
+          okr: "Make sure the system design is safe, fast, and follows all privacy rules before writing code.",
+          kpi: "Zero unresolved high-risk security or privacy issues, and all Partner system connections mapped.",
+          valid: true,
+        },
       ],
       template: `TECHNICAL ARCHITECTURE & RISK SIGN-OFF
-Stage: 05 Tech Review | Timeline: Week 8
+Stage: 05 Tech Review | Timeline: Month 5
 
 1. ARCHITECTURE & COMPLIANCE READINESS
 System design verified for speed, data privacy compliance, and CRM/billing platform integrations.
 
 2. PRODUCT MOVE & BUDGET SPLIT
 Direction: New Build (Architecture)
-Budget Allocation: 10% End-User | 20% Business | 70% Technology
+Budget Allocation: 10% Customer | 20% Business | 70% Technology
 
 3. STAKEHOLDER ALIGNMENT
 • Engineering: Scrum Team
@@ -478,28 +473,27 @@ KPI: Zero unresolved high-risk security or privacy issues, and all system connec
     6: {
       title: "Stage 06: Sprints",
       label: "6. Sprints",
-      timeline: "Weeks 9–12",
-      window: "Weeks 9–12 (Build Sprints)",
-      clue: "1. Why: Pick ranked MVP stories & agreed sprint goals.\n2. What: New Build (Execution) • Budget: 20% End-User / 15% Business / 65% Technology.\n3. Who: Engineering (Scrum Team) & Product & UX (Scrum Team).\n4. How: Working software built and demoed every two weeks.\n5. When: Weeks 9–12 (Build Sprints) • 6. Impact: ≥ 85% sprint completion OKR.",
+      timeline: "Months 6–7",
+      window: "Build Sprints - Months 6–7",
       facts: [
-        {
-          id: "f1",
-          text: "Must-have MVP user stories are ranked by customer value.",
-          valid: true,
-        },
         {
           id: "f2",
           text: "The team has agreed on sprint goals and what finished looks like for each task.",
           valid: true,
         },
         {
-          id: "f3",
-          text: "HR scheduled annual fire safety training for next month.",
+          id: "f4",
+          text: "A Partner font library released a minor patch update.",
           valid: false,
         },
         {
-          id: "f4",
-          text: "A third-party font library released a minor patch update.",
+          id: "f1",
+          text: "Must-have MVP user stories are ranked by customer value.",
+          valid: true,
+        },
+        {
+          id: "f3",
+          text: "HR scheduled annual fire safety training for next month.",
           valid: false,
         },
       ],
@@ -509,12 +503,12 @@ KPI: Zero unresolved high-risk security or privacy issues, and all system connec
         "New Build (Execution)",
         "UX / Flow Refine",
         "Operational Readiness",
-        "Decommission / Optimize",
+        "Continuous Optimisation",
       ],
       budget: { user: 20, business: 15, tech: 65 },
       stakeholders: [
         { group: "Engineering", role: "Scrum Team" },
-        { group: "Product & UX", role: "Scrum Team" },
+        { group: "Product", role: "Scrum Team" },
       ],
       deliverable: "Working software built and demoed every two weeks",
       options: [
@@ -524,13 +518,19 @@ KPI: Zero unresolved high-risk security or privacy issues, and all system connec
       ],
       documents: ["Sprint Backlog", "Sprint Review Demo Notes"],
       windows: [
-        "Weeks 9–12 (Build Sprints)",
-        "Weeks 1–2 (Concept Review)",
-        "Week 16+ (Post-Launch)",
+        "Concept Review - Month 1",
+        "Post-Launch Iteration - Months 11–12",
+        "Build Sprints - Months 6–7",
       ],
       okr: "Build and test working pieces of the product on a steady two-week schedule.",
       kpi: "Complete at least 85% of planned sprint work on time, with at least 80% automated code test coverage.",
       outcomes: [
+        {
+          id: "o3",
+          okr: "Change sprint priorities daily based on ad-hoc requests.",
+          kpi: "0% sprint goal completion across four weeks.",
+          valid: false,
+        },
         {
           id: "o1",
           okr: "Build and test working pieces of the product on a steady two-week schedule.",
@@ -540,25 +540,19 @@ KPI: Zero unresolved high-risk security or privacy issues, and all system connec
         {
           id: "o2",
           okr: "Skip sprint demos and test everything on launch morning.",
-          kpi: "Zero working builds shown until Week 15.",
-          valid: false,
-        },
-        {
-          id: "o3",
-          okr: "Change sprint priorities daily based on ad-hoc requests.",
-          kpi: "0% sprint goal completion across four weeks.",
+          kpi: "Zero working builds shown until Month 10.",
           valid: false,
         },
       ],
       template: `SPRINT BACKLOG & DEMO NOTES
-Stage: 06 Sprints | Timeline: Weeks 9–12
+Stage: 06 Sprints | Timeline: Months 6–7
 
 1. DELIVERY CADENCE
-Prioritized MVP user stories built, tested, and demoed on a two-week sprint cycle.
+Prioritised MVP user stories built, tested, and demoed on a two-week sprint cycle.
 
 2. PRODUCT MOVE & BUDGET SPLIT
 Direction: New Build (Execution)
-Budget Allocation: 20% End-User | 15% Business | 65% Technology
+Budget Allocation: 20% Customer | 15% Business | 65% Technology
 
 3. STAKEHOLDER ALIGNMENT
 • Engineering: Scrum Team
@@ -571,14 +565,13 @@ KPI: ≥ 85% planned sprint work completed on time, with ≥ 80% automated code 
     7: {
       title: "Stage 07: QA & UAT",
       label: "7. QA & UAT",
-      timeline: "Week 13",
-      window: "Week 13 (Quality Check)",
-      clue: "1. Why: Pick automated staging checks & desktop/mobile sign-up tests.\n2. What: UX / Flow Refine • Budget: 35% End-User / 15% Business / 50% Technology.\n3. Who: End-Users (Peer / Subject Matter Expert) & Engineering & QA (Sign-Off).\n4. How: Tested, bug-free product ready for real customers.\n5. When: Week 13 (Quality Check) • 6. Impact: ≥ 95% test pass rate OKR.",
+      timeline: "Month 8",
+      window: "Quality Check - Month 8",
       facts: [
         {
-          id: "f1",
-          text: "The test environment passes automated checks without crashing.",
-          valid: true,
+          id: "f4",
+          text: "Internal wiki pages were reorganised into alphabetical folders.",
+          valid: false,
         },
         {
           id: "f2",
@@ -591,9 +584,9 @@ KPI: ≥ 85% planned sprint work completed on time, with ≥ 80% automated code 
           valid: false,
         },
         {
-          id: "f4",
-          text: "Internal wiki pages were reorganized into alphabetical folders.",
-          valid: false,
+          id: "f1",
+          text: "The test environment passes automated checks without crashing.",
+          valid: true,
         },
       ],
       move: "UX / Flow Refine",
@@ -606,20 +599,20 @@ KPI: ≥ 85% planned sprint work completed on time, with ≥ 80% automated code 
       ],
       budget: { user: 35, business: 15, tech: 50 },
       stakeholders: [
-        { group: "End-Users", role: "Peer / Subject Matter Expert" },
-        { group: "Engineering & QA", role: "Sign-Off" },
+        { group: "Customer", role: "SME" },
+        { group: "Engineering", role: "Sign-Off" },
       ],
       deliverable: "Tested, bug-free product ready for real customers",
       options: [
-        "Tested, bug-free product ready for real customers",
         "Initial competitor self-serve gap summary",
         "Three-year CLV:CAC financial return model",
+        "Tested, bug-free product ready for real customers",
       ],
       documents: ["UAT Sign-Off Log", "Bug Triage Report"],
       windows: [
-        "Week 13 (Quality Check)",
-        "Week 5 (Funding Check)",
-        "Weeks 9–12 (Build Sprints)",
+        "Build Sprints - Months 6–7",
+        "Quality Check - Month 8",
+        "Funding Check - Month 3",
       ],
       okr: "Confirm the product works smoothly and has no major bugs before going live.",
       kpi: "At least 95% of user test cases pass, with zero critical or major bugs left open.",
@@ -644,17 +637,17 @@ KPI: ≥ 85% planned sprint work completed on time, with ≥ 80% automated code 
         },
       ],
       template: `UAT SIGN-OFF & BUG TRIAGE LOG
-Stage: 07 QA & UAT | Timeline: Week 13
+Stage: 07 QA & UAT | Timeline: Month 8
 
 1. QUALITY VERIFICATION
 End-to-end self-serve sign-up flows tested across desktop and mobile with automated staging checks green.
 
 2. PRODUCT MOVE & BUDGET SPLIT
 Direction: UX / Flow Refine
-Budget Allocation: 35% End-User | 15% Business | 50% Technology
+Budget Allocation: 35% Customer | 15% Business | 50% Technology
 
 3. STAKEHOLDER ALIGNMENT
-• End-Users: Peer / Subject Matter Expert
+• Customers: SME
 • Engineering & QA: Sign-Off
 
 4. TARGET OKR & KPI BENCHMARK
@@ -664,9 +657,8 @@ KPI: ≥ 95% of user test cases pass, with zero critical or major bugs left open
     8: {
       title: "Stage 08: Launch Prep",
       label: "8. Launch Prep",
-      timeline: "Week 14",
-      window: "Week 14 (Readiness Check)",
-      clue: "1. Why: Pick help guides/release notes & Activation/TTV tracking.\n2. What: Operational Readiness • Budget: 30% End-User / 45% Business / 25% Technology.\n3. Who: Operations & Support (Peer / Subject Matter Expert) & Legal & Risk (Sign-Off).\n4. How: Trained support staff and verified usage tracking.\n5. When: Week 14 (Readiness Check) • 6. Impact: 100% support training OKR.",
+      timeline: "Month 9",
+      window: "Readiness Check - Month 9",
       facts: [
         {
           id: "f1",
@@ -674,14 +666,14 @@ KPI: ≥ 95% of user test cases pass, with zero critical or major bugs left open
           valid: true,
         },
         {
-          id: "f2",
-          text: "Tracking tools for Activation Rate, TTV, and Conversion Rate are tested and working.",
-          valid: true,
-        },
-        {
           id: "f3",
           text: "Cafeteria catering menus were updated for the new season.",
           valid: false,
+        },
+        {
+          id: "f2",
+          text: "Tracking tools for Activation Rate, TTV, and Conversion Rate are tested and working.",
+          valid: true,
         },
         {
           id: "f4",
@@ -695,18 +687,18 @@ KPI: ≥ 95% of user test cases pass, with zero critical or major bugs left open
         "New Build (Scoping)",
         "New Build (Execution)",
         "Operational Readiness",
-        "Decommission / Optimize",
+        "Continuous Optimisation",
       ],
       budget: { user: 30, business: 45, tech: 25 },
       stakeholders: [
-        { group: "Operations & Support", role: "Peer / Subject Matter Expert" },
-        { group: "Legal & Risk", role: "Sign-Off" },
+        { group: "Data Team", role: "SME" },
+        { group: "Legal & Support", role: "Sign-Off" },
       ],
       deliverable: "Trained support staff and verified usage tracking",
       options: [
+        "CRM and billing database schema map",
         "Trained support staff and verified usage tracking",
         "Clickable low-fidelity discovery wireframe",
-        "CRM and billing database schema map",
       ],
       documents: [
         "Launch Readiness Checklist",
@@ -714,19 +706,13 @@ KPI: ≥ 95% of user test cases pass, with zero critical or major bugs left open
         "Analytics Tracking Plan",
       ],
       windows: [
-        "Week 14 (Readiness Check)",
-        "Weeks 1–2 (Concept Review)",
-        "Weeks 6–7 (Specification Check)",
+        "Readiness Check - Month 9",
+        "Concept Review - Month 1",
+        "Specification Check - Month 4",
       ],
       okr: "Get support teams trained and confirm live tracking works before launch day.",
       kpi: "Every support team member completes training, and all core tracking events record accurately in testing.",
       outcomes: [
-        {
-          id: "o1",
-          okr: "Get support teams trained and confirm live tracking works before launch day.",
-          kpi: "Every support team member completes training, and all core tracking events record accurately in testing.",
-          valid: true,
-        },
         {
           id: "o2",
           okr: "Launch without telling support teams or installing analytics.",
@@ -739,19 +725,25 @@ KPI: ≥ 95% of user test cases pass, with zero critical or major bugs left open
           kpi: "Skip Legal & Risk approval on customer terms.",
           valid: false,
         },
+        {
+          id: "o1",
+          okr: "Get support teams trained and confirm live tracking works before launch day.",
+          kpi: "Every support team member completes training, and all core tracking events record accurately in testing.",
+          valid: true,
+        },
       ],
       template: `LAUNCH READINESS & ANALYTICS PLAN
-Stage: 08 Launch Prep | Timeline: Week 14
+Stage: 08 Launch Prep | Timeline: Month 9
 
 1. OPERATIONAL & TRACKING READINESS
 Customer support playbooks delivered and live event tracking verified for Activation Rate, TTV, and Conversion Rate.
 
 2. PRODUCT MOVE & BUDGET SPLIT
 Direction: Operational Readiness
-Budget Allocation: 30% End-User | 45% Business | 25% Technology
+Budget Allocation: 30% Customer | 45% Business | 25% Technology
 
 3. STAKEHOLDER ALIGNMENT
-• Operations & Support: Peer / Subject Matter Expert
+• Operations & Support: SME
 • Legal & Risk: Sign-Off
 
 4. TARGET OKR & KPI BENCHMARK
@@ -761,29 +753,28 @@ KPI: 100% support team training completed and all core tracking events accurate 
     9: {
       title: "Stage 09: Go Live",
       label: "9. Go Live",
-      timeline: "Week 15",
-      window: "Week 15 (Release Week)",
-      clue: "1. Why: Pick phased rollout checks & live End-User sign-up tracking.\n2. What: New Build (Release) • Budget: 40% End-User / 35% Business / 25% Technology.\n3. Who: Product & Engineering (Scrum Team) & SLT (Sign-Off).\n4. How: Live self-serve product available to customers.\n5. When: Week 15 (Release Week) • 6. Impact: ≥ 45% Activation Rate OKR.",
+      timeline: "Month 10",
+      window: "Release Window - Month 10",
       facts: [
-        {
-          id: "f1",
-          text: "Phased rollout (10% → 50% → all users) stability checks are green.",
-          valid: true,
-        },
-        {
-          id: "f2",
-          text: "Live sign-up tracking shows real End-Users are completing onboarding cleanly.",
-          valid: true,
-        },
         {
           id: "f3",
           text: "Office stationery supplies were reordered for Q4.",
           valid: false,
         },
         {
+          id: "f1",
+          text: "Phased rollout (10% → 50% → all users) stability checks are green.",
+          valid: true,
+        },
+        {
           id: "f4",
           text: "Internal team lunch preferences were collected for Friday.",
           valid: false,
+        },
+        {
+          id: "f2",
+          text: "Live sign-up tracking shows real Customers are completing onboarding cleanly.",
+          valid: true,
         },
       ],
       move: "New Build (Release)",
@@ -792,11 +783,11 @@ KPI: 100% support team training completed and all core tracking events accurate 
         "New Build (Investment Approval)",
         "New Build (Architecture)",
         "New Build (Release)",
-        "Decommission / Optimize",
+        "Continuous Optimisation",
       ],
       budget: { user: 40, business: 35, tech: 25 },
       stakeholders: [
-        { group: "Product & Engineering", role: "Scrum Team" },
+        { group: "Operations", role: "Scrum Team" },
         { group: "SLT", role: "Sign-Off" },
       ],
       deliverable: "Live self-serve product available to customers",
@@ -807,13 +798,19 @@ KPI: 100% support team training completed and all core tracking events accurate 
       ],
       documents: ["Public Release Notes", "Post-Launch Performance Report"],
       windows: [
-        "Week 15 (Release Week)",
-        "Weeks 3–4 (Research Sprint)",
-        "Week 8 (Pre-Sprint Check)",
+        "Research Sprint - Month 2",
+        "Architecture Sign-Off - Month 5",
+        "Release Window - Month 10",
       ],
       okr: "Roll out the product smoothly and help new users get started right away.",
       kpi: "At least 45% Activation Rate within 7 days, Time to Value (TTV) under 10 minutes, and 99.9% system uptime.",
       outcomes: [
+        {
+          id: "o3",
+          okr: "Delay customer release indefinitely while polishing internal docs.",
+          kpi: "0% live customer traffic in Month 10.",
+          valid: false,
+        },
         {
           id: "o1",
           okr: "Roll out the product smoothly and help new users get started right away.",
@@ -826,22 +823,16 @@ KPI: 100% support team training completed and all core tracking events accurate 
           kpi: "Ignore server error spikes during launch week.",
           valid: false,
         },
-        {
-          id: "o3",
-          okr: "Delay customer release indefinitely while polishing internal docs.",
-          kpi: "0% live customer traffic in Week 15.",
-          valid: false,
-        },
       ],
       template: `PUBLIC RELEASE NOTES & PERFORMANCE REPORT
-Stage: 09 Go Live | Timeline: Week 15
+Stage: 09 Go Live | Timeline: Month 10
 
 1. LAUNCH EXECUTION
 Phased rollout (10% → 50% → 100%) completed with live onboarding telemetry active.
 
 2. PRODUCT MOVE & BUDGET SPLIT
 Direction: New Build (Release)
-Budget Allocation: 40% End-User | 35% Business | 25% Technology
+Budget Allocation: 40% Customer | 35% Business | 25% Technology
 
 3. STAKEHOLDER ALIGNMENT
 • Product & Engineering: Scrum Team
@@ -854,18 +845,22 @@ KPI: ≥ 45% Activation Rate within 7 days, TTV < 10 mins, and 99.9% uptime.`,
     10: {
       title: "Stage 10: Iterate",
       label: "10. Iterate",
-      timeline: "Week 16+",
-      window: "Week 16+ (Post-Launch)",
-      clue: "1. Why: Pick 30-day Cohort Retention/NPS & retiring manual sign-up.\n2. What: Decommission / Optimize • Budget: 45% End-User / 35% Business / 20% Technology.\n3. Who: End-Users (Peer / Subject Matter Expert) & Product & UX (Scrum Team).\n4. How: Roadmap for improvements and retirement of old manual tools.\n5. When: Week 16+ (Post-Launch) • 6. Impact: ≥ 60% Feature Adoption Rate OKR.",
+      timeline: "Months 11–12",
+      window: "Post-Launch Iteration - Months 11–12",
       facts: [
         {
-          id: "f1",
-          text: "30-day Cohort Retention, DAU/MAU, and NPS scores have been reviewed.",
+          id: "f2",
+          text: "Live funnel analytics highlight two high-value drop-off points for v1.1 optimisation.",
           valid: true,
         },
         {
-          id: "f2",
-          text: "Old manual sign-up steps are ready to be turned off.",
+          id: "f4",
+          text: "Unused meeting room projectors were moved to storage.",
+          valid: false,
+        },
+        {
+          id: "f1",
+          text: "30-day Cohort Retention, DAU/MAU, and NPS scores have been reviewed.",
           valid: true,
         },
         {
@@ -873,51 +868,46 @@ KPI: ≥ 45% Activation Rate within 7 days, TTV < 10 mins, and 99.9% uptime.`,
           text: "Company holiday party dates were added to the calendar.",
           valid: false,
         },
-        {
-          id: "f4",
-          text: "Unused meeting room projectors were moved to storage.",
-          valid: false,
-        },
       ],
-      move: "Decommission / Optimize",
+      move: "Continuous Optimisation",
       moves: [
         "New Build (Self-Serve)",
         "UX / Flow Discovery",
         "New Build (Scoping)",
         "Operational Readiness",
-        "Decommission / Optimize",
+        "Continuous Optimisation",
       ],
       budget: { user: 45, business: 35, tech: 20 },
       stakeholders: [
-        { group: "End-Users", role: "Peer / Subject Matter Expert" },
-        { group: "Product & UX", role: "Scrum Team" },
+        { group: "Data Team", role: "SME" },
+        { group: "CX / UX", role: "Scrum Team" },
       ],
       deliverable:
-        "Roadmap for improvements and retirement of old manual tools",
+        "Prioritised v1.1 optimisation backlog and 90-day growth roadmap",
       options: [
-        "Roadmap for improvements and retirement of old manual tools",
         "Initial commercial funding request for SLT",
         "Pre-sprint security and privacy assessment",
+        "Prioritised v1.1 optimisation backlog and 90-day growth roadmap",
       ],
-      documents: ["30-Day Post-Launch Review", "Iteration & Sunset Plan"],
+      documents: ["30-Day Post-Launch Review", "v1.1 Iteration Roadmap"],
       windows: [
-        "Week 16+ (Post-Launch)",
-        "Week 5 (Funding Check)",
-        "Week 13 (Quality Check)",
+        "Quality Check - Month 8",
+        "Post-Launch Iteration - Months 11–12",
+        "Funding Check - Month 3",
       ],
-      okr: "Keep users coming back long-term while shutting down costly manual processes.",
+      okr: "Grow long-term customer retention and refine self-serve conversion based on live usage data.",
       kpi: "At least 60% Feature Adoption Rate, Product Stickiness (DAU/MAU) of 25% or higher, +12% lift in Customer Retention Rate (CRR), CSAT of 85% or higher, and NPS of +40 or higher.",
       outcomes: [
         {
           id: "o1",
-          okr: "Keep users coming back long-term while shutting down costly manual processes.",
+          okr: "Grow long-term customer retention and refine self-serve conversion based on live usage data.",
           kpi: "At least 60% Feature Adoption Rate, Product Stickiness (DAU/MAU) of 25% or higher, +12% lift in Customer Retention Rate (CRR), CSAT of 85% or higher, and NPS of +40 or higher.",
           valid: true,
         },
         {
           id: "o2",
-          okr: "Keep maintaining both the old manual workflow and new self-serve flow forever.",
-          kpi: "Zero legacy systems retired after launch.",
+          okr: "Freeze the product after launch and ignore customer funnel drop-offs.",
+          kpi: "Zero post-launch improvements shipped in Months 11–12.",
           valid: false,
         },
         {
@@ -928,42 +918,36 @@ KPI: ≥ 45% Activation Rate within 7 days, TTV < 10 mins, and 99.9% uptime.`,
         },
       ],
       template: `30-DAY POST-LAUNCH REVIEW & SUNSET PLAN
-Stage: 10 Iterate | Timeline: Week 16+
+Stage: 10 Iterate | Timeline: Months 11–12
 
 1. OUTCOME REVIEW & OPTIMIZATION
 30-day Cohort Retention, DAU/MAU stickiness, CSAT, and NPS reviewed to guide next improvements and retire legacy manual workflows.
 
 2. PRODUCT MOVE & BUDGET SPLIT
-Direction: Decommission / Optimize
-Budget Allocation: 45% End-User | 35% Business | 20% Technology
+Direction: Continuous Optimisation
+Budget Allocation: 45% Customer | 35% Business | 20% Technology
 
 3. STAKEHOLDER ALIGNMENT
-• End-Users: Peer / Subject Matter Expert
+• Customers: SME
 • Product & UX: Scrum Team
 
 4. TARGET OKR & KPI BENCHMARK
-OKR: Keep users coming back long-term while shutting down costly manual processes.
+OKR: Grow long-term customer retention and refine self-serve conversion based on live usage data.
 KPI: ≥ 60% Feature Adoption, ≥ 25% DAU/MAU, +12% CRR, ≥ 85% CSAT, and NPS ≥ +40.`,
     },
   },
   stakeholderGroups: [
-    "End-Users",
+    "Customer",
     "SLT",
-    "Product & UX",
+    "Product",
+    "Data Team",
     "Engineering",
-    "Engineering & QA",
-    "Product & Engineering",
-    "Finance & Operations",
-    "Legal, Security & Risk",
-    "Legal & Risk",
-    "Operations & Support",
+    "CX / UX",
+    "Operations",
+    "Legal & Support",
   ],
-  engagementRoles: [
-    "Scrum Team",
-    "Peer / Subject Matter Expert",
-    "Sign-Off",
-    "Third-Party",
-  ],
+  engagementRoles: ["Scrum Team", "SME", "Sign-Off", "Partner"],
+
   acronyms: [
     {
       term: "ARR (Annual Recurring Revenue)",

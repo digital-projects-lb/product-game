@@ -160,7 +160,7 @@ export default function Calculator({ onClose }) {
           <title>3-Pillar Metrics &amp; Acronym Reference — Product Path</title>
           <link href="https://googleapis.com" rel="stylesheet" />
           <style>
-            body { font-family: 'Raleway', sans-serif; font-weight: 300; color: #3e2f26; padding: 32px; line-height: 1.6; }
+            body { font-family: 'Raleway', sans-serif; font-weight: 300; colour: #3e2f26; padding: 32px; line-height: 1.6; }
             .header { background: #faf8f4; padding: 18px 22px; border: 1px solid #dcd6ca; border-top: 3px solid #dfc3a6; border-radius: 10px; margin-bottom: 20px; }
             h1 { font-size: 20px; font-weight: 400; margin: 0 0 4px 0; }
             table { width: 100%; border-collapse: collapse; table-layout: fixed; font-size: 12px; }
@@ -171,13 +171,13 @@ export default function Calculator({ onClose }) {
             td { vertical-align: top; padding: 12px; border: 1px solid #dcd6ca; }
             .cell-item { padding: 6px 0; border-bottom: 1px solid #efece6; }
             .cell-item:last-child { border-bottom: none; }
-            .term { font-weight: 400; color: #3e2f26; }
+            .term { font-weight: 400; colour: #3e2f26; }
           </style>
         </head>
         <body>
           <div class="header">
             <h1>3-Pillar Product Metrics, Formulas &amp; Acronyms</h1>
-            <div style="font-size:12px;color:#756558;">Product Path • Customer, Business &amp; Technology Reference Table</div>
+            <div style="font-size:12px;colour:#756558;">Product Path • Customer, Business &amp; Technology Reference Table</div>
           </div>
           <table>
             <thead>

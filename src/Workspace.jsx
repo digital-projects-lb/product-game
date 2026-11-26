@@ -1,6 +1,12 @@
 import React, { useState, useEffect, useRef } from "react";
 import { StageData } from "./Data";
 
+function trackWorkspaceEvent(eventName, params = {}) {
+  if (typeof window.gtag === "function") {
+    window.gtag("event", eventName, params);
+  }
+}
+
 export default function Workspace({
   stage,
   progress,
@@ -536,7 +542,15 @@ export default function Workspace({
                 <strong>Documents Produced in This Stage:</strong>{" "}
                 {stage.documents.join(" • ")}
               </div>
-              <button className="btn-tint" onClick={onOpenDocuments}>
+              <button
+                className="btn-tint"
+                onClick={() => {
+                  trackWorkspaceEvent("open_stage_documents_cta", {
+                    stage_label: stage.label,
+                  });
+                  onOpenDocuments();
+                }}
+              >
                 Open Stage Documents
               </button>
             </div>

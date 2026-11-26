@@ -110,6 +110,11 @@ const PRODUCT_GUIDES = [
     ],
   },
 ];
+function trackResourceEvent(eventName, params = {}) {
+  if (typeof window.gtag === "function") {
+    window.gtag("event", eventName, params);
+  }
+}
 
 export default function Resources({ onClose }) {
   const [activeTab, setActiveTab] = useState("guides");
@@ -136,7 +141,7 @@ export default function Resources({ onClose }) {
       <html>
         <head>
           <title>${title} — Product Path</title>
-          <link href="https://googleapis.com" rel="stylesheet" />
+          <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400&display=swap" rel="stylesheet" />
           <style>
             body { font-family: 'Raleway', sans-serif; font-weight: 300; colour: #3e2f26; padding: 36px; line-height: 1.65; }
             .header { background: #faf8f4; padding: 20px 24px; border: 1px solid #dcd6ca; border-top: 3px solid #dfc3a6; border-radius: 10px; margin-bottom: 22px; }
@@ -171,6 +176,11 @@ export default function Resources({ onClose }) {
   };
 
   const handlePrintGuide = () => {
+    trackResourceEvent("export_pdf", {
+      pdf_type: "product_guide",
+      document_title: currentGuide.title,
+    });
+
     const html = currentGuide.sections
       .map(
         (sec) =>
@@ -189,6 +199,12 @@ export default function Resources({ onClose }) {
 
   const handlePrintStageDoc = () => {
     const docTitle = currentStage.documents.join(" & ");
+    trackResourceEvent("export_pdf", {
+      pdf_type: "stage_template",
+      stage_number: currentStage.num,
+      document_title: docTitle,
+    });
+
     const html = `<div class="goal-box">Stage OKR: ${currentStage.okr}</div><pre>${currentStage.template}</pre>`;
     printDocument(
       docTitle,
@@ -239,7 +255,13 @@ export default function Resources({ onClose }) {
                     className={`sidebar-item-btn ${
                       selectedGuideId === guide.id ? "active" : ""
                     }`}
-                    onClick={() => setSelectedGuideId(guide.id)}
+                    onClick={() => {
+                      trackResourceEvent("view_resource_item", {
+                        resource_type: "product_guide",
+                        document_title: guide.title,
+                      });
+                      setSelectedGuideId(guide.id);
+                    }}
                   >
                     <div className="sidebar-item-tag">{guide.tag}</div>
                     <div className="sidebar-item-title">{guide.title}</div>
@@ -251,7 +273,14 @@ export default function Resources({ onClose }) {
                     className={`sidebar-item-btn ${
                       selectedStageNum === st.num ? "active" : ""
                     }`}
-                    onClick={() => setSelectedStageNum(st.num)}
+                    onClick={() => {
+                      trackResourceEvent("view_resource_item", {
+                        resource_type: "stage_template",
+                        stage_number: st.num,
+                        document_title: st.documents.join(" • "),
+                      });
+                      setSelectedStageNum(st.num);
+                    }}
                   >
                     <div className="sidebar-item-tag">{st.label}</div>
                     <div className="sidebar-item-title">

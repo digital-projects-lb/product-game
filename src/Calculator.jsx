@@ -48,6 +48,12 @@ function detectPillar(text) {
   return "tech";
 }
 
+function trackCalcEvent(eventName, params = {}) {
+  if (typeof window.gtag === "function") {
+    window.gtag("event", eventName, params);
+  }
+}
+
 export default function Calculator({ onClose }) {
   const [viewMode, setViewMode] = useState("calculator");
   const [pillar, setPillar] = useState("customer");
@@ -83,8 +89,9 @@ export default function Calculator({ onClose }) {
           0,
           Math.min(
             100,
-            ((endingCustomers - retainedNewCustomers) / startingCustomers) * 100
-          )
+            ((endingCustomers - retainedNewCustomers) / startingCustomers) *
+              100,
+          ),
         )
       : 0;
   const churnRate = Math.max(0, 100 - retentionRate);
@@ -100,7 +107,9 @@ export default function Calculator({ onClose }) {
   const activationRate =
     newSignups > 0 ? Math.min(100, (onboardedUsers / newSignups) * 100) : 0;
   const conversionRate =
-    totalVisitors > 0 ? Math.min(100, (targetActions / totalVisitors) * 100) : 0;
+    totalVisitors > 0
+      ? Math.min(100, (targetActions / totalVisitors) * 100)
+      : 0;
 
   const combinedReferenceItems = [
     ...StageData.formulas.map((f) => ({
@@ -128,6 +137,10 @@ export default function Calculator({ onClose }) {
   });
 
   const handlePrintGuide = () => {
+    trackCalcEvent("export_pdf", {
+      pdf_type: "kpi_reference_guide",
+    });
+
     const win = window.open("", "_blank", "width=880,height=920");
     if (!win) return;
 
@@ -135,21 +148,21 @@ export default function Calculator({ onClose }) {
       .filter((i) => i.pillar === "customer")
       .map(
         (i) =>
-          `<div class="cell-item"><span class="term">${i.term}:</span> ${i.detail}</div>`
+          `<div class="cell-item"><span class="term">${i.term}:</span> ${i.detail}</div>`,
       )
       .join("");
     const businessRows = combinedReferenceItems
       .filter((i) => i.pillar === "business")
       .map(
         (i) =>
-          `<div class="cell-item"><span class="term">${i.term}:</span> ${i.detail}</div>`
+          `<div class="cell-item"><span class="term">${i.term}:</span> ${i.detail}</div>`,
       )
       .join("");
     const techRows = combinedReferenceItems
       .filter((i) => i.pillar === "tech")
       .map(
         (i) =>
-          `<div class="cell-item"><span class="term">${i.term}:</span> ${i.detail}</div>`
+          `<div class="cell-item"><span class="term">${i.term}:</span> ${i.detail}</div>`,
       )
       .join("");
 
@@ -223,7 +236,12 @@ export default function Calculator({ onClose }) {
           </button>
           <button
             className={`light-tab baltic ${viewMode === "reference" ? "active" : ""}`}
-            onClick={() => setViewMode("reference")}
+            onClick={() => {
+              trackCalcEvent("switch_calculator_view", {
+                view_name: "reference",
+              });
+              setViewMode("reference");
+            }}
           >
             Acronym &amp; Formula Reference
           </button>
@@ -235,19 +253,34 @@ export default function Calculator({ onClose }) {
               <div className="light-tabs" style={{ marginBottom: "20px" }}>
                 <button
                   className={`light-tab oat ${pillar === "customer" ? "active" : ""}`}
-                  onClick={() => setPillar("customer")}
+                  onClick={() => {
+                    trackCalcEvent("select_calculator_pillar", {
+                      pillar_name: "customer",
+                    });
+                    setPillar("customer");
+                  }}
                 >
                   1. Customer &amp; Retention
                 </button>
                 <button
                   className={`light-tab baltic ${pillar === "business" ? "active" : ""}`}
-                  onClick={() => setPillar("business")}
+                  onClick={() => {
+                    trackCalcEvent("select_calculator_pillar", {
+                      pillar_name: "business",
+                    });
+                    setPillar("business");
+                  }}
                 >
                   2. Business &amp; Revenue
                 </button>
                 <button
                   className={`light-tab lichen ${pillar === "tech" ? "active" : ""}`}
-                  onClick={() => setPillar("tech")}
+                  onClick={() => {
+                    trackCalcEvent("select_calculator_pillar", {
+                      pillar_name: "tech",
+                    });
+                    setPillar("tech");
+                  }}
                 >
                   3. Tech &amp; Adoption
                 </button>
@@ -473,7 +506,9 @@ export default function Calculator({ onClose }) {
                         <input
                           type="number"
                           value={dailyUsers}
-                          onChange={(e) => setDailyUsers(Number(e.target.value))}
+                          onChange={(e) =>
+                            setDailyUsers(Number(e.target.value))
+                          }
                         />
                         <input
                           type="number"
@@ -497,7 +532,9 @@ export default function Calculator({ onClose }) {
                         <input
                           type="number"
                           value={newSignups}
-                          onChange={(e) => setNewSignups(Number(e.target.value))}
+                          onChange={(e) =>
+                            setNewSignups(Number(e.target.value))
+                          }
                         />
                       </div>
                     </label>

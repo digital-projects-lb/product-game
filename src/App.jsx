@@ -144,6 +144,12 @@ function createEmptyProgress() {
   };
 }
 
+function trackGameEvent(eventName, params = {}) {
+  if (typeof window.gtag === "function") {
+    window.gtag("event", eventName, params);
+  }
+}
+
 export default function App() {
   const [activeStage, setActiveStage] = useState(1);
   const [maxUnlockedStage, setMaxUnlockedStage] = useState(1);
@@ -298,10 +304,17 @@ export default function App() {
     }
     setStatusBanner("");
     setActiveStage(stageNum);
+
+    trackGameEvent("select_stage_node", { stage_number: stageNum });
   };
 
   const commitAndAdvance = () => {
     if (!isStageComplete) return;
+    trackGameEvent("complete_stage", {
+      stage_number: activeStage,
+      stage_label: currentStageData.label,
+    });
+
     if (activeStage < 10) {
       const nextStage = activeStage + 1;
       setMaxUnlockedStage((prev) => Math.max(prev, nextStage));
@@ -320,6 +333,7 @@ export default function App() {
   };
 
   const resetStage = () => {
+    trackGameEvent("reset_stage", { stage_number: activeStage });
     setStageProgress((prev) => ({
       ...prev,
       [activeStage]: createEmptyProgress(),
@@ -329,6 +343,7 @@ export default function App() {
 
   const globalReset = (e) => {
     e.preventDefault();
+    trackGameEvent("reset_stage", { stage_number: activeStage });
     setActiveStage(1);
     setMaxUnlockedStage(1);
     setIsLifecycleFinished(false);
@@ -353,20 +368,32 @@ export default function App() {
           <div className="nav-links">
             <button
               className="nav-link-clean"
-              onClick={() => setShowCalculator(true)}
+              onClick={() => {
+                trackGameEvent("open_modal", { modal_name: "kpi_calculator" });
+                setShowCalculator(true);
+              }}
             >
               KPI Calculator
             </button>
             <button
               className="nav-link-clean"
-              onClick={() => setShowResources(true)}
+              onClick={() => {
+                trackGameEvent("open_modal", { modal_name: "resources" });
+                setShowResources(true);
+              }}
             >
               Resources
             </button>
             <button className="nav-link-clean" onClick={resetStage}>
               Reset
             </button>
-            <button className="nav-link-clean" onClick={() => setTourStep(0)}>
+            <button
+              className="nav-link-clean"
+              onClick={() => {
+                trackGameEvent("open_modal", { modal_name: "how_to_play" });
+                setTourStep(0);
+              }}
+            >
               How to Play
             </button>
           </div>
@@ -811,6 +838,12 @@ export default function App() {
             <button
               className="nav-link-clean"
               onClick={() => {
+                if (!showClue) {
+                  trackGameEvent("open_stage_clue", {
+                    stage_number: activeStage,
+                    tab_name: activeTab,
+                  });
+                }
                 setShowClue((prev) => !prev);
                 setPinGlow(false);
               }}
@@ -884,7 +917,13 @@ export default function App() {
           onNextStage={commitAndAdvance}
           isFinalStage={activeStage === 10}
           activeTab={activeTab}
-          onTabChange={setActiveTab}
+          onTabChange={(newTab) => {
+            trackGameEvent("switch_workspace_tab", {
+              stage_number: activeStage,
+              tab_name: newTab,
+            });
+            setActiveTab(newTab);
+          }}
         />
       </main>
 
@@ -996,8 +1035,12 @@ export default function App() {
             Reset All Progress
           </a>{" "}
           •{" "}
-          <a href="https://github.io" target="_blank" rel="noreferrer">
-            View Case Study &amp; Docs
+          <a
+            href="https://digital-projects-lb.github.io/product-portfolio/"
+            target="_blank"
+            rel="noreferrer"
+          >
+            View Portfolio
           </a>
         </p>
       </footer>

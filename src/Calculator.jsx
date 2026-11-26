@@ -616,7 +616,16 @@ export default function Calculator({ onClose }) {
                     placeholder="Search acronyms or formulas (e.g. ARR, CRR, NPS)..."
                     value={refSearch}
                     onChange={(e) => setRefSearch(e.target.value)}
+                    onBlur={() => {
+                      if (refSearch.trim()) {
+                        trackCalcEvent("search_reference", {
+                          search_term: refSearch.trim(),
+                          results_count: filteredReference.length,
+                        });
+                      }
+                    }}
                   />
+
                   <div className="ref-pill-group">
                     <button
                       className={`ref-filter-pill ${refFilter === "all" ? "active" : ""}`}

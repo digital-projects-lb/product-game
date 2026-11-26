@@ -117,6 +117,12 @@ export default function Workspace({
         ? [...progress.facts, factId]
         : [progress.facts[1], factId];
     onUpdateProgress({ ...progress, facts: updated });
+    const pickedFact = stage.facts.find((f) => f.id === factId);
+    trackWorkspaceEvent("select_workbench_choice", {
+      stage_label: stage.label,
+      step_name: "why_fact",
+      choice_value: pickedFact ? pickedFact.text : factId,
+    });
   };
 
   // Slider proportional adjustment
@@ -182,12 +188,25 @@ export default function Workspace({
       updated = [updated[1], { group, role }];
     }
     onUpdateProgress({ ...progress, stakeholders: updated });
+
+    trackWorkspaceEvent("select_workbench_choice", {
+      stage_label: stage.label,
+      step_name: "who_stakeholder",
+      choice_value: `${group}: ${role}`,
+    });
   };
 
   const handleDropDeliverable = (e) => {
     e.preventDefault();
     if (draggedDeliverable) {
       onUpdateProgress({ ...progress, deliverable: draggedDeliverable });
+
+      trackWorkspaceEvent("select_workbench_choice", {
+        stage_label: stage.label,
+        step_name: "how_deliverable",
+        choice_value: draggedDeliverable,
+      });
+
       setDraggedDeliverable(null);
     }
   };
@@ -291,9 +310,14 @@ export default function Workspace({
                     className={`move-pill ${
                       progress.move === moveLabel ? "picked" : ""
                     }`}
-                    onClick={() =>
-                      onUpdateProgress({ ...progress, move: moveLabel })
-                    }
+                    onClick={() => {
+                      onUpdateProgress({ ...progress, move: moveLabel });
+                      trackWorkspaceEvent("select_workbench_choice", {
+                        stage_label: stage.label,
+                        step_name: "what_move",
+                        choice_value: moveLabel,
+                      });
+                    }}
                   >
                     {moveLabel}
                   </button>
@@ -507,9 +531,14 @@ export default function Workspace({
                     key={opt}
                     draggable
                     onDragStart={() => setDraggedDeliverable(opt)}
-                    onClick={() =>
-                      onUpdateProgress({ ...progress, deliverable: opt })
-                    }
+                    onClick={() => {
+                      onUpdateProgress({ ...progress, deliverable: opt });
+                      trackWorkspaceEvent("select_workbench_choice", {
+                        stage_label: stage.label,
+                        step_name: "how_deliverable",
+                        choice_value: opt,
+                      });
+                    }}
                     className={`delivery-token ${
                       progress.deliverable === opt ? "picked" : ""
                     }`}
@@ -576,9 +605,14 @@ export default function Workspace({
                   className={`window-strip ${
                     progress.window === winLabel ? "picked" : ""
                   }`}
-                  onClick={() =>
-                    onUpdateProgress({ ...progress, window: winLabel })
-                  }
+                  onClick={() => {
+                    onUpdateProgress({ ...progress, window: winLabel });
+                    trackWorkspaceEvent("select_workbench_choice", {
+                      stage_label: stage.label,
+                      step_name: "when_window",
+                      choice_value: winLabel,
+                    });
+                  }}
                 >
                   <span className="window-dot" />
                   <span>{winLabel}</span>
